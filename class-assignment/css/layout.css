@@ -1,0 +1,202 @@
+.header-div{
+     height: 80px;
+     background-color: #76c7c1;
+     background-image: url("../images/ruler.png");
+     background-position: bottom;
+     background-repeat: repeat-x;
+}
+
+.topinfo-div-wrapper, .header-wrapper, .main-body-1-wrapper, .main-body-2-wrapper, .main-body-3-wrapper, .footer-top-wrapper, .footer-bottom-wrapper {
+     width: 1172px;
+     margin: auto;
+}
+
+.header-left{
+     float: left;
+     padding-left: 10px;
+}
+
+.logo-div{
+     height: 80px;
+     line-height: 90px;
+}
+
+.header-right{
+     float: right;
+     height: 80px;
+     line-height: 80px;
+}
+
+.clearfix::before, .clearfix::after{
+     content: "";
+     display: table;
+}
+.clearfix::after{
+     clear: both;
+}
+
+.menu-list{
+     float: right;
+}
+
+.topinfo-div{
+     background-color: #ececec;
+}
+
+.col2-left{
+     height: 80px;
+     line-height: 80px;
+     padding-left: 10px;
+     float: left;
+     color: #7b8a87;
+     font-size: 16px;
+}
+
+.col2-right{
+     float: right;
+}
+
+.topinfo-arrowdown{
+     background: #f3f3f3;
+}
+.topinfo-arrowdown-wrapper{
+     margin: auto;
+     width: 1172px;
+     height: 13px;
+     background-image: url("../images/arrow-down.png");
+     background-repeat: no-repeat;
+     background-position: bottom left;
+}
+
+.main-body-1{
+     background-color: #f3f3f3;
+     height: 490px;
+     max-height: 490px;
+}
+
+.col3-left{
+     float: left;
+     color: #909696;
+     width: 300px;
+}
+
+.main-wrapper{
+     float: right;
+}
+
+.main{
+     float: left;
+     width: 572px;
+}
+
+.col3-right{
+     float: right;
+     color: #909696;
+     width: 300px;
+}
+
+.main-body-2{
+     height: 397px;
+     max-height: 398px;
+     background-color: #ececec;
+     background-image: url("../images/design-ruler-2.png");
+     background-position: top;
+     background-repeat: repeat-x;
+}
+
+.main-body-2 h1{
+     text-align: center;
+     padding-top: 66px;
+}
+
+.main-body-3{
+     background-color: #f3f3f3;
+     max-height: 590px;
+}
+
+.headline-title{
+     float: left;
+}
+
+.headline-arrows{
+     float: right;
+     background-color: #f3f3f3;
+}
+
+.left-arrow-div, .right-arrow-div{
+     float: left;
+     margin-left: 18px;
+}
+
+.team-members{
+     position: relative;
+     width: 100%;
+     margin-top: 60px;
+}
+
+.members{
+     float: left;
+     position: relative;
+     width: 270px;
+     height: 335px;
+     margin: 0 11px;
+     border: 1px solid;
+}
+
+.members-image{
+     position: relative;
+     background-image: url("../images/member-image.png");
+     background-position: center;
+     background-repeat: no-repeat;
+     width: 270px;
+     height: 314px;
+}
+
+.members-image img{
+     position: absolute;
+     top:0px;
+     left:0px;
+}
+
+.members-desp{
+     display: none;
+     background-image: url("../images/member-desp.png");
+     background-position: center;
+     background-repeat: no-repeat;
+     position: absolute relative;
+     width: 198px;
+     height: 242px;
+     top: 0px;
+     left:0px;
+     padding: 36px 36px;
+     color: white;
+    font-size: 13px;
+    line-height: 25px;
+    font-style: italic;
+}
+
+.members-nametag{
+     position: absolute;
+     background-image: url("../images/member-nametag.png");
+     background-position: center;
+     background-repeat: no-repeat;
+     bottom: 0px;
+     right: 35px;
+     width: 200px;
+     height: 54px;
+     font-size: 17px;
+     font-weight: bold;
+     color: white;
+     text-align: center;
+     line-height: 54px;
+}
+
+.members:hover .members-nametag{
+     background-image: url("../images/member-nametag-hover.png");
+     background-position: center;
+     background-repeat: no-repeat;
+}
+
+.members:hover .members-desp{
+     display: block;
+}
