@@ -1,0 +1,32 @@
+.main-body-2{
+     height: 397px;
+     max-height: 398px;
+     background-color: #ececec;
+     background-image: url("../images/design-ruler-2.png");
+     background-position: top;
+     background-repeat: repeat-x;
+}
+
+.main-body-2 h1{
+     text-align: center;
+     padding-top: 66px;
+}
+
+.main-body-3{
+     background-color: #f3f3f3;
+     max-height: 590px;
+}
+
+.headline-title{
+     float: left;
+}
+
+.headline-arrows{
+     float: right;
+     background-color: #f3f3f3;
+}
+
+.left-arrow-div, .right-arrow-div{
+     float: left;
+     margin-left: 18px;
+}
