@@ -4,3 +4,11 @@
 	font-family: Arial, Helvetica, sans-serif;
 }
 
+.clearfix::before, .clearfix::after{
+	content: "";
+	display: table;
+}
+
+.clearfix::after{
+	clear: both;
+}

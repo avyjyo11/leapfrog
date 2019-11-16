@@ -1,19 +1,209 @@
-.main-body-2{
-     height: 397px;
-     max-height: 398px;
+.body-div{
+     background-color: #f3f3f3;
+}
+
+/*generals*/
+.col2-left{
+     float: left;
+}
+
+.col2-right{
+     float: right;
+}
+
+.col3-left{
+     float: left;
+}
+
+.main{
+     float: left;
+}
+
+.col3-right{
+     float: right;
+}
+
+.wrapper{
+     width: 1172px;
+     margin: 0 auto;
+}
+
+.main-wrapper{
+     float: right;
+}
+/*creates*/
+/*headers css*/
+.header-div{
+     background-color: #76c7c1;
+     background-image: url("../images/ruler.png");
+     background-position: bottom;
+     background-repeat: repeat-x;
+}
+
+.header-left{
+     float: left;
+     padding-left: 10px;
+}
+
+.header-right{
+     float: right;
+}
+
+.logo-div{
+     height: 80px;
+     line-height: 90px;
+}
+
+.header-right ul{
+     float: left;
+     height: 80px;
+     line-height: 80px;
+}
+
+.header-right ul li{
+     float: left;
+     list-style-type: none;
+     padding-left: 14px;
+     padding-right: 12px;
+}
+
+.menu-search{
+     float: right;
+}
+
+/*body css*/
+.topinfo-div{
      background-color: #ececec;
-     background-image: url("../images/design-ruler-2.png");
+}
+
+.topinfo-arrowdown-wrapper{
+     height: 13px;
+     background-image: url("../images/arrow-down.png");
+     background-repeat: no-repeat;
+     background-position: bottom left;
+}
+
+.top-col2-left{
+     height: 80px;
+     line-height: 80px;
+     padding-left: 10px;
+}
+
+.main-body-1{
+     padding-top: 40px;
+     padding-bottom: 75px;
+}
+
+.main-body-1-col{
+     width: 300px;
+}
+
+.main-body-1-main{
+     width: 572px;
+}
+
+.main-body-1-col3-right{
+     float: right;
+     width:272px;
+}
+
+.main-body-2{
+     height: 578px;
+     background-image: url("../images/main-body-2-bg.png");
      background-position: top;
      background-repeat: repeat-x;
 }
 
-.main-body-2 h1{
-     text-align: center;
+.main-body-2-wrapper{
      padding-top: 66px;
+     padding-bottom: 90px;
 }
 
+.team-members{
+     position: relative;
+     width: 100%;
+     margin-top: 70px;
+}
+
+.members{
+     float: left;
+     position: relative;
+     width: 270px;
+     height: 335px;
+     margin: 0 11px;
+}
+
+.members-nametag{
+     position: absolute;
+     background-image: url("../images/member-nametag.png");
+     background-position: center;
+     background-repeat: no-repeat;
+     bottom: 0px;
+     right: 35px;
+     width: 200px;
+     height: 54px;
+     font-size: 17px;
+     font-weight: bold;
+     color: white;
+     text-align: center;
+     line-height: 54px;
+     z-index: 30;
+}
+
+.members-image{
+     position: relative;
+     background-image: url("../images/member-image.png");
+     background-position: center;
+     background-repeat: no-repeat;
+     width: 270px;
+     height: 314px;
+}
+
+.members-image-frame{
+     position: absolute;
+     top: 0px;
+     left: 0px;
+     width: 270px;
+     height: 314px;
+}
+
+.members-desp{
+     display: none;
+     background-image: url("../images/member-desp.png");
+     background-position: center;
+     background-repeat: no-repeat;
+     position: absolute;
+     width: 198px;
+     height: 242px;
+     top: 0px;
+     left:0px;
+     padding: 36px 36px;
+     color: #ffffff;
+    font-size: 13px;
+    line-height: 25px;
+    font-style: italic;
+    z-index: 10;
+}
+
+.sharing {
+     position: absolute;
+     bottom: 52px;
+     left: 33px;
+     z-index: 20;
+}
+
+.members:hover .members-nametag{
+     background-image: url("../images/member-nametag-hover.png");
+     background-position: center;
+     background-repeat: no-repeat;
+}
+
+.members:hover .members-desp{
+     display: block;
+}
+
+/*body-3 css*/
 .main-body-3{
-     background-color: #f3f3f3;
      max-height: 590px;
 }
 
@@ -29,4 +219,41 @@
 .left-arrow-div, .right-arrow-div{
      float: left;
      margin-left: 18px;
+}
+
+.footer-top{
+     padding-top: 45px;
+     background-color: #76c7c1;
+     background-image: url("../images/footer-design.png");
+     background-position: top;
+     background-repeat: repeat-x;
+     padding-bottom: 45px;
+}
+
+.footer-bottom{
+     background-color: #6bb4ad;
+}
+
+.footer-bottom-right{
+     padding-top: px;
+}
+
+.footer-top-left{
+     width: 366px;
+}
+
+.footer-top-main{
+     width: 318px;
+}
+
+.footer-top-main-wrapper{
+     width: 770px;
+}
+
+.footer-top-right{
+     width: 338px;
+}
+
+.checker{
+     border:1px solid;
 }
