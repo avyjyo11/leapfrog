@@ -24,7 +24,7 @@
 }
 
 .wrapper {
-     width: 1172px;
+     width: 73.25em;
      margin: 0 auto;
 }
 
@@ -32,8 +32,12 @@
      float: right;
 }
 
+.checker {
+     border: 0.1px solid;
+}
+
 /*creates*/
-/*headers css*/
+/*header-div css*/
 .header-div {
      background-color: #76c7c1;
      background-image: url("../images/ruler.png");
@@ -51,14 +55,13 @@
 }
 
 .logo-div {
-     height: 80px;
-     line-height: 90px;
+     padding-top: 21px;
 }
 
 .header-right ul {
      float: left;
-     height: 80px;
-     line-height: 80px;
+     margin-top: 32px;
+     margin-bottom: 32px;
 }
 
 .header-right ul li {
@@ -85,14 +88,22 @@
 }
 
 .top-col2-left {
-     height: 80px;
      line-height: 80px;
      padding-left: 10px;
 }
 
+/*main-body-1 css*/
 .main-body-1 {
      padding-top: 40px;
      padding-bottom: 75px;
+}
+
+.heading {
+     width: 100%;
+}
+
+.main-body-1-3cols {
+     width: 100%;
 }
 
 .main-body-1-col {
@@ -189,7 +200,7 @@
 .sharing {
      position: absolute;
      bottom: 52px;
-     left: 33px;
+     left: 34px;
      z-index: 20;
 }
 
@@ -251,10 +262,6 @@
 
 .footer-top-right {
      width: 386px;
-}
-
-.checker {
-     border: 1px solid;
 }
 
 .footer-top-right ul li {
