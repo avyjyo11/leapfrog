@@ -1,10 +1,10 @@
 /*header css*/
-.header-right ul li{
+.header-right ul li {
      font-size: 13px;
      font-weight: bold;
 }
 
-.header-right ul li a{
+.header-right ul li a {
      text-align: center;
      text-decoration: none;
      text-decoration-color: #ffffff;
@@ -13,44 +13,44 @@
      position: relative;
 }
 
-.header-right a:hover{
+.header-right a:hover {
      background-color: #63a19e;
 }
 
-.header-right a:hover .left-closure{
+.header-right a:hover .left-closure {
      display: inline-block;
 }
 
-.header-right a:hover .right-closure{
+.header-right a:hover .right-closure {
      display: inline-block;
 }
 
-.header-right a:hover .bottom-closure{
+.header-right a:hover .bottom-closure {
      display: inline-block;
 }
 
-.left-closure{
-     background:url("../images/left-closure.png") no-repeat bottom left;
+.left-closure {
+     background: url("../images/left-closure.png") no-repeat bottom left;
      display: none;
      position: absolute;
      bottom: 0px;
      left: 0px;
-     height:36px;
+     height: 36px;
      width: 10px;
 }
 
-.right-closure{
-     background:url("../images/right-closure.png") no-repeat bottom right;
+.right-closure {
+     background: url("../images/right-closure.png") no-repeat bottom right;
      display: none;
      position: absolute;
      bottom: 0px;
      right: 0px;
-     height:36px;
+     height: 36px;
      width: 10px;
 }
 
-.bottom-closure{
-     background:url("../images/bottom-closure.png") repeat-x bottom;
+.bottom-closure {
+     background: url("../images/bottom-closure.png") repeat-x bottom;
      display: none;
      position: absolute;
      bottom: 0px;
@@ -59,7 +59,7 @@
      width: 87%;
 }
 
-.menu-search{
+.menu-search {
      background: url("../images/search-icon.png") no-repeat center;
      height: 30px;
      width: 30px;
@@ -68,19 +68,19 @@
      margin-left: 10px;
 }
 
-.menu-search:hover{
+.menu-search:hover {
      background-color: #63a19e;
      background: url("../images/search-icon-hover.png") no-repeat center;
 }
 
 /*top-info-div css*/
 
-.top-col2-left{
+.top-col2-left {
      color: #7b8a87;
      font-size: 18px;
 }
 
-.top-col2-right ul{
+.top-col2-right ul {
      list-style-type: none;
      margin: 0;
      padding: 0;
@@ -88,114 +88,115 @@
      line-height: 80px;
 }
 
-.top-col2-right ul li{
+.top-col2-right ul li {
      float: left;
      color: #818785;
      font-size: 12px;
      padding: 0px 3px;
 }
 
-.top-col2-right ul li a{
+.top-col2-right ul li a {
      color: #818785;
      text-decoration: none;
      padding-right: 10px;
 }
 
-.top-col2-right li::after{
+.top-col2-right li::after {
      content: "/";
      float: right;
      color: silver;
 }
 
-.top-col2-right li:last-child::after{
+.top-col2-right li:last-child::after {
      display: none;
 }
 
 /*main-bodies css*/
-.heading h1{
+.heading h1 {
      color: #de5646;
      margin-left: 7px;
      margin-bottom: 16px;
 }
 
-.heading p{
+.heading p {
      color: #7f8d8d;
      line-height: 22px;
      font-size: 15px;
      margin-bottom: 64px;
 }
 
-.col3-left, .col3-right{
+.col3-left,
+.col3-right {
      color: #7f8d8d;
 }
 
-.body1-col3left ul{
+.body1-col3left ul {
      margin-left: 17px;
      font-size: 13px;
      width: 270px;
 }
 
-.body1-col3left li{
+.body1-col3left li {
      list-style-image: url("../images/list-img.png");
      line-height: 26px;
 }
 
-.main-body-1-main p a{
+.main-body-1-main p a {
      color: red;
 }
 
-.main-body-1-main p{
+.main-body-1-main p {
      margin-left: 20px;
      line-height: 26px;
-     margin-bottom:56px;
+     margin-bottom: 56px;
      font-size: 14px;
      color: #7f8d8d;
 }
 
-.main-body-1-main ul li{
+.main-body-1-main ul li {
      float: left;
      list-style: none;
      padding-right: 10px;
      padding-left: 10px;
 }
 
-.percent-pic{
+.percent-pic {
      font-size: 30px;
      position: relative;
 }
 
-.percent-txt{
+.percent-txt {
      position: absolute;
      bottom: 0;
-     left:45px;
+     left: 45px;
      text-align: center;
      font-size: 30px;
      color: #7f8d8d;
 }
 
-.percent-title{
+.percent-title {
      margin-top: 14px;
      text-align: center;
      color: #7f8d8d;
 }
 
-.adjust-100{
-     left:35px;
+.adjust-100 {
+     left: 35px;
 }
 
-.main-body-1-col h3{
+.main-body-1-col h3 {
      padding-bottom: 20px;
 }
 
-.bubble-text{
+.bubble-text {
      background-color: #f8f8f8;
      font-size: 12px;
      line-height: 26px;
-     padding:14px;
+     padding: 14px;
      font-style: italic;
 }
 
-.bubble-user{
+.bubble-user {
      background-image: url("../images/bubble-arrow.png");
      background-position-x: 20px;
      background-position-y: top;
@@ -204,61 +205,61 @@
      padding-top: 8px;
 }
 
-.main-body-2-wrapper h1{
+.main-body-2-wrapper h1 {
      text-align: center;
      font-size: 38px;
      color: #7f8d8d;
 }
 
-.sharing a{
+.sharing a {
      padding-left: 4px;
      padding-right: 4px;
 }
 
-.sharing a img{
+.sharing a img {
      height: 40px;
      width: 40px;
 }
 
-.body-3-head{
+.body-3-head {
      text-align: center;
      font-size: 33px;
-     color:#e05447;
+     color: #e05447;
      margin-bottom: 22px;
 }
 
-.body-3-p{
+.body-3-p {
      margin: 0px auto;
      width: 940px;
 }
 
-.body-3-p p{
+.body-3-p p {
      color: #7f8d8d;
      line-height: 17px;
      text-align: center;
      padding-bottom: 50px;
 }
 
-.headline{
+.headline {
      background-image: url("../images/hedline-seperator.png");
      background-position-y: center;
      background-position-x: left;
      background-repeat: repeat-x;
 }
 
-.headline-title{
+.headline-title {
      background-color: #f3f3f3;
-      background-image: url("../images/hedline-circle.png");
-      background-position-y: center;
-      background-position-x: right;
-      background-repeat: no-repeat;
-      font-size: 18px;
-      padding-right: 24px;
-      padding-top: 20px;
-      height:40px;
+     background-image: url("../images/hedline-circle.png");
+     background-position-y: center;
+     background-position-x: right;
+     background-repeat: no-repeat;
+     font-size: 18px;
+     padding-right: 24px;
+     padding-top: 20px;
+     height: 40px;
 }
 
-.left-arrow-div{
+.left-arrow-div {
      background-image: url("../images/left-arrow.png");
      background-position-y: center;
      background-position-x: center;
@@ -267,7 +268,7 @@
      width: 40px;
 }
 
-.right-arrow-div{
+.right-arrow-div {
      background-image: url("../images/right-arrow.png");
      background-position-y: center;
      background-position-x: center;
@@ -276,21 +277,21 @@
      width: 40px;
 }
 
-.right-arrow-div:hover{
+.right-arrow-div:hover {
      background-image: url("../images/right-arrow-red.png");
 }
 
-.left-arrow-div:hover{
+.left-arrow-div:hover {
      background-image: url("../images/left-arrow-red.png");
 }
 
-.body-3-list ul li{
+.body-3-list ul li {
      float: left;
      list-style: none;
      margin-right: 22px;
 }
 
-.jquery-lis{
+.jquery-lis {
      height: 92px;
      width: 172px;
      background-image: url("../images/jquery.png");
@@ -298,7 +299,7 @@
      background-repeat: no-repeat;
 }
 
-.jquery-lis a{
+.jquery-lis a {
      display: block;
      height: 91px;
      width: 171px;
@@ -306,56 +307,82 @@
      text-decoration: none;
 }
 
-.body-3-list{
+.body-3-list {
      margin-top: 20px;
      background-color: #f3f3f3;
      width: 100%;
      padding-bottom: 67px;
 }
 
-.footer-bottom-left{
+.footer-bottom-left {
      font-size: 12px;
      line-height: 50px;
      color: #f3f3f3;
 }
 
-.footer-bottom-right ul{
+.footer-bottom-right ul {
      padding-top: 10px;
 }
 
-.footer-bottom-right ul li{
+.footer-bottom-right ul li {
      float: left;
      list-style: none;
      list-style-type: none;
      padding-left: 24px;
 }
 
-.footer-bottom-right ul li a{
+.footer-bottom-right ul li a {
      text-decoration: none;
      text-align: center;
 }
 
-.footer-top-left p{
+.footer-top-left p {
      color: #f3f3f3;
      line-height: 22px;
      font-size: 14px;
      margin-bottom: 28px;
 }
 
-.footer-top-left img{
+.footer-mid {
+     font-size: 20px;
+     color: #3e7f77;
+}
+
+.footer-mid ul {
+     padding-left: 36px;
+     padding-top: 30px;
+
+}
+
+.footer-mid ul li {
+     list-style: url("../images/footer-list-image.png");
+     color: #f3f3f3;
+     font-size: 14px;
+     line-height: 24px;
+}
+
+.footer-top-left img {
      margin-bottom: 26px;
 }
 
-.info-box{
+.footer-top-right {
+     color: #f3f3f3;
+}
+
+.info-box {
      color: #f3f3f3;
      margin-bottom: 10px;
      font-size: 14px;
 }
 
-.info-txt{
+.info-txt {
      color: #f3f3f3;
      padding-left: 5px;
      font-size: 18px;
      font-weight: bold;
      font-style: italic;
+}
+
+.date-set {
+     color: #3e7f77;
 }
