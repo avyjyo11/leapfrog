@@ -255,6 +255,7 @@
      background-position-y: center;
      background-position-x: left;
      background-repeat: repeat-x;
+     width: 100%;
 }
 
 .headline-title {
@@ -299,11 +300,12 @@
      float: left;
      list-style: none;
      margin-right: 22px;
+     width: 14.675700%;
 }
 
 .jquery-lis {
      height: 92px;
-     width: 172px;
+     width: 100%;
      background-image: url("../images/jquery.png");
      background-position: center;
      background-repeat: no-repeat;
@@ -311,8 +313,7 @@
 
 .jquery-lis a {
      display: block;
-     height: 91px;
-     width: 171px;
+     width: 100%;
      text-align: center;
      text-decoration: none;
 }
