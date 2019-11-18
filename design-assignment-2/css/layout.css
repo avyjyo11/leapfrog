@@ -76,7 +76,7 @@
 }
 
 .menu-search {
-     width: 34px;
+     width: 4.1%;
      float: right;
      margin-top: 26px;
      margin-left: 10px;
@@ -432,7 +432,7 @@
 }
 
 .tab-block {
-     position: absolute relative;
+     position: absolute;
      width: 100%;
      top: 0px;
      left: 0px;
@@ -570,7 +570,7 @@
 }
 
 .headline-block-3-1-right {
-     display: right;
+     display: block;
      float: right;
      width: 24%;
 }
@@ -892,7 +892,8 @@
           display: block;
           text-align: left;
           float: none;
-          background-color: #7b8785;
+          background-color: #3e7f77;
+          border: 1px solid whitesmoke;
      }
 
      .header-right {

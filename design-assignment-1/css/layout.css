@@ -43,19 +43,23 @@
      background-image: url("../images/ruler.png");
      background-position: bottom;
      background-repeat: repeat-x;
+     width: 100%;
 }
 
 .header-left {
      float: left;
      padding-left: 10px;
+     width: 8.803418%;
 }
 
 .header-right {
      float: right;
+     width: auto;
 }
 
 .logo-div {
      padding-top: 21px;
+     width: 100%;
 }
 
 .header-right ul {
@@ -78,6 +82,7 @@
 /*body css*/
 .topinfo-div {
      background-color: #ececec;
+     width: 100%;
 }
 
 .topinfo-arrowdown-wrapper {
