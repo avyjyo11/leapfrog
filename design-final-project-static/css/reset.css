@@ -30,3 +30,10 @@ img {
      border: 0.1px solid;
      border-color: black;
 }
+
+.body-div {
+     font-family: "Raleway", sans-serif;
+     background-color: #f5f5f5;
+     /*background: url("../i-Recovered.png") no-repeat top left;
+     background-size: cover;*/
+}
