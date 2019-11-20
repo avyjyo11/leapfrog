@@ -424,7 +424,7 @@ main {
      padding-bottom: 24px;
      font-family: 'Open Sans', sans-serif;
      color: #8e8f93;
-     font-size: 14px;
+     font-size: 0.825em;
      line-height: 20px;
 }
 
@@ -798,7 +798,7 @@ main {
      color: #000000;
      border: none;
      border-bottom: 1px solid #d6d6d6;
-     font-size: 14px;
+     font-size: 0.825em;
 }
 
 .contact-right textarea {
@@ -813,7 +813,7 @@ main {
      color: #000000;
      border: none;
      border-bottom: 1px solid #d6d6d6;
-     font-size: 14px;
+     font-size: 0.825em;
 }
 
 .send-msg {
@@ -871,7 +871,8 @@ footer {
      list-style-type: none;
 }
 
-.footer-social-icons a {
+.footer-icons a {
+     display: inline-block;
      width: 28px;
 }
 
@@ -888,17 +889,191 @@ footer {
 @media only screen and (device-width: 768px) {
 
      /* For general iPad layouts */
-     header {
+     header,
+     main,
+     footer {
           min-width: 48em;
-          font-size: 1em;
      }
 
      .wrapper {
-          width: 48em;
+          width: 94.0104%;
+          /*722px*/
      }
 
      .nav-right ul li {
           font-size: 1em;
+     }
+
+     .trial-form {
+          width: 90%;
+     }
+
+     .header-bottom-left,
+     .header-bottom-right,
+     .tabs,
+     .tab-section,
+     .tabs-desp,
+     .tabs-img,
+     .section-2-left,
+     .section-2-right,
+     .section-3-left,
+     .section-3-right {
+          float: none;
+          width: 100%;
+          padding: 0;
+          margin: 0;
+     }
+
+     .header-bottom-left {
+          text-align: center;
+          padding-top: 20px;
+          padding-bottom: 0px;
+     }
+
+     .header-bottom {
+          padding-bottom: 20px;
+     }
+
+     .header-bottom-right a {
+          width: 10%;
+     }
+
+     .section-1-wrapper {
+          padding-top: 100px;
+          padding-bottom: 100px;
+     }
+
+     .tabs ul {
+          width: 90%;
+     }
+
+     .tabs ul li {
+          float: left;
+          padding: 20px 46px;
+          margin-right: 5px;
+     }
+
+     .tabs-desp,
+     .tabs-img {
+          padding-top: 50px;
+          width: 95%;
+     }
+
+     .tabs-desp {
+          font-size: 1.25em;
+     }
+
+     .tabs-img figure {
+          width: 70%;
+          margin: 0 auto;
+     }
+
+     .section-2,
+     .section-3 {
+          padding-top: 100px;
+          padding-bottom: 30px;
+          font-size: 1.5em;
+     }
+
+     .section-2-right,
+     .section-2-left,
+     .section-3-left,
+     .section-3-right {
+          padding: 0 30px;
+          width: 91.68%;
+          padding-bottom: 100px;
+     }
+
+     .window-img {
+          margin: 0 auto;
+     }
+
+     .section-3-right .window-img {
+          margin: 0 auto;
+          float: none;
+     }
+
+     .section-4 {
+          font-size: 1.15em;
+     }
+
+     .section-default p {
+          font-size: 1.25em;
+     }
+
+     .section-5 .section-3cols,
+     .section-6 .section-3cols {
+          display: block;
+          width: 100%;
+          padding: 0;
+          margin: 0;
+     }
+
+     .section-5 .section-col,
+     .section-6 .section-col {
+          display: block;
+          width: 100%;
+          padding: 0;
+          margin: 0 auto;
+     }
+
+     .pricing-options {
+          margin: 0 auto;
+          width: 60%;
+     }
+
+     .opt-price,
+     .opt-type {
+          width: 92.2122%;
+     }
+
+     .section-5,
+     .section-6 {
+          padding-bottom: 100px;
+     }
+
+     .saying-box {
+          padding: 70px 22px 0px 22px;
+          width: 78%;
+          margin: 0 auto;
+          font-size: 1.5em;
+     }
+
+     .customer-info {
+          float: left;
+          padding: 4px 20px;
+     }
+
+     .section-7 .section-default p {
+          font-size: 1.5em;
+     }
+
+     .contact-left,
+     .contact-right {
+          float: none;
+          width: 90%;
+          margin: 0 auto;
+          font-size: 1.5em;
+     }
+
+     #contact-msg textarea {
+          margin: 0;
+     }
+
+     .send-msg {
+          font-size: 1.5em;
+     }
+
+     .footer-icons {
+          width: 63%;
+     }
+
+     .footer-icons a {
+          width: 40px;
+     }
+
+     .footer-cr {
+          font-size: 1.5em;
      }
 
 }
@@ -906,40 +1081,191 @@ footer {
 /*media queries for samsung s5*/
 @media screen and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
 
-     header {
+     header,
+     main,
+     footer {
           min-width: 22.5em;
-          font-size: 1em;
+          font-size: 1.25em;
      }
 
      .wrapper {
-          width: 22em;
-     }
-
-     .nav-left {
-          width: 50%;
-     }
-
-     .nav-right {
-          width: 50%;
+          width: 94.0104%;
+          /*722px*/
      }
 
      .nav-right ul li {
           font-size: 1em;
      }
 
-     .logo-1 {
-          width: 70%;
+     .trial-form {
+          width: 90%;
      }
 
-     .header-top-left,
-     .header-top-right {
+     .header-bottom-left,
+     .header-bottom-right,
+     .tabs,
+     .tab-section,
+     .tabs-desp,
+     .tabs-img,
+     .section-2-left,
+     .section-2-right,
+     .section-3-left,
+     .section-3-right {
           float: none;
           width: 100%;
+          padding: 0;
+          margin: 0;
      }
 
-     .prototype-container {
-          padding: 10px 10px;
+     .header-bottom-left {
+          text-align: center;
+          padding-top: 20px;
+          padding-bottom: 0px;
      }
 
-     .trial-form {}
+     .header-bottom {
+          padding-bottom: 20px;
+     }
+
+     .header-bottom-right a {
+          width: 10%;
+     }
+
+     .section-1-wrapper {
+          padding-top: 100px;
+          padding-bottom: 100px;
+     }
+
+     .tabs ul {
+          width: 90%;
+     }
+
+     .tabs ul li {
+          float: left;
+          padding: 20px 46px;
+          margin-right: 5px;
+     }
+
+     .tabs-desp,
+     .tabs-img {
+          padding-top: 50px;
+          width: 95%;
+     }
+
+     .tabs-desp {
+          font-size: 1.25em;
+     }
+
+     .tabs-img figure {
+          width: 70%;
+          margin: 0 auto;
+     }
+
+     .section-2,
+     .section-3 {
+          padding-top: 100px;
+          padding-bottom: 30px;
+          font-size: 1.5em;
+     }
+
+     .section-2-right,
+     .section-2-left,
+     .section-3-left,
+     .section-3-right {
+          padding: 0 30px;
+          width: 91.68%;
+          padding-bottom: 100px;
+     }
+
+     .window-img {
+          margin: 0 auto;
+     }
+
+     .section-3-right .window-img {
+          margin: 0 auto;
+          float: none;
+     }
+
+     .section-4 {
+          font-size: 1.15em;
+     }
+
+     .section-default p {
+          font-size: 1.25em;
+     }
+
+     .section-5 .section-3cols,
+     .section-6 .section-3cols {
+          display: block;
+          width: 100%;
+          padding: 0;
+          margin: 0;
+     }
+
+     .section-5 .section-col,
+     .section-6 .section-col {
+          display: block;
+          width: 100%;
+          padding: 0;
+          margin: 0 auto;
+     }
+
+     .pricing-options {
+          margin: 0 auto;
+          width: 60%;
+     }
+
+     .opt-price,
+     .opt-type {
+          width: 92.2122%;
+     }
+
+     .section-5,
+     .section-6 {
+          padding-bottom: 100px;
+     }
+
+     .saying-box {
+          padding: 70px 22px 0px 22px;
+          width: 78%;
+          margin: 0 auto;
+          font-size: 1.5em;
+     }
+
+     .customer-info {
+          float: left;
+          padding: 4px 20px;
+     }
+
+     .section-7 .section-default p {
+          font-size: 1.5em;
+     }
+
+     .contact-left,
+     .contact-right {
+          float: none;
+          width: 90%;
+          margin: 0 auto;
+          font-size: 1.5em;
+     }
+
+     #contact-msg textarea {
+          margin: 0;
+     }
+
+     .send-msg {
+          font-size: 1.5em;
+     }
+
+     .footer-icons {
+          width: 63%;
+     }
+
+     .footer-icons a {
+          width: 40px;
+     }
+
+     .footer-cr {
+          font-size: 1.5em;
+     }
 }
