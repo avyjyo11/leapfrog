@@ -939,6 +939,22 @@ footer {
           width: 90%;
      }
 
+     .nav-right ul li {
+          float: none;
+          display: none;
+     }
+
+     .menu-tab {
+          margin-top: 18px;
+          margin-right: 18px;
+          display: block;
+          width: 30px;
+     }
+
+     .nav-right:hover ul li {
+          display: block;
+     }
+
      .header-top-left,
      .header-top-right,
      .trial-form,
