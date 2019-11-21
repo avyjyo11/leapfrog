@@ -1,0 +1,263 @@
+.nav-right ul li {
+     list-style: none;
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 600;
+}
+
+.nav-right ul li a {
+     color: #c9c9c9;
+     text-decoration: none;
+}
+
+.nav-right ul li a:hover {
+     text-decoration: underline;
+}
+
+.prototype-container h1 {
+     color: #ffffff;
+     font-family: 'Raleway', sans-serif;
+     font-weight: 400;
+}
+
+.prototype-container p {
+     color: #c6c6c6;
+     font-weight: 300;
+}
+
+.download-btn {
+     color: #ffffff;
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 600;
+     text-decoration: none;
+}
+
+.download-btn:hover {
+     background-color: #ffffff;
+     color: #000000;
+}
+
+.trial-title {
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 800;
+}
+
+.trial-title span {
+     color: #ff8b38;
+}
+
+.trial-form form input[type=text],
+.trial-form form input[type=password] {
+     font-family: 'Open Sans', sans-serif;
+     color: #000000
+}
+
+.trial-form form input::placeholder {
+     color: #d6d6d6;
+     font-size: 0.875em;
+}
+
+.trial-form form input[type=submit] {
+     background-color: #ff9b51;
+     border: none;
+     color: #ffffff;
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 600;
+}
+
+.trial-form form input[type=submit]:hover {
+     background-color: #333333;
+}
+
+.header-bottom {
+     background-color: #ffffff;
+     box-shadow: 3px 3px 3px#b7b7b7;
+}
+
+.header-bottom-left p {
+     font-size: 0.8125em;
+     color: #86878b;
+}
+
+.tabs ul li {
+     list-style: none;
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 700;
+     background-color: #000000;
+     color: #ffffff;
+     box-shadow: 2px 2px 2px #b7b7b7;
+}
+
+.tabs ul li:hover {
+     background-color: #ff8b38;
+     color: #000000;
+}
+
+.tabs-desp h3 {
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 700;
+}
+
+.tabs-desp p {
+     font-family: 'Open Sans', sans-serif;
+     color: #8e8f93;
+}
+
+.tabs-dnld-btn {
+     color: #ffffff;
+     background-color: #ff8b38;
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 600;
+     text-decoration: none;
+     box-shadow: 1px 1px 1px #b7b7b7;
+     border-radius: 3px;
+}
+
+.tabs-dnld-btn:hover {
+     background-color: #333333;
+}
+
+.section-2-right h3,
+.section-3-left h3 {
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 700;
+}
+
+.section-2-right p,
+.section-3-left p {
+     font-family: 'Open Sans', sans-serif;
+     color: #8e8f93;
+}
+
+.sublist-desp h5 {
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 600;
+}
+
+.sublist-desp p {
+     font-family: 'Open Sans', sans-serif;
+     color: #8e8f93;
+}
+
+.section-default h1 {
+     font-family: 'Raleway', sans-serif;
+     font-weight: 400;
+}
+
+.section-default p {
+     font-family: 'Open Sans', sans-serif;
+     color: #86878b;
+}
+
+.icon-fig {
+     color: #ff8b38;
+     border-radius: 50%;
+}
+
+.section-4 .section-col h3 {
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 700;
+}
+
+.section-4 .section-col p {
+     font-family: 'Open Sans', sans-serif;
+     color: #8e8f93;
+}
+
+.pricing-options {
+     text-decoration: none;
+     color: #ffffff;
+}
+
+.opt-title {
+     color: #ffffff;
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 700;
+     background-color: #333333;
+}
+
+.opt-price {
+     color: #ffffff;
+     font-family: 'Raleway', sans-serif;
+     font-weight: 700;
+     background-color: #333333;
+}
+
+.opt-type {
+     color: #adadad;
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 600;
+     font-style: italic;
+     background-color: #333333;
+}
+
+.opt-value {
+     color: #ffffff;
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 700;
+     background-color: #ff8b38;
+}
+
+.opt-specs ul li {
+     color: #98999c;
+     background-color: #ffffff;
+     list-style-type: none;
+     font-family: 'Open Sans', sans-serif;
+}
+
+.saying-quote {
+     background-color: #f5f5f5;
+     font-family: 'Open Sans', sans-serif;
+     color: #86878b;
+     font-weight: 400;
+     font-style: italic;
+}
+
+.customer-name {
+     font-family: 'Open Sans', sans-serif;
+     font-size: 1.17em;
+     font-weight: 700;
+}
+
+.customer-post {
+     font-family: 'Open Sans', sans-serif;
+     font-size: 0.825em;
+     color: #98999c;
+     font-weight: 400;
+}
+
+.section-7 .section-default p {
+     font-family: 'Raleway', sans-serif;
+     font-weight: 300;
+     color: #b7b7b7;
+}
+
+.contact-left input[type=text],
+.contact-right textarea {
+     font-family: 'Open Sans', sans-serif;
+     color: #000000;
+     border: none;
+}
+
+.send-msg input[type=submit] {
+     background-color: #ff9b51;
+     border: none;
+     color: #ffffff;
+     font-family: 'Open Sans', sans-serif;
+     font-weight: 600;
+     box-shadow: 1px 1px 2px #86878b;
+}
+
+.section-8 form input::placeholder,
+.section-8 form textarea::placeholder {
+     color: #d6d6d6;
+     font-size: 1em;
+}
+
+.send-msg input[type=submit]:hover {
+     background-color: #333333;
+}
+
+.footer-cr {
+     color: #c6c6c6;
+     font-family: 'Open Sans', sans-serif;
+}
