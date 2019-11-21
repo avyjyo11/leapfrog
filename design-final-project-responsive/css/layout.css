@@ -886,13 +886,13 @@ footer {
 }
 
 /*media queries for ipad*/
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
 
      /* For general iPad layouts */
      header,
      main,
      footer {
-          min-width: 48em;
+          min-width: 100%;
      }
 
      .wrapper {
@@ -1079,17 +1079,16 @@ footer {
 }
 
 /*media queries for samsung s5*/
-@media screen and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
+@media screen and (min-device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
 
      header,
      main,
      footer {
-          min-width: 22.5em;
-          font-size: 1.25em;
+          min-width: 100%;
      }
 
      .wrapper {
-          width: 94.0104%;
+          width: 96%;
           /*722px*/
      }
 
@@ -1101,6 +1100,9 @@ footer {
           width: 90%;
      }
 
+     .header-top-left,
+     .header-top-right,
+     .trial-form,
      .header-bottom-left,
      .header-bottom-right,
      .tabs,
@@ -1117,6 +1119,23 @@ footer {
           margin: 0;
      }
 
+     .prototype-container {
+          padding: 40px 20px;
+     }
+
+     .prototype-container p {
+          padding-right: 0px;
+     }
+
+     .trial-form {
+          width: 90%;
+          margin: 0 auto;
+     }
+
+     .header-top-right {
+          padding-bottom: 50px;
+     }
+
      .header-bottom-left {
           text-align: center;
           padding-top: 20px;
@@ -1128,21 +1147,28 @@ footer {
      }
 
      .header-bottom-right a {
-          width: 10%;
+          display: block;
+          width: 40px;
+     }
+
+     .header-bottom-right ul li {
+          padding: 0px;
+          padding-top: 20px;
+          padding-right: 8px;
      }
 
      .section-1-wrapper {
-          padding-top: 100px;
-          padding-bottom: 100px;
+          width: 94%;
+          padding: 100px 10px;
      }
 
-     .tabs ul {
-          width: 90%;
+     .tabs {
+          width: 98%;
      }
 
      .tabs ul li {
           float: left;
-          padding: 20px 46px;
+          padding: 14px 24px;
           margin-right: 5px;
      }
 
@@ -1157,7 +1183,7 @@ footer {
      }
 
      .tabs-img figure {
-          width: 70%;
+          width: 90%;
           margin: 0 auto;
      }
 
@@ -1165,23 +1191,24 @@ footer {
      .section-3 {
           padding-top: 100px;
           padding-bottom: 30px;
-          font-size: 1.5em;
      }
 
      .section-2-right,
      .section-2-left,
      .section-3-left,
      .section-3-right {
-          padding: 0 30px;
-          width: 91.68%;
-          padding-bottom: 100px;
+          width: 90%;
+          padding: 0 16px;
+          padding-bottom: 50px;
      }
 
      .window-img {
+          width: 94%;
           margin: 0 auto;
      }
 
      .section-3-right .window-img {
+          width: 94%;
           margin: 0 auto;
           float: none;
      }
@@ -1191,81 +1218,118 @@ footer {
      }
 
      .section-default p {
-          font-size: 1.25em;
+          font-size: 1em;
      }
 
-     .section-5 .section-3cols,
-     .section-6 .section-3cols {
+     .section-3cols {
           display: block;
           width: 100%;
           padding: 0;
           margin: 0;
      }
 
+     .section-col {
+          display: block;
+          width: 100%;
+          padding: 0;
+          margin: 0 auto;
+     }
+
+     .section-4 p {
+          padding-bottom: 40px;
+     }
+
+     .section-4 .section-col,
      .section-5 .section-col,
      .section-6 .section-col {
           display: block;
           width: 100%;
           padding: 0;
           margin: 0 auto;
+          padding-top: 40px;
+     }
+
+     .section-4 {
+          padding-bottom: 60px;
      }
 
      .pricing-options {
           margin: 0 auto;
-          width: 60%;
+          width: 80%;
      }
 
      .opt-price,
      .opt-type {
-          width: 92.2122%;
+          width: 87.7%;
      }
 
      .section-5,
      .section-6 {
-          padding-bottom: 100px;
+          padding-bottom: 60px;
      }
 
      .saying-box {
-          padding: 70px 22px 0px 22px;
+          padding: 20px 20px 0px 20px;
           width: 78%;
           margin: 0 auto;
-          font-size: 1.5em;
+          font-size: 1em;
      }
 
      .customer-info {
           float: left;
           padding: 4px 20px;
+          width: 50%;
      }
 
      .section-7 .section-default p {
-          font-size: 1.5em;
+          font-size: 1em;
+     }
+
+     .section-8 form {
+          padding-top: 40px;
      }
 
      .contact-left,
      .contact-right {
           float: none;
-          width: 90%;
+          width: 100%;
+          padding: 0px;
           margin: 0 auto;
-          font-size: 1.5em;
+          font-size: 1em;
      }
 
-     #contact-msg textarea {
-          margin: 0;
+     .contact-left input[type=text] {
+          margin: 0px 20px 20px 20px;
+          width: 82%;
+     }
+
+     #contact-msg {
+          margin: 0px 20px 20px 20px;
+          width: 81%;
      }
 
      .send-msg {
-          font-size: 1.5em;
+          font-size: 1em;
      }
 
      .footer-icons {
-          width: 63%;
+          width: 100%;
      }
 
      .footer-icons a {
-          width: 40px;
+          display: block;
+          width: 29px;
+     }
+
+     .footer-icons ul li {
+          padding: 0px;
+          padding-top: 40px;
+          padding-right: 10px;
+          padding-left: 10px;
      }
 
      .footer-cr {
-          font-size: 1.5em;
+          font-size: 1em;
+          padding-bottom: 20px;
      }
 }
