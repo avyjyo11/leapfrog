@@ -854,6 +854,7 @@ footer {
      width: 100%;
      background-color: #000000;
      padding-bottom: 12px;
+     min-width: 87.5em;
 }
 
 .footer-icons {
