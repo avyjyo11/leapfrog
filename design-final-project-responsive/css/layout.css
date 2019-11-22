@@ -1,12 +1,11 @@
 header {
-     width: 100%;
      background: url("../images/header-bg-img.png") no-repeat top center;
      background-size: cover;
-     min-width: 87.5em;
+     width: 100%;
 }
 
 .wrapper {
-     width: 71.875em;
+     width: 75.7011%;
      /*1150px*/
      margin: 0 auto;
 }
@@ -85,7 +84,7 @@ header {
 }
 
 .logo-2 {
-     width: 30.4347%;
+     width: 32.4347%;
      padding-bottom: 33px;
 }
 
@@ -98,7 +97,7 @@ header {
      display: inline-block;
      background-color: #ffffff;
      height: 2px;
-     width: 11.1304%;
+     width: 12.1304%;
 }
 
 .prototype-container p {
@@ -216,7 +215,6 @@ header {
 }
 
 main {
-     min-width: 87.5em;
      width: 100%;
 }
 
@@ -430,6 +428,7 @@ main {
 .section-3cols {
      display: table;
      table-layout: fixed;
+     margin: 0 auto;
 }
 
 .section-col {
@@ -477,7 +476,7 @@ main {
 
 .section-4 .section-col p {
      padding-bottom: 24px;
-     font-size: 0.8125em;
+     font-size: 0.825em;
      line-height: 19px;
      text-align: center;
 }
@@ -489,15 +488,14 @@ main {
 }
 
 .section-5 .section-col {
-     padding-left: 21px;
-     padding-right: 21px;
+     padding-left: 20px;
+     padding-right: 20px;
      padding-top: 72px;
      padding-bottom: 96px;
 }
 
 .pricing-options {
      display: block;
-     height: 498px;
      width: 343px;
      padding-top: 35px;
 }
@@ -694,7 +692,6 @@ footer {
      width: 100%;
      background-color: #000000;
      padding-bottom: 12px;
-     min-width: 87.5em;
 }
 
 .footer-icons {
@@ -725,7 +722,7 @@ footer {
 }
 
 /*media queries for ipad*/
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+@media only screen and (max-width : 1024px) {
 
      /* For general iPad layouts */
      header,
@@ -918,7 +915,278 @@ footer {
 }
 
 /*media queries for samsung s5*/
-@media screen and (min-device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
+@media screen and (min-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
+
+     header,
+     main,
+     footer {
+          min-width: 100%;
+     }
+
+     .wrapper {
+          width: 96%;
+          /*722px*/
+     }
+
+     .nav-right ul li {
+          font-size: 1em;
+     }
+
+     .trial-form {
+          width: 90%;
+     }
+
+     .nav-right ul li {
+          float: none;
+          display: none;
+     }
+
+     .menu-tab {
+          margin-top: 18px;
+          margin-right: 18px;
+          display: block;
+          width: 30px;
+     }
+
+     .nav-right:hover ul li {
+          display: block;
+     }
+
+     .header-top-left,
+     .header-top-right,
+     .trial-form,
+     .header-bottom-left,
+     .header-bottom-right,
+     .tabs,
+     .tab-section,
+     .tabs-desp,
+     .tabs-img,
+     .section-2-left,
+     .section-2-right,
+     .section-3-left,
+     .section-3-right {
+          float: none;
+          width: 100%;
+          padding: 0;
+          margin: 0;
+     }
+
+     .prototype-container {
+          padding: 40px 20px;
+     }
+
+     .prototype-container p {
+          padding-right: 0px;
+     }
+
+     .trial-form {
+          width: 90%;
+          margin: 0 auto;
+     }
+
+     .header-top-right {
+          padding-bottom: 50px;
+     }
+
+     .header-bottom-left {
+          text-align: center;
+          padding-top: 20px;
+          padding-bottom: 0px;
+     }
+
+     .header-bottom {
+          padding-bottom: 20px;
+     }
+
+     .header-bottom-right a {
+          display: block;
+          width: 40px;
+     }
+
+     .header-bottom-right ul li {
+          padding: 0px;
+          padding-top: 20px;
+          padding-right: 8px;
+     }
+
+     .section-1-wrapper {
+          width: 94%;
+          padding: 100px 10px;
+     }
+
+     .tabs {
+          width: 98%;
+     }
+
+     .tabs ul li {
+          float: left;
+          padding: 14px 24px;
+          margin-right: 5px;
+     }
+
+     .tabs-desp,
+     .tabs-img {
+          padding-top: 50px;
+          width: 95%;
+     }
+
+     .tabs-desp {
+          font-size: 1.25em;
+     }
+
+     .tabs-img figure {
+          width: 90%;
+          margin: 0 auto;
+     }
+
+     .section-2,
+     .section-3 {
+          padding-top: 100px;
+          padding-bottom: 30px;
+     }
+
+     .section-2-right,
+     .section-2-left,
+     .section-3-left,
+     .section-3-right {
+          width: 90%;
+          padding: 0 16px;
+          padding-bottom: 50px;
+     }
+
+     .window-img {
+          width: 94%;
+          margin: 0 auto;
+     }
+
+     .section-3-right .window-img {
+          width: 94%;
+          margin: 0 auto;
+          float: none;
+     }
+
+     .section-4 {
+          font-size: 1.15em;
+     }
+
+     .section-default p {
+          font-size: 1em;
+     }
+
+     .section-3cols {
+          display: block;
+          width: 100%;
+          padding: 0;
+          margin: 0;
+     }
+
+     .section-col {
+          display: block;
+          width: 100%;
+          padding: 0;
+          margin: 0 auto;
+     }
+
+     .section-4 p {
+          padding-bottom: 40px;
+     }
+
+     .section-4 .section-col,
+     .section-5 .section-col,
+     .section-6 .section-col {
+          display: block;
+          width: 100%;
+          padding: 0;
+          margin: 0 auto;
+          padding-top: 40px;
+     }
+
+     .section-4 {
+          padding-bottom: 60px;
+     }
+
+     .pricing-options {
+          margin: 0 auto;
+          width: 80%;
+     }
+
+     .opt-price,
+     .opt-type {
+          width: 87.7%;
+     }
+
+     .section-5,
+     .section-6 {
+          padding-bottom: 60px;
+     }
+
+     .saying-box {
+          padding: 20px 20px 0px 20px;
+          width: 78%;
+          margin: 0 auto;
+          font-size: 1em;
+     }
+
+     .customer-info {
+          float: left;
+          padding: 4px 20px;
+          width: 50%;
+     }
+
+     .section-7 .section-default p {
+          font-size: 1em;
+     }
+
+     .section-8 form {
+          padding-top: 40px;
+     }
+
+     .contact-left,
+     .contact-right {
+          float: none;
+          width: 100%;
+          padding: 0px;
+          margin: 0 auto;
+          font-size: 1em;
+     }
+
+     .contact-left input[type=text] {
+          margin: 0px 20px 20px 20px;
+          width: 82%;
+     }
+
+     #contact-msg {
+          margin: 0px 20px 20px 20px;
+          width: 81%;
+     }
+
+     .send-msg {
+          font-size: 1em;
+     }
+
+     .footer-icons {
+          width: 100%;
+     }
+
+     .footer-icons a {
+          display: block;
+          width: 29px;
+     }
+
+     .footer-icons ul li {
+          padding: 0px;
+          padding-top: 40px;
+          padding-right: 10px;
+          padding-left: 10px;
+     }
+
+     .footer-cr {
+          font-size: 1em;
+          padding-bottom: 20px;
+     }
+}
+
+@media screen and (max-width: 700px) {
 
      header,
      main,
