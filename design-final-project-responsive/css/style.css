@@ -236,6 +236,7 @@
      font-family: 'Open Sans', sans-serif;
      color: #000000;
      border: none;
+     border-bottom: 1px solid #d6d6d6;
 }
 
 .send-msg input[type=submit] {
