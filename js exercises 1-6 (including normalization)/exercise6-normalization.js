@@ -33,7 +33,6 @@ function solution(ip) {
      var op = {};
      for (key in ip) {
           var obj = ip[key];
-          //console.log(obj);
           recursion(obj, op);
      }
      return op;
@@ -57,13 +56,12 @@ function recursion(obj, op) {
                     }
                }
           });
-     } else {
-          //nothing
      }
 }
 
 var output = solution(input);
 console.log(output);
+
 // To this
 // var output = {
 //      '1': {
