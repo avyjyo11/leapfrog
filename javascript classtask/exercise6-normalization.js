@@ -22,18 +22,21 @@ var input = {
           children: [{
                id: 6,
                name: 'Peter'
+          }, {
+               id: 7,
+               name: 'Parker'
           }]
      }
 };
 
-var output = {};
-
-function solution(ip, op) {
+function solution(ip) {
+     var op = {};
      for (key in ip) {
           var obj = ip[key];
           //console.log(obj);
           recursion(obj, op);
      }
+     return op;
 }
 
 function recursion(obj, op) {
@@ -59,7 +62,7 @@ function recursion(obj, op) {
      }
 }
 
-solution(input, output);
+var output = solution(input);
 console.log(output);
 // To this
 // var output = {
