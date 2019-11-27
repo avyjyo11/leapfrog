@@ -100,7 +100,6 @@ function autoSlidingRight() {
       } else {
         pos = pos + transitionInterval;
         carouselImageWrapper.style.left = (-currentPos - pos) + 'px';
-
       }
     }
 
@@ -177,26 +176,9 @@ function setter() {
 for (var i = 0; i < numberOfImages; i++) {
   indicators[i].addEventListener('click', function (e) {
     console.log(e.target);
-    if (counter > i) {
-      var pos = -(currentPos + containerWidth);
-      posCondition = containerWidth * i;
-      var prevBtnSlide = setInterval(frameLeft, transitionTime);
-
-      function frameLeft() {
-        if (pos >= posCondition) {
-          counter = i;
-          currentPos = (containerWidth * counter);
-          nextPos = currentPos + containerWidth;
-          clearInterval(prevBtnSlide);
-          setter();
-        } else {
-          pos = pos + transitionInterval * 10;
-          carouselImageWrapper.style.left = pos + 'px';
-        }
-      }
-    } else {
-
-    }
-
+    counter = i;
+    currentPos = counter * containerWidth;
+    nextPos = currentPos + containerWidth;
+    carouselImageWrapper.style.left = -nextpos + 'px';
   })
 }
