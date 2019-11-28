@@ -1,7 +1,6 @@
 .carousel-container {
-  width: 666px;
-  height: 500px;
-  margin: 0 auto;
+  margin: 30px auto;
+  /* overflow: hidden; */
   position: relative;
   overflow: hidden;
 }
@@ -16,45 +15,30 @@
   display: block;
 }
 
-#prevBtn,
-#nextBtn {
+.carousel-container-button {
   position: absolute;
-  height: 60px;
-  width: 40px;
-  margin-top: -30px;
   z-index: 20;
-  font-size: 60px;
-  color: rgb(255, 250, 244);
-  line-height: 60px;
   display: block;
   background: none;
+  color: rgb(255, 250, 244);
+  font-size: 80px;
   border: 0px;
+  text-align: center;
   opacity: 70%;
   overflow: hidden;
+  top: 50%;
 }
 
-#prevBtn:hover,
-#nextBtn:hover {
+.carousel-container-button:hover {
   opacity: 90%;
 }
 
-#prevBtn {
-  left: 0px;
-  top: 50%;
-}
-
-#nextBtn {
-  right: 0px;
-  top: 50%;
-}
-
-#indicators {
+.indicator-div {
   position: absolute;
   z-index: 22;
   text-align: center;
   bottom: 0px;
   width: 100%;
-  height: 20px;
 }
 
 .clearfix::before,
