@@ -2,8 +2,8 @@
   width: 666px;
   height: 500px;
   margin: 0 auto;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
 }
 
 .carousel-image-wrapper {
@@ -12,9 +12,8 @@
 }
 
 .carousel-image-wrapper img {
-  position: absolute;
+  float: left;
   display: block;
-  z-index: 10;
 }
 
 #prevBtn,
