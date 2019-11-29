@@ -1,0 +1,55 @@
+header button {
+  background-color: royalblue;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding: 16px;
+  text-align: center;
+  border-radius: 10px;
+  margin: 20px 0px 20px 20px;
+}
+
+header button:hover {
+  background-color: black;
+}
+
+.ant-section,
+.ball-section {
+  float: left;
+  margin: 20px;
+}
+
+.container {
+  position: relative;
+  border: 3px solid black;
+  font-weight: bold;
+}
+
+.scoreboard {
+  background-color: silver;
+  font-size: 20px;
+  padding: 10px 0px;
+  border: 3px solid black;
+  border-top: none;
+  text-align: center;
+  font-weight: bold;
+}
+
+.ball,
+.ant {
+  position: absolute;
+  z-index: 10;
+}
+
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+}
+
+.clearfix::after {
+  clear: both;
+}
+
+.
