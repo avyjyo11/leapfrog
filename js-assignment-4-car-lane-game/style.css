@@ -1,0 +1,28 @@
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+}
+
+.clearfix::after {
+  clear: both;
+}
+
+.body-container {
+  border: 1px solid black;
+}
+
+.main-container {
+  background-color: aqua;
+  position: absolute;
+  overflow: hidden;
+}
+
+.backGround {
+  position: absolute;
+  z-index: 3;
+}
+
+.score-board {
+  background-color: blueviolet;
+}

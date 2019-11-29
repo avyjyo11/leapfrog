@@ -1,4 +1,4 @@
-new BallCollision(700, 500, 11, 8, 4, 1, 30, 16).start();
+//new BallCollision(700, 500, 11, 8, 4, 1, 30, 16).start();
 
 /*width, height of container*/
 /*maxSpeed, minSpeed, maxRadius, minRadius of balls*/
@@ -136,7 +136,7 @@ function Ball(container, width, height, allBalls, maxSpeed, minSpeed, maxRadius,
         var dy = this.centerY - ball2.centerY;
         var distance = Math.floor(Math.sqrt(dx * dx + dy * dy));
 
-        if (distance <= this.radius + ball2.radius) {
+        if (distance - this.radius - ball2.radius <= 0.0000001) {
           this.angle = (this.angle + 90) % 360;
           ball2.angle = (ball2.angle + 90) % 360;
         }
@@ -169,6 +169,27 @@ function randomColor() {
   return rc;
 }
 
+function reflectAngle(angle, axis) {
+
+  if (angle % 90 === 0)
+    return (angle + 180) % 360;
+
+  let reflected;
+  let segment = (angle % 90) * 2;
+
+  if (axis === 'X')
+    reflected = angle + (180 - segment);
+
+  else if (axis === 'Y')
+    reflected = angle - segment;
+
+  if (angle < 90)
+    reflected += 180;
+
+  return reflected % 360;
+}
+
 function addBallContainer() {
-  new BallCollision(600, 500, 10).start();
+  var ballCount = getRandom(10, 20);
+  new BallCollision(700, 500, ballCount).start();
 }

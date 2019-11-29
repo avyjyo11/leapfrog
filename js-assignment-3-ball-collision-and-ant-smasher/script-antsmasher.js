@@ -1,4 +1,4 @@
-new AntSmasher(700, 456, 11, 10, 3, 1, 30, 10).start();
+//new AntSmasher(700, 456, 11, 10, 3, 1, 30, 10).start();
 
 /*width, height of container*/
 /*maxSpeed, minSpeed, maxSize, minSize of ants*/
@@ -13,6 +13,7 @@ function AntSmasher(width, height, antCount, transitionTime, maxSpeed, minSpeed,
   this.scoreCount = 0;
   this.ants = [];
   this.game;
+  this.startTimer = false;
   this.antContainer;
   this.scoreBoard;
   this.MAXSPEED = maxSpeed || 3;
@@ -60,7 +61,9 @@ function AntSmasher(width, height, antCount, transitionTime, maxSpeed, minSpeed,
   }
 
   function moveAnts() {
-    that.timer += that.TRANSITION;
+    if (this.startTimer == true) {
+      that.timer += that.TRANSITION;
+    }
     for (var i = 0; i < this.ants.length; i++) {
       that.ants[i].wallCollisionCheck();
       that.ants[i].antCollisionCheck(that.ants);
@@ -85,6 +88,7 @@ function AntSmasher(width, height, antCount, transitionTime, maxSpeed, minSpeed,
   function antSmashed(e) {
     for (var i = 0; i < this.ants.length; i++) {
       if (this.ants[i].element == e.target) {
+        this.startTimer = true;
         this.ants[i].speed = 0;
         this.ants[i].element.style.background = "url('./images/blood.png') center";
         this.ants[i].element.style.backgroundSize = 'contain';
@@ -180,7 +184,7 @@ function Ant(container, width, height, allAnts, maxSpeed, minSpeed, maxSize, min
         var dy = this.centerY - ant2.centerY;
         var distance = Math.floor(Math.sqrt(dx * dx + dy * dy));
 
-        if (distance <= this.radius + ant2.radius) {
+        if (distance - this.radius - ant2.radius <= 0.0000001) {
           this.angle = (this.angle + 90) % 360;
           ant2.angle = (ant2.angle + 90) % 360;
         }
@@ -202,5 +206,6 @@ function angleConvert(rad) {
 }
 
 function addAntContainer() {
-  new AntSmasher(700, 456, 15).start();
+  var antCount = getRandom(10, 40);
+  new AntSmasher(700, 456, antCount).start();
 }
