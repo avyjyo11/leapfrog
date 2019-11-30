@@ -1,11 +1,12 @@
-var game1 = new CarLaneGame(500, 800);
+var game1 = new CarLaneGame(400, 640);
 game1.init();
 
 function CarLaneGame(width, height) {
   this.width = width;
   this.height = height;
   this.start;
-  this.increase;
+  this.increase = 0;
+  this.backGround;
   var that = this;
 
   this.init = function () {
@@ -38,13 +39,14 @@ function CarLaneGame(width, height) {
     var backGround = document.createElement('div');
     backGround.classList.add('backGround');
     backGround.style.width = this.width + 'px';
-    backGround.style.height = this.height + 256 + 'px';
+    backGround.style.height = this.height + 51 + 'px';
     backGround.style.background = 'url("./images/carLane.png") top left';
     backGround.style.backgroundRepeat = 'repeat-y';
     backGround.style.backgroundSize = 'contain';
     backGround.style.left = 0 + 'px';
-    backGround.style.top = -128 + 'px';
+    backGround.style.top = -51 + 'px';
     mainContainer.appendChild(backGround);
+    this.backGround = backGround;
 
     var scoreBoard = document.createElement('div');
     scoreBoard.style.width = 400 + 'px';
@@ -55,10 +57,15 @@ function CarLaneGame(width, height) {
   }
 
   this.moveBackground = function () {
-    if (this.increase >= ) {
-
+    if (this.increase >= 51) {
+      this.increase = 0;
     }
     this.increase++;
-    backGround.style.top = (-128 - this.increase) + 'px';
+    console.log(this.increase);
+    this.backGround.style.top = (-51 + this.increase) + 'px';
   }
+}
+
+function Car(){
+
 }

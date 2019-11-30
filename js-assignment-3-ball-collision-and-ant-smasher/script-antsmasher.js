@@ -1,4 +1,4 @@
-//new AntSmasher(700, 456, 11, 10, 3, 1, 30, 10).start();
+new AntSmasher(700, 456, 11, 10, 3, 1, 30, 10).start();
 
 /*width, height of container*/
 /*maxSpeed, minSpeed, maxSize, minSize of ants*/
@@ -206,6 +206,5 @@ function angleConvert(rad) {
 }
 
 function addAntContainer() {
-  var antCount = getRandom(10, 40);
-  new AntSmasher(700, 456, antCount).start();
+  new AntSmasher(700, 456, 11).start();
 }
