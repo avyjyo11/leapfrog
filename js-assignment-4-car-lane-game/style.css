@@ -9,18 +9,27 @@
 }
 
 .body-container {
-  border: 1px solid black;
+  border: 4px solid black;
 }
 
 .main-container {
-  background-color: aqua;
   position: absolute;
   overflow: hidden;
 }
 
+.car-container {
+  position: absolute;
+  z-index: 100;
+}
+
+.cars {
+  position: absolute;
+  z-index: 500;
+}
+
 .backGround {
   position: absolute;
-  z-index: 3;
+  z-index: 10;
 }
 
 .score-board {

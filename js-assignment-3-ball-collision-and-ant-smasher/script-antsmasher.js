@@ -86,9 +86,9 @@ function AntSmasher(width, height, antCount, transitionTime, maxSpeed, minSpeed,
   }
 
   function antSmashed(e) {
+    this.startTimer = true;
     for (var i = 0; i < this.ants.length; i++) {
       if (this.ants[i].element == e.target) {
-        this.startTimer = true;
         this.ants[i].speed = 0;
         this.ants[i].element.style.background = "url('./images/blood.png') center";
         this.ants[i].element.style.backgroundSize = 'contain';
