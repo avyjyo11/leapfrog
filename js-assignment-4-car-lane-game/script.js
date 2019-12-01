@@ -5,35 +5,72 @@ function CarLaneGame(width, height) {
   this.width = width;
   this.height = height;
   this.start;
+  this.transition = 10;
   this.gameCounter = 0;
-  this.spawnTime = 300;
-  this.increase = 0;
+  this.level = 1;
+  this.gamePause = true;
+  this.scoreCount = 0;
+  this.spawnTime = 360;
+  this.bgIncrease = 0;
+  this.increaseBy = 1;
+  this.highScore = 0;
   this.backGround;
   this.myCar;
   this.myCarIndex = 1;
   this.lanes = [0, 126, 252];
   this.otherVehicles = [];
+  this.noOfLanes = this.lanes.length;
   this.container;
+  this.levelDiv;
+  this.scoreDiv;
+  this.playBtn;
+  this.pauseBtn;
+  this.tryAgainBtn;
+  this.highScoreDiv;
   var that = this;
 
   this.init = function () {
     this.createContainer();
     this.generateMyCar();
-
+    this.playBtn.addEventListener('click', function () {
+      this.gamePause = false;
+      this.pauseBtn.style.display = 'block';
+      this.playBtn.style.display = 'none';
+    }.bind(this));
+    this.pauseBtn.addEventListener('click', function () {
+      this.gamePause = true;
+      this.pauseBtn.style.display = 'none';
+      this.playBtn.style.display = 'block';
+    }.bind(this));
+    this.tryAgainBtn.addEventListener('click', function () {
+      this.gamePause = false;
+      this.levelDiv.innerHTML = 'Level: ' + this.level;
+      that.scoreDiv.innerHTML = 'Score: ' + this.scoreCount;
+      this.tryAgainBtn.style.display = 'none';
+      this.pauseBtn.style.display = 'block';
+      this.removeAllCarDivs();
+      that.otherVehicles.splice(0, that.otherVehicles.length);
+      this.myCarIndex = 1;
+      this.myCar.lane = this.lanes[this.myCarIndex];
+      this.myCar.setPosition();
+      this.myCar.draw();
+    }.bind(this));
     document.addEventListener("keydown", this.moveMyCar.bind(this));
-    this.start = setInterval(gaming.bind(this), 12);
+    this.start = setInterval(this.gaming.bind(this), this.transition);
   }
 
-  function gaming() {
-    this.moveBackground();
-    this.gameCounter += 1;
-    if (this.gameCounter == this.spawnTime) {
-      this.randomVehicles();
-      this.gameCounter = 0;
+  this.gaming = function () {
+    if (this.gamePause == false) {
+      this.moveBackground();
+      this.gameCounter += this.increaseBy;
+      if (this.gameCounter >= this.spawnTime) {
+        this.randomVehicles();
+        this.gameCounter = 0;
+      }
+      this.checkCollision();
+      this.removeCars();
+      this.moveRandomCars();
     }
-    this.checkCollision();
-    this.removeCars();
-    this.moveRandomCars();
   }
 
   this.createContainer = function () {
@@ -50,6 +87,7 @@ function CarLaneGame(width, height) {
     mainContainer.style.height = this.height + 'px';
     mainContainer.style.cssFloat = 'left';
     mainContainer.classList.add('main-container');
+    bodyContainer.appendChild(mainContainer);
 
     var carContainer = document.createElement('div');
     carContainer.style.height = this.height + 'px';
@@ -74,19 +112,85 @@ function CarLaneGame(width, height) {
     this.backGround = backGround;
 
     var scoreBoard = document.createElement('div');
-    scoreBoard.style.width = 300 + 'px';
-    scoreBoard.style.height = this.height + 'px';
+    scoreBoard.style.padding = 50 + 'px';
+    scoreBoard.style.width = 250 + 'px';
+    scoreBoard.style.height = this.height - 100 + 'px';
     scoreBoard.style.cssFloat = 'right';
     scoreBoard.classList.add('score-board');
-    bodyContainer.appendChild(mainContainer);
+    bodyContainer.appendChild(scoreBoard);
+
+    var scoreDiv = document.createElement('div');
+    scoreDiv.style.width = 250 + 'px';
+    scoreDiv.style.textAlign = 'center';
+    scoreDiv.style.fontSize = 30 + 'px';
+    scoreDiv.style.lineHeight = 60 + 'px';
+    scoreDiv.innerHTML = 'Score: ' + this.scoreCount;
+    scoreDiv.setAttribute('id', 'score-div');
+    scoreBoard.appendChild(scoreDiv);
+    this.scoreDiv = scoreDiv;
+
+    var levelDiv = document.createElement('div');
+    levelDiv.style.width = 250 + 'px';
+    levelDiv.style.textAlign = 'center';
+    levelDiv.style.fontSize = 30 + 'px';
+    levelDiv.style.lineHeight = 60 + 'px';
+    levelDiv.innerHTML = 'Level: ' + this.level;
+    levelDiv.setAttribute('id', 'level-div');
+    scoreBoard.appendChild(levelDiv);
+    this.levelDiv = levelDiv;
+
+    var highScoreDiv = document.createElement('div');
+    highScoreDiv.style.width = 250 + 'px';
+    highScoreDiv.style.textAlign = 'center';
+    highScoreDiv.style.fontSize = 30 + 'px';
+    highScoreDiv.style.lineHeight = 60 + 'px';
+    highScoreDiv.innerHTML = 'HighScore: ' + this.highScore;
+    highScoreDiv.setAttribute('id', 'highscore-div');
+    scoreBoard.appendChild(highScoreDiv);
+    this.highScoreDiv = highScoreDiv;
+
+    var playBtn = document.createElement('button');
+    playBtn.style.border = 'none';
+    playBtn.style.backgroundColor = 'blue';
+    playBtn.innerHTML = 'PLAY';
+    playBtn.style.padding = '14px';
+    playBtn.style.fontSize = '20px';
+    playBtn.style.color = 'white';
+    playBtn.style.margin = '0 auto';
+    scoreBoard.appendChild(playBtn);
+    this.playBtn = playBtn;
+
+    var pauseBtn = document.createElement('button');
+    pauseBtn.style.border = 'none';
+    pauseBtn.style.backgroundColor = 'blue';
+    pauseBtn.innerHTML = 'PAUSE';
+    pauseBtn.style.padding = '14px';
+    pauseBtn.style.display = 'none';
+    pauseBtn.style.fontSize = '20px';
+    pauseBtn.style.color = 'white';
+    pauseBtn.style.margin = '0 auto';
+    scoreBoard.appendChild(pauseBtn);
+    this.pauseBtn = pauseBtn;
+
+    var tryAgainBtn = document.createElement('button');
+    tryAgainBtn.style.border = 'none';
+    tryAgainBtn.style.backgroundColor = 'red';
+    tryAgainBtn.innerHTML = 'TRY AGAIN';
+    tryAgainBtn.style.padding = '14px';
+    tryAgainBtn.style.display = 'none';
+    tryAgainBtn.style.fontSize = '20px';
+    tryAgainBtn.style.color = 'white';
+    tryAgainBtn.style.margin = '0 auto';
+    scoreBoard.appendChild(tryAgainBtn);
+    this.tryAgainBtn = tryAgainBtn;
   }
 
   this.moveBackground = function () {
-    if (this.increase >= 50) {
-      this.increase = 0;
+    if (this.bgIncrease >= 50) {
+      this.bgIncrease = 0;
     }
-    this.increase += 2;
-    this.backGround.style.top = (-50 + this.increase) + 'px';
+    this.bgIncrease += (this.increaseBy + 1);
+    this.backGround.style.top = (-50 + this.bgIncrease) + 'px';
   }
 
   this.generateMyCar = function () {
@@ -96,14 +200,14 @@ function CarLaneGame(width, height) {
 
   this.moveMyCar = function (e) {
     var keyCode = e.keyCode;
-    if (keyCode === 65) {
+    if (keyCode === 65 && this.gamePause == false) {
       if (this.myCarIndex != 0) {
         this.myCarIndex--;
         this.myCar.lane = this.lanes[this.myCarIndex];
         this.myCar.setPosition();
         this.myCar.draw();
       }
-    } else if (keyCode === 68) {
+    } else if (keyCode === 68 && this.gamePause == false) {
       if (this.myCarIndex != 2) {
         this.myCarIndex++;
         this.myCar.lane = this.lanes[this.myCarIndex];
@@ -114,14 +218,24 @@ function CarLaneGame(width, height) {
   }
 
   this.randomVehicles = function () {
-    var randomCar = new Car(this.container, this.lanes[getRandom(0, 3)], this.width, this.height, false, getRandom(1, 8));
+    var random1 = getRandom(0, this.noOfLanes);
+    var randomCar = new Car(this.container, this.lanes[random1], this.width, this.height, false, getRandom(1, 8));
     randomCar.init();
     that.otherVehicles.push(randomCar);
+    if (this.level >= 4) {
+      var decideSpwn = getRandom(0, 2);
+      if (decideSpwn == 1) {
+        var random2 = get2ndRandom(0, this.noOfLanes, random1);
+        var randomCar2 = new Car(this.container, this.lanes[random2], this.width, this.height, false, getRandom(1, 8));
+        randomCar2.init();
+        that.otherVehicles.push(randomCar2);
+      }
+    }
   }
 
   this.moveRandomCars = function () {
     for (var i = 0; i < this.otherVehicles.length; i++) {
-      that.otherVehicles[i].y = this.otherVehicles[i].y + 1;
+      that.otherVehicles[i].y = this.otherVehicles[i].y + this.increaseBy;
       that.otherVehicles[i].draw();
     }
   }
@@ -135,21 +249,67 @@ function CarLaneGame(width, height) {
         mycar.y < car2.y + car2.carModel.carHeight &&
         mycar.y + mycar.carModel.carHeight > car2.y) {
         // collision detected!
-        clearInterval(this.start);
         console.log('game-over');
+        this.gameOver();
       }
     }
   }
 
   this.removeCars = function () {
     for (var i = 0; i < that.otherVehicles.length; i++) {
-      if (that.otherVehicles[i].y == this.height) {
+      if (that.otherVehicles[i].y >= this.height) {
         that.container.removeChild(that.otherVehicles[i].element);
         that.otherVehicles.splice(i, 1);
+        that.scoreCount += 10;
+        that.scoreDiv.innerHTML = 'Score: ' + this.scoreCount;
+        this.levelCheck();
       }
     }
   }
 
+  this.levelCheck = function () {
+    if ((this.scoreCount % 70) == 0 && this.scoreCount != 0) {
+      this.level++;
+      this.levelDiv.innerHTML = 'Level: ' + this.level;
+      clearInterval(this.start);
+      this.transition -= 1;
+      if (this.level > 3 && (this.scoreCount % 140) == 0) {
+        this.increaseBy += 1;
+      } else if (this.level <= 3) {
+        this.increaseBy += 1;
+      }
+      this.start = setInterval(this.gaming.bind(this), this.transition);
+      if (this.spawnTime >= 360) {
+        this.spawnTime -= 20;
+      }
+
+    }
+  }
+
+  this.gameOver = function () {
+    clearInterval(this.start);
+    this.gamePause = true;
+    this.level = 1;
+    if (this.highScore < this.scoreCount) {
+      this.highScore = this.scoreCount;
+      this.highScoreDiv.innerHTML = 'HighScore: ' + this.highScore;
+    }
+    this.scoreCount = 0;
+    this.transition = 10;
+    this.increaseBy = 1;
+    this.gameCounter = 0;
+    this.spawnTime = 360;
+    this.bgIncrease = 0;
+    this.start = setInterval(this.gaming.bind(this), this.transition);
+    this.tryAgainBtn.style.display = 'block';
+    this.pauseBtn.style.display = 'none';
+  }
+
+  this.removeAllCarDivs = function () {
+    for (var i = 0; i < this.otherVehicles.length; i++) {
+      that.otherVehicles[i].element.parentElement.removeChild(that.otherVehicles[i].element);
+    }
+  }
 }
 
 function Car(parentDiv, lane, containerWidth, containerHeight, myCar, carNo) {
@@ -208,4 +368,12 @@ function Car(parentDiv, lane, containerWidth, containerHeight, myCar, carNo) {
 
 function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
+}
+
+function get2ndRandom(min, max, x) {
+  var y = getRandom(min, max);
+  if (y == x) {
+    y = get2ndRandom(min, max, x);
+  }
+  return y;
 }
