@@ -10,6 +10,7 @@ function CarLaneGame(width, height) {
   this.level = 1;
   this.gamePause = true;
   this.scoreCount = 0;
+  this.scoreInterval = 40;
   this.spawnTime = 360;
   this.bgIncrease = 0;
   this.increaseBy = 1;
@@ -201,19 +202,25 @@ function CarLaneGame(width, height) {
   this.moveMyCar = function (e) {
     var keyCode = e.keyCode;
     if (keyCode === 65 && this.gamePause == false) {
-      if (this.myCarIndex != 0) {
-        this.myCarIndex--;
-        this.myCar.lane = this.lanes[this.myCarIndex];
-        this.myCar.setPosition();
-        this.myCar.draw();
+      //if (this.myCarIndex != 0) {
+      this.myCarIndex--;
+      if (this.myCarIndex == -1) {
+        this.myCarIndex = 2;
       }
+      this.myCar.lane = this.lanes[this.myCarIndex];
+      this.myCar.setPosition();
+      this.myCar.draw();
+      //}
     } else if (keyCode === 68 && this.gamePause == false) {
-      if (this.myCarIndex != 2) {
-        this.myCarIndex++;
-        this.myCar.lane = this.lanes[this.myCarIndex];
-        this.myCar.setPosition();
-        this.myCar.draw();
+      //if (this.myCarIndex != 2) {
+      this.myCarIndex++;
+      if (this.myCarIndex == 3) {
+        this.myCarIndex = 0;
       }
+      this.myCar.lane = this.lanes[this.myCarIndex];
+      this.myCar.setPosition();
+      this.myCar.draw();
+      //}
     }
   }
 
@@ -268,21 +275,17 @@ function CarLaneGame(width, height) {
   }
 
   this.levelCheck = function () {
-    if ((this.scoreCount % 70) == 0 && this.scoreCount != 0) {
+    if ((this.scoreCount % this.scoreInterval) == 0 && this.scoreCount != 0) {
       this.level++;
       this.levelDiv.innerHTML = 'Level: ' + this.level;
       clearInterval(this.start);
-      this.transition -= 1;
-      if (this.level > 3 && (this.scoreCount % 140) == 0) {
-        this.increaseBy += 1;
-      } else if (this.level <= 3) {
-        this.increaseBy += 1;
-      }
+      //this.transition -= 2;
+      this.increaseBy += 1;
       this.start = setInterval(this.gaming.bind(this), this.transition);
-      if (this.spawnTime >= 360) {
-        this.spawnTime -= 20;
-      }
-
+      // if (this.spawnTime >= 260) {
+      //   this.spawnTime -= 20;
+      // }
+      this.scoreInterval = this.scoreCount;
     }
   }
 
@@ -300,6 +303,7 @@ function CarLaneGame(width, height) {
     this.gameCounter = 0;
     this.spawnTime = 360;
     this.bgIncrease = 0;
+    this.scoreInterval = 40;
     this.start = setInterval(this.gaming.bind(this), this.transition);
     this.tryAgainBtn.style.display = 'block';
     this.pauseBtn.style.display = 'none';
