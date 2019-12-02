@@ -212,6 +212,16 @@ function CarLaneGame(width, height) {
     tryAgainBtn.style.margin = '0 auto';
     scoreBoard.appendChild(tryAgainBtn);
     this.tryAgainBtn = tryAgainBtn;
+
+    var instructionDiv = document.createElement('div');
+    instructionDiv.style.width = 228 + 'px';
+    instructionDiv.style.border = '1px solid white';
+    instructionDiv.style.padding = '10px';
+    instructionDiv.style.textAlign = 'left';
+    instructionDiv.style.fontSize = '10px';
+    instructionDiv.style.marginTop = '140px';
+    instructionDiv.innerHTML = '<h3>Instructions:</h3><p>A or Left arrow to move left lane.</p><p>D or Right arrow to move right lane.</p>';
+    scoreBoard.appendChild(instructionDiv);
   }
 
   this.moveBackground = function () {
@@ -229,38 +239,38 @@ function CarLaneGame(width, height) {
 
   this.moveMyCar = function (e) {
     var keyCode = e.keyCode;
-    if (keyCode === 65 && this.gamePause == false) {
-      //if (this.myCarIndex != 0) {
-      var push1 = {};
-      push1.prevPos = this.myCar.x;
-      push1.prevIndex = this.myCarIndex;
-      this.myCarIndex--;
-      if (this.myCarIndex == -1) {
-        this.myCarIndex = 2;
+    if ((keyCode === 65 || keyCode === 37) && this.gamePause == false) {
+      if (this.myCarIndex != 0) {
+        var push1 = {};
+        push1.prevPos = this.myCar.x;
+        push1.prevIndex = this.myCarIndex;
+        this.myCarIndex--;
+        if (this.myCarIndex == -1) {
+          this.myCarIndex = 2;
+        }
+        this.myCar.lane = this.lanes[this.myCarIndex];
+        this.myCar.setPosition();
+        push1.nextIndex = this.myCarIndex;
+        push1.nextPos = this.myCar.x;
+        //this.myCar.draw();
+        this.moveLeft(push1);
       }
-      this.myCar.lane = this.lanes[this.myCarIndex];
-      this.myCar.setPosition();
-      push1.nextIndex = this.myCarIndex;
-      push1.nextPos = this.myCar.x;
-      //this.myCar.draw();
-      this.moveLeft(push1);
-      //}
-    } else if (keyCode === 68 && this.gamePause == false) {
-      //if (this.myCarIndex != 2) {
-      var push1 = {};
-      push1.prevPos = this.myCar.x;
-      push1.prevIndex = this.myCarIndex;
-      this.myCarIndex++;
-      if (this.myCarIndex == 3) {
-        this.myCarIndex = 0;
+    } else if ((keyCode === 68 || keyCode === 39) && this.gamePause == false) {
+      if (this.myCarIndex != 2) {
+        var push1 = {};
+        push1.prevPos = this.myCar.x;
+        push1.prevIndex = this.myCarIndex;
+        this.myCarIndex++;
+        if (this.myCarIndex == 3) {
+          this.myCarIndex = 0;
+        }
+        this.myCar.lane = this.lanes[this.myCarIndex];
+        this.myCar.setPosition();
+        push1.nextIndex = this.myCarIndex;
+        push1.nextPos = this.myCar.x;
+        //this.myCar.draw();
+        this.moveRight(push1);
       }
-      this.myCar.lane = this.lanes[this.myCarIndex];
-      this.myCar.setPosition();
-      push1.nextIndex = this.myCarIndex;
-      push1.nextPos = this.myCar.x;
-      //this.myCar.draw();
-      this.moveRight(push1);
-      //}
     }
   }
 
