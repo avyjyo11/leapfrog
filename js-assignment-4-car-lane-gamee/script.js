@@ -93,7 +93,7 @@ function CarLaneGame(width, height) {
     this.logoBgDiv = logoBgDiv;
 
     var logo = document.createElement('img')
-    logo.src = 'images/logo.gif';
+    logo.src = './images/logo.gif';
     logo.alt = 'logo';
     logo.style.width = 300 + 'px';
     logo.style.height = 400 + 'px';
