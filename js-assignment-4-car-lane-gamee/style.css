@@ -19,6 +19,7 @@
   left: 0px;
   background: url('./images/logobg.png') no-repeat center;
   background-size: contain;
+  font-family: 'Monda', sans-serif;
   z-index: 100;
   text-align: center;
 }
@@ -47,7 +48,7 @@
 
 .bullet {
   position: absolute;
-  z-index: 100;
+  z-index: 90;
 }
 
 .backGround {
@@ -58,15 +59,21 @@
 .score-board {
   background-color: rgb(61, 61, 61);
   color: white;
-  font-size: 24px;
+  font-size: 20px;
   font-family: 'Monda', sans-serif;
   font-weight: bold;
 }
 
 .score-board button {
   color: white;
+  text-align: center;
   font-size: 20px;
+  width: 200px;
   font-family: 'Monda', sans-serif;
   font-weight: bold;
   display: inline-block;
+}
+
+.score-board button:hover {
+  box-shadow: 1px -1px 1px 2px gainsboro;
 }

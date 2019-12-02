@@ -18,6 +18,8 @@ function CarLaneGame(width, height) {
   this.backGround;
   this.myCar;
   this.myCarIndex = 1;
+  this.bulletCounter = 1;
+  this.bulletSpawnTime = 0;
   this.bullets = [];
   this.lanes = [0, 126, 252];
   this.otherVehicles = [];
@@ -31,6 +33,11 @@ function CarLaneGame(width, height) {
   this.tryAgainBtn;
   this.startBtn;
   this.highScoreDiv;
+  this.ammoDiv;
+  this.ammoBarDiv;
+  this.booms = [];
+  this.endBoom = {};
+  this.saveAmmo;
   var that = this;
 
   this.init = function () {
@@ -51,8 +58,11 @@ function CarLaneGame(width, height) {
     }.bind(this));
     this.tryAgainBtn.addEventListener('click', function () {
       this.gamePause = false;
+      this.container.removeChild(this.endBoom.element);
+      this.endBoom = {};
       this.levelDiv.innerHTML = 'Level: ' + this.level;
       that.scoreDiv.innerHTML = 'Score: ' + this.scoreCount;
+      this.ammoDiv.innerHTML = 'Ammo: <h1>' + this.bulletCounter + '</h1>';
       this.tryAgainBtn.style.display = 'none';
       this.pauseBtn.style.display = 'block';
       this.removeAllCarDivs();
@@ -71,10 +81,43 @@ function CarLaneGame(width, height) {
       this.moveBackground();
       this.gameCounter += this.increaseBy;
       this.randomVehicles();
+      this.fillBullets();
+      this.fireBullets();
       this.checkCollision();
       this.removeCars();
+      this.removeBullets();
       this.moveRandomCars();
+      this.boomEffect();
+      console.log(this.saveAmmo);
+      this.ammoBarDiv.style.width = this.bgIncrease + 'px';
     }
+  }
+
+  this.fillBullets = function () {
+    if (this.bulletCounter < this.level) {
+      this.bulletSpawnTime++;
+      //console.log(Math.floor(this.bulletSpawnTime / 3));
+      if (this.bulletSpawnTime >= 600) {
+        this.bulletCounter++;
+        this.bulletSpawnTime = 0;
+        this.ammoDiv.innerHTML = 'Ammo: <h1>' + this.bulletCounter + '</h1>';
+      }
+      //this.ammoBarDiv.style.width = Math.floor(this.bulletSpawnTime / 3) + 'px';
+    }
+    this.saveAmmo = (this.bulletSpawnTime / 3);
+  }
+
+  this.fireBullets = function () {
+    for (var i = 0; i < this.bullets.length; i++) {
+      this.bullets[i].y -= this.increaseBy;
+      this.bullets[i].drawBullet();
+    }
+  }
+
+  this.createBullets = function () {
+    var bullet = new Bullet(this.container, this.myCar);
+    bullet.init();
+    that.bullets.push(bullet);
   }
 
   this.createContainer = function () {
@@ -89,25 +132,50 @@ function CarLaneGame(width, height) {
     var logoBgDiv = document.createElement('div');
     logoBgDiv.style.width = this.width + 350 + 'px';
     logoBgDiv.style.height = this.height + 'px';
-    logoBgDiv.classList.add('logo-bg');
+    logoBgDiv.classList.add('logo-bg', 'clearfix');
     bodyContainer.appendChild(logoBgDiv);
     this.logoBgDiv = logoBgDiv;
 
-    var logo = document.createElement('img')
-    logo.src = './images/logo.gif';
-    logo.alt = 'logo';
+    var logoDiv = document.createElement('div');
+    logoDiv.style.width = this.width + 'px';
+    logoDiv.style.height = this.height + 'px';
+    logoDiv.style.cssFloat = 'left';
+    logoBgDiv.appendChild(logoDiv);
+
+    var readDiv = document.createElement('div');
+    readDiv.style.width = 310 + 'px';
+    readDiv.style.padding = '20px';
+    readDiv.style.height = this.height - 40 + 'px';
+    readDiv.style.cssFloat = 'right';
+    readDiv.style.color = 'white';
+    readDiv.innerHTML = "<h2>Game Instruction</h2><p></p>";
+    logoBgDiv.appendChild(readDiv);
+
+    var instructionDiv = document.createElement('div');
+    instructionDiv.style.width = 228 + 'px';
+    instructionDiv.style.border = '1px solid white';
+    instructionDiv.style.padding = '10px';
+    instructionDiv.style.textAlign = 'left';
+    instructionDiv.style.fontSize = '10px';
+    instructionDiv.style.marginTop = '40px';
+    instructionDiv.innerHTML = '<h3>CONTROLS:</h3><p>A or Left arrow to move left lane.</p><p>D or Right arrow to move right lane.</p>';
+    readDiv.appendChild(instructionDiv);
+
+    var logo = document.createElement('div')
+    logo.style.background = "url('./images/logo.gif') no-repeat center";
+    logo.style.backgroundSize = 'contain';
     logo.style.width = 300 + 'px';
     logo.style.height = 400 + 'px';
     logo.style.display = 'block';
     logo.style.margin = '30px auto';
-    logoBgDiv.appendChild(logo);
+    logoDiv.appendChild(logo);
 
     var startBtn = document.createElement('button');
     startBtn.innerHTML = 'START GAME';
     startBtn.style.border = '2px solid white';
     startBtn.style.padding = '16px';
     startBtn.style.color = 'white';
-    logoBgDiv.appendChild(startBtn);
+    logoDiv.appendChild(startBtn);
     this.startBtn = startBtn;
 
     var mainContainer = document.createElement('div');
@@ -154,7 +222,7 @@ function CarLaneGame(width, height) {
     scoreDiv.style.textAlign = 'center';
     scoreDiv.style.lineHeight = 60 + 'px';
     scoreDiv.innerHTML = 'Score: ' + this.scoreCount;
-    scoreDiv.setAttribute('id', 'score-div');
+    scoreDiv.setAttribute('class', 'score-div');
     scoreBoard.appendChild(scoreDiv);
     this.scoreDiv = scoreDiv;
 
@@ -164,7 +232,7 @@ function CarLaneGame(width, height) {
     levelDiv.style.textAlign = 'center';
     levelDiv.style.lineHeight = 60 + 'px';
     levelDiv.innerHTML = 'Level: ' + this.level;
-    levelDiv.setAttribute('id', 'level-div');
+    levelDiv.setAttribute('class', 'level-div');
     scoreBoard.appendChild(levelDiv);
     this.levelDiv = levelDiv;
 
@@ -175,9 +243,32 @@ function CarLaneGame(width, height) {
     highScoreDiv.style.lineHeight = 60 + 'px';
     highScoreDiv.style.marginBottom = '30px';
     highScoreDiv.innerHTML = 'HighScore: ' + this.highScore;
-    highScoreDiv.setAttribute('id', 'highscore-div');
+    highScoreDiv.setAttribute('class', 'highscore-div');
     scoreBoard.appendChild(highScoreDiv);
     this.highScoreDiv = highScoreDiv;
+
+    var ammoDiv = document.createElement('div');
+    ammoDiv.style.width = 248 + 'px';
+    ammoDiv.style.border = '1px solid';
+    ammoDiv.style.textAlign = 'center';
+    ammoDiv.style.paddingTop = '20px';
+    ammoDiv.style.marginTop = '40px';
+    ammoDiv.style.marginBottom = '40px';
+    ammoDiv.style.position = 'relative';
+    ammoDiv.innerHTML = 'Ammo: <h1>' + this.bulletCounter + '</h1>';
+    scoreBoard.appendChild(ammoDiv);
+    this.ammoDiv = ammoDiv;
+
+    var ammoBarDiv = document.createElement('div');
+    ammoBarDiv.style.position = 'absolute';
+    ammoBarDiv.style.width = 5 + 'px';
+    ammoBarDiv.style.height = 10 + 'px';
+    ammoBarDiv.style.top = 70 + 'px';
+    ammoBarDiv.style.left = 24 + 'px';
+    ammoBarDiv.style.zIndex = '90';
+    ammoBarDiv.style.backgroundColor = 'lightblue';
+    ammoDiv.appendChild(ammoBarDiv);
+    this.ammoBarDiv = ammoBarDiv;
 
     var playBtn = document.createElement('button');
     playBtn.style.border = 'none';
@@ -213,16 +304,6 @@ function CarLaneGame(width, height) {
     tryAgainBtn.style.margin = '0 auto';
     scoreBoard.appendChild(tryAgainBtn);
     this.tryAgainBtn = tryAgainBtn;
-
-    var instructionDiv = document.createElement('div');
-    instructionDiv.style.width = 228 + 'px';
-    instructionDiv.style.border = '1px solid white';
-    instructionDiv.style.padding = '10px';
-    instructionDiv.style.textAlign = 'left';
-    instructionDiv.style.fontSize = '10px';
-    instructionDiv.style.marginTop = '140px';
-    instructionDiv.innerHTML = '<h3>Instructions:</h3><p>A or Left arrow to move left lane.</p><p>D or Right arrow to move right lane.</p>';
-    scoreBoard.appendChild(instructionDiv);
   }
 
   this.moveBackground = function () {
@@ -273,12 +354,18 @@ function CarLaneGame(width, height) {
         this.moveRight(push1);
 
       }
+    } else if ((keyCode === 87 || keyCode === 38) && this.gamePause == false) {
+      if (that.bulletCounter > 0) {
+        that.createBullets();
+        that.bulletCounter--;
+        that.ammoDiv.innerHTML = 'Ammo: <h1>' + that.bulletCounter + '</h1>';
+      }
     }
   }
 
   this.moveRight = function (push1) {
     clearInterval(this.start);
-    var int1 = setInterval(rightFrame.bind(this), (this.transition));
+    var int1 = setInterval(rightFrame.bind(this), (this.transition + (this.transition / 2)));
     this.start = setInterval(this.gaming.bind(this), this.transition);
 
     function rightFrame() {
@@ -307,7 +394,7 @@ function CarLaneGame(width, height) {
 
   this.moveLeft = function (push1) {
     clearInterval(this.start);
-    var int2 = setInterval(leftFrame.bind(this), (this.transition));
+    var int2 = setInterval(leftFrame.bind(this), (this.transition + (this.transition / 2)));
     this.start = setInterval(this.gaming.bind(this), this.transition);
 
     function leftFrame() {
@@ -359,6 +446,26 @@ function CarLaneGame(width, height) {
     for (var i = 0; i < this.otherVehicles.length; i++) {
       that.otherVehicles[i].y = this.otherVehicles[i].y + this.increaseBy;
       that.otherVehicles[i].draw();
+      that.checkCollisionWithBullets(that.otherVehicles[i], i);
+    }
+  }
+
+  this.checkCollisionWithBullets = function (car, carIndex) {
+    for (var i = 0; i < that.bullets.length; i++) {
+      var bullet = that.bullets[i];
+      if (car.x < bullet.x + bullet.width &&
+        car.x + car.carModel.carWidth > bullet.x &&
+        car.y < bullet.y + bullet.height &&
+        car.y + car.carModel.carHeight > bullet.y) {
+        // collision detected!
+        var boom = new Boom(car.x, car.y, this.container);
+        that.container.removeChild(car.element);
+        that.otherVehicles.splice(carIndex, 1);
+        that.container.removeChild(bullet.element);
+        that.bullets.splice(i, 1);
+        boom.init();
+        this.booms.push(boom);
+      }
     }
   }
 
@@ -389,9 +496,20 @@ function CarLaneGame(width, height) {
     }
   }
 
+  this.removeBullets = function () {
+    for (var i = 0; i < that.bullets.length; i++) {
+      if (that.bullets[i].y <= (-that.bullets[i].height)) {
+        that.container.removeChild(that.bullets[i].element);
+        that.bullets.splice(i, 1);
+      }
+    }
+  }
+
   this.levelCheck = function () {
     if ((this.scoreCount % this.scoreInterval) == 0 && this.scoreCount != 0) {
       this.level++;
+      this.bulletCounter = this.level;
+      this.ammoDiv.innerHTML = 'Ammo: <h1>' + this.bulletCounter + '</h1>';
       this.levelDiv.innerHTML = 'Level: ' + this.level;
       clearInterval(this.start);
       this.increaseBy += 1;
@@ -405,8 +523,9 @@ function CarLaneGame(width, height) {
 
   this.gameOver = function () {
     clearInterval(this.start);
+    this.endBoom = new Boom(this.myCar.x, this.myCar.y, this.container);
+    this.endBoom.init();
     this.gamePause = true;
-    this.level = 1;
     if (this.highScore < this.scoreCount) {
       this.highScore = this.scoreCount;
       this.highScoreDiv.innerHTML = 'HighScore: ' + this.highScore;
@@ -415,9 +534,13 @@ function CarLaneGame(width, height) {
     this.transition = 10;
     this.increaseBy = 1;
     this.gameCounter = 0;
-    this.spawnTime = 360;
-    this.bgIncrease = 0;
+    this.level = 1;
     this.scoreInterval = 40;
+    this.spawnTime = getRandom(300, 400);
+    this.bgIncrease = 0;
+    this.bulletCounter = 1;
+    this.bulletSpawnTime = 0;
+    this.bullets = [];
     this.start = setInterval(this.gaming.bind(this), this.transition);
     this.tryAgainBtn.style.display = 'block';
     this.pauseBtn.style.display = 'none';
@@ -426,6 +549,19 @@ function CarLaneGame(width, height) {
   this.removeAllCarDivs = function () {
     for (var i = 0; i < this.otherVehicles.length; i++) {
       that.otherVehicles[i].element.parentElement.removeChild(that.otherVehicles[i].element);
+    }
+  }
+
+  this.boomEffect = function () {
+    for (var i = 0; i < this.booms.length; i++) {
+      if (this.booms[i].displayRate < 60) {
+        this.booms[i].y += this.increaseBy;
+        this.booms[i].displayRate++;
+        this.booms[i].drawBoom();
+      } else {
+        that.container.removeChild(that.booms[i].element);
+        that.booms.splice(i, 1);
+      }
     }
   }
 }
@@ -484,15 +620,15 @@ function Car(parentDiv, lane, containerWidth, containerHeight, myCar, carNo) {
 
 }
 
-function bullet(parentDiv, myCar) {
-  this.height = 4;
-  this.width = 4;
+function Bullet(parentDiv, myCar) {
+  this.height = 16;
+  this.width = 16;
   this.x;
   this.y;
   this.element;
   var that = this;
 
-  this.fire = function () {
+  this.init = function () {
     this.createBullet();
     this.setBullet();
     this.drawBullet();
@@ -500,11 +636,12 @@ function bullet(parentDiv, myCar) {
 
   this.createBullet = function () {
     var bulletDiv = document.createElement('div');
-    bulletDiv.classList.add('bullets');
+    bulletDiv.classList.add('bullet');
     bulletDiv.style.width = that.width + 'px';
     bulletDiv.style.height = that.height + 'px';
     bulletDiv.style.backgroundColor = 'brown';
     bulletDiv.style.borderRadius = '50%';
+    bulletDiv.style.border = '2px solid white';
     parentDiv.appendChild(bulletDiv);
     this.element = bulletDiv;
   }
@@ -518,6 +655,40 @@ function bullet(parentDiv, myCar) {
     this.element.style.left = this.x + 'px';
     this.element.style.top = this.y + 'px';
   }
+}
+
+function Boom(x, y, parentDiv) {
+  this.x = x - 20;
+  this.y = y + 20;
+  this.displayRate = 0;
+  this.width = 100;
+  this.height = 60;
+  this.url = "url('./images/bomb-explosion.png')";
+  this.element;
+  var that = this;
+
+  this.init = function () {
+    this.createBoom();
+    this.drawBoom();
+  }
+
+  this.createBoom = function () {
+    var boomDiv = document.createElement('div');
+    boomDiv.style.position = 'absolute';
+    boomDiv.style.zIndex = '100';
+    boomDiv.style.width = this.width + 'px';
+    boomDiv.style.height = this.height + 'px';
+    boomDiv.style.background = this.url + " no-repeat center";
+    boomDiv.style.backgroundSize = 'contain';
+    parentDiv.appendChild(boomDiv);
+    this.element = boomDiv;
+  }
+
+  this.drawBoom = function () {
+    that.element.style.left = that.x + 'px';
+    that.element.style.top = that.y + 'px';
+  }
+
 }
 
 function getRandom(min, max) {
