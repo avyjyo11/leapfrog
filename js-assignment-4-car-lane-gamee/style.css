@@ -45,6 +45,11 @@
   z-index: 100;
 }
 
+.bullet {
+  position: absolute;
+  z-index: 100;
+}
+
 .backGround {
   position: absolute;
   z-index: 10;

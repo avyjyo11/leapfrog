@@ -18,6 +18,7 @@ function CarLaneGame(width, height) {
   this.backGround;
   this.myCar;
   this.myCarIndex = 1;
+  this.bullets = [];
   this.lanes = [0, 126, 252];
   this.otherVehicles = [];
   this.noOfLanes = this.lanes.length;
@@ -270,13 +271,14 @@ function CarLaneGame(width, height) {
         push1.nextPos = this.myCar.x;
         //this.myCar.draw();
         this.moveRight(push1);
+
       }
     }
   }
 
   this.moveRight = function (push1) {
     clearInterval(this.start);
-    var int1 = setInterval(rightFrame.bind(this), (this.transition / 2));
+    var int1 = setInterval(rightFrame.bind(this), (this.transition));
     this.start = setInterval(this.gaming.bind(this), this.transition);
 
     function rightFrame() {
@@ -293,6 +295,11 @@ function CarLaneGame(width, height) {
         } else {
           push1.prevPos = push1.prevPos + 10;
           this.myCar.element.style.left = push1.prevPos + 'px';
+          if (push1.prevPos < (push1.nextPos - 20)) {
+            this.myCar.element.style.transform = 'rotate(' + 45 + 'deg)';
+          } else {
+            this.myCar.element.style.transform = 'rotate(' + 0 + 'deg)';
+          }
         }
       }
     }
@@ -300,7 +307,7 @@ function CarLaneGame(width, height) {
 
   this.moveLeft = function (push1) {
     clearInterval(this.start);
-    var int2 = setInterval(leftFrame.bind(this), (this.transition / 2));
+    var int2 = setInterval(leftFrame.bind(this), (this.transition));
     this.start = setInterval(this.gaming.bind(this), this.transition);
 
     function leftFrame() {
@@ -317,6 +324,11 @@ function CarLaneGame(width, height) {
         } else {
           push1.prevPos = push1.prevPos - 10;
           this.myCar.element.style.left = push1.prevPos + 'px';
+          if (push1.prevPos > (push1.nextPos + 20)) {
+            this.myCar.element.style.transform = 'rotate(' + -45 + 'deg)';
+          } else {
+            this.myCar.element.style.transform = 'rotate(' + 0 + 'deg)';
+          }
         }
       }
     }
@@ -470,6 +482,42 @@ function Car(parentDiv, lane, containerWidth, containerHeight, myCar, carNo) {
     that.element.style.top = that.y + 'px';
   }
 
+}
+
+function bullet(parentDiv, myCar) {
+  this.height = 4;
+  this.width = 4;
+  this.x;
+  this.y;
+  this.element;
+  var that = this;
+
+  this.fire = function () {
+    this.createBullet();
+    this.setBullet();
+    this.drawBullet();
+  }
+
+  this.createBullet = function () {
+    var bulletDiv = document.createElement('div');
+    bulletDiv.classList.add('bullets');
+    bulletDiv.style.width = that.width + 'px';
+    bulletDiv.style.height = that.height + 'px';
+    bulletDiv.style.backgroundColor = 'brown';
+    bulletDiv.style.borderRadius = '50%';
+    parentDiv.appendChild(bulletDiv);
+    this.element = bulletDiv;
+  }
+
+  this.setBullet = function () {
+    this.x = myCar.x + (myCar.carModel.carWidth / 2) - (that.width / 2);
+    this.y = myCar.y - (that.height / 2);
+  }
+
+  this.drawBullet = function () {
+    this.element.style.left = this.x + 'px';
+    this.element.style.top = this.y + 'px';
+  }
 }
 
 function getRandom(min, max) {
