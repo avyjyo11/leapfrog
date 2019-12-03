@@ -1,10 +1,14 @@
-var game1 = new CarLaneGame(412, 650);
+var game1 = new CarLaneGame(412, 650, 65, 68, 87);
 game1.init();
+var game2 = new CarLaneGame(412, 650, 37, 39, 38);
+game2.init();
 
-function CarLaneGame(width, height) {
+function CarLaneGame(width, height, leftKey, rightKey, upKey) {
   this.width = width;
   this.height = height;
-  this.start;
+  this.leftKey = leftKey;
+  this.rightKey = rightKey;
+  this.upKey = upKey;
   this.transition = 10;
   this.gameCounter = 0;
   this.level = 1;
@@ -16,11 +20,8 @@ function CarLaneGame(width, height) {
   this.increaseBy = 1;
   this.highScore = 0;
   this.backGround;
-  this.myCar;
+  this.myCar = [];
   this.myCarIndex = 1;
-  this.bulletCounter = 1;
-  this.bulletSpawnTime = 0;
-  this.bullets = [];
   this.lanes = [0, 126, 252];
   this.otherVehicles = [];
   this.noOfLanes = this.lanes.length;
@@ -62,15 +63,16 @@ function CarLaneGame(width, height) {
       this.endBoom = {};
       this.levelDiv.innerHTML = 'Level: ' + this.level;
       that.scoreDiv.innerHTML = 'Score: ' + this.scoreCount;
-      this.ammoDiv.innerHTML = 'Ammo: <h1>' + this.bulletCounter + '</h1>';
+      this.ammoDiv.innerHTML = 'Ammo: <h1>' + this.myCar[0].bulletCounter + '</h1>';
       this.tryAgainBtn.style.display = 'none';
       this.pauseBtn.style.display = 'block';
       this.removeAllCarDivs();
       that.otherVehicles.splice(0, that.otherVehicles.length);
+      that.myCar[0].bullets.splice(0, that.myCar[0].bullets.length);
       this.myCarIndex = 1;
-      this.myCar.lane = this.lanes[this.myCarIndex];
-      this.myCar.setPosition();
-      this.myCar.draw();
+      this.myCar[0].lane = this.lanes[this.myCarIndex];
+      this.myCar[0].setPosition();
+      this.myCar[0].draw();
     }.bind(this));
     document.addEventListener("keydown", this.moveMyCar.bind(this));
     this.start = setInterval(this.gaming.bind(this), this.transition);
@@ -88,44 +90,17 @@ function CarLaneGame(width, height) {
       this.removeBullets();
       this.moveRandomCars();
       this.boomEffect();
-      console.log(this.saveAmmo);
-      this.ammoBarDiv.style.width = this.bgIncrease + 'px';
     }
-  }
-
-  this.fillBullets = function () {
-    if (this.bulletCounter < this.level) {
-      this.bulletSpawnTime++;
-      //console.log(Math.floor(this.bulletSpawnTime / 3));
-      if (this.bulletSpawnTime >= 600) {
-        this.bulletCounter++;
-        this.bulletSpawnTime = 0;
-        this.ammoDiv.innerHTML = 'Ammo: <h1>' + this.bulletCounter + '</h1>';
-      }
-      //this.ammoBarDiv.style.width = Math.floor(this.bulletSpawnTime / 3) + 'px';
-    }
-    this.saveAmmo = (this.bulletSpawnTime / 3);
-  }
-
-  this.fireBullets = function () {
-    for (var i = 0; i < this.bullets.length; i++) {
-      this.bullets[i].y -= this.increaseBy;
-      this.bullets[i].drawBullet();
-    }
-  }
-
-  this.createBullets = function () {
-    var bullet = new Bullet(this.container, this.myCar);
-    bullet.init();
-    that.bullets.push(bullet);
   }
 
   this.createContainer = function () {
     var body = document.getElementsByTagName('body')[0];
+    body.classList.add('clearfix');
     var bodyContainer = document.createElement('div');
     bodyContainer.style.width = this.width + 350 + 'px';
     bodyContainer.style.height = this.height + 'px';
-    bodyContainer.style.margin = '20px auto';
+    bodyContainer.style.cssFloat = 'left';
+    bodyContainer.style.margin = 20 + 'px';
     bodyContainer.classList.add('body-container', 'clearfix');
     body.appendChild(bodyContainer);
 
@@ -148,21 +123,30 @@ function CarLaneGame(width, height) {
     readDiv.style.height = this.height - 40 + 'px';
     readDiv.style.cssFloat = 'right';
     readDiv.style.color = 'white';
-    readDiv.innerHTML = "<h2>Game Instruction</h2><p></p>";
     logoBgDiv.appendChild(readDiv);
 
     var instructionDiv = document.createElement('div');
     instructionDiv.style.width = 228 + 'px';
     instructionDiv.style.border = '1px solid white';
-    instructionDiv.style.padding = '10px';
+    instructionDiv.style.padding = '20px';
     instructionDiv.style.textAlign = 'left';
-    instructionDiv.style.fontSize = '10px';
-    instructionDiv.style.marginTop = '40px';
-    instructionDiv.innerHTML = '<h3>CONTROLS:</h3><p>A or Left arrow to move left lane.</p><p>D or Right arrow to move right lane.</p>';
+    instructionDiv.style.fontSize = '12px';
+    instructionDiv.style.marginTop = '30px';
+    instructionDiv.innerHTML = '<h3>INSTRUCTIONS:</h3><p>Pass by other cars to Score Points.</p><p>Level(Speed) increases as the Score points rises.</p><p>Shoot Bullets to destroy Other cars on the lane.</p><p>Ammo is equal to current level you are in.</p><p>Bullets are limited and regenerates slowly. So use it wisely.</p>';
     readDiv.appendChild(instructionDiv);
 
+    var controlsDiv = document.createElement('div');
+    controlsDiv.style.width = 228 + 'px';
+    controlsDiv.style.border = '1px solid white';
+    controlsDiv.style.padding = '20px';
+    controlsDiv.style.textAlign = 'left';
+    controlsDiv.style.fontSize = '12px';
+    controlsDiv.style.marginTop = '30px';
+    controlsDiv.innerHTML = '<h3>CONTROLS:</h3><p>A or Left arrow to move left lane.</p><p>D or Right arrow to move right lane.</p><p>W or Up arrow to shoot bullets.</p>';
+    readDiv.appendChild(controlsDiv);
+
     var logo = document.createElement('div')
-    logo.style.background = "url('./images/logo.gif') no-repeat center";
+    logo.style.background = "url('./images/logo.png') no-repeat center";
     logo.style.backgroundSize = 'contain';
     logo.style.width = 300 + 'px';
     logo.style.height = 400 + 'px';
@@ -255,13 +239,14 @@ function CarLaneGame(width, height) {
     ammoDiv.style.marginTop = '40px';
     ammoDiv.style.marginBottom = '40px';
     ammoDiv.style.position = 'relative';
-    ammoDiv.innerHTML = 'Ammo: <h1>' + this.bulletCounter + '</h1>';
+    ammoDiv.classList.add('clearfix');
+    ammoDiv.innerHTML = 'Ammo: <h1>' + 1 + '</h1>';
     scoreBoard.appendChild(ammoDiv);
     this.ammoDiv = ammoDiv;
 
     var ammoBarDiv = document.createElement('div');
     ammoBarDiv.style.position = 'absolute';
-    ammoBarDiv.style.width = 5 + 'px';
+    ammoBarDiv.style.width = 0 + 'px';
     ammoBarDiv.style.height = 10 + 'px';
     ammoBarDiv.style.top = 70 + 'px';
     ammoBarDiv.style.left = 24 + 'px';
@@ -314,51 +299,83 @@ function CarLaneGame(width, height) {
     this.backGround.style.top = (-50 + this.bgIncrease) + 'px';
   }
 
+  this.fillBullets = function () {
+    if (this.myCar[0].bulletCounter < this.level) {
+      this.myCar[0].bulletSpawnTime++;
+      //console.log(Math.floor(this.bulletSpawnTime / 3));
+      if (this.myCar[0].bulletSpawnTime >= 500) {
+        this.myCar[0].bulletCounter++;
+        this.myCar[0].bulletSpawnTime = 0;
+        this.ammoDiv.innerHTML = 'Ammo: <h1>' + this.myCar[0].bulletCounter + '</h1>';
+      }
+      //this.ammoBarDiv.style.width = Math.floor(this.myCar[0].bulletSpawnTime / 3) + 'px';
+    }
+    this.saveAmmo = (this.myCar[0].bulletSpawnTime / 3);
+  }
+
+  this.fireBullets = function () {
+    for (var i = 0; i < that.myCar[0].bullets.length; i++) {
+      that.myCar[0].bullets[i].y -= that.increaseBy;
+      that.myCar[0].bullets[i].drawBullet();
+    }
+  }
+
+  this.createBullets = function () {
+    var bullet = new Bullet(this.container, this.myCar[0]);
+    bullet.init();
+    that.myCar[0].bullets.push(bullet);
+  }
+
   this.generateMyCar = function () {
-    this.myCar = new Car(this.container, this.lanes[this.myCarIndex], this.width, this.height, true, 'F1');
-    this.myCar.init();
+    var myCar = new Car(this.container, this.lanes[this.myCarIndex], this.width, this.height, true, 'F1');
+    myCar.bulletCounter = 1;
+    myCar.bulletSpawnTime = 0;
+    myCar.bullets = [];
+    myCar.init();
+    this.myCar.push(myCar);
+    console.log(this.myCar);
   }
 
   this.moveMyCar = function (e) {
     var keyCode = e.keyCode;
-    if ((keyCode === 65 || keyCode === 37) && this.gamePause == false) {
+    if ((keyCode === this.leftKey) && this.gamePause == false) {
       if (this.myCarIndex != 0) {
         var push1 = {};
-        push1.prevPos = this.myCar.x;
+        push1.prevPos = this.myCar[0].x;
         push1.prevIndex = this.myCarIndex;
         this.myCarIndex--;
         if (this.myCarIndex == -1) {
           this.myCarIndex = 2;
         }
-        this.myCar.lane = this.lanes[this.myCarIndex];
-        this.myCar.setPosition();
+        this.myCar[0].lane = this.lanes[this.myCarIndex];
+        this.myCar[0].setPosition();
         push1.nextIndex = this.myCarIndex;
-        push1.nextPos = this.myCar.x;
-        //this.myCar.draw();
+        push1.nextPos = this.myCar[0].x;
+        //this.myCar[0].draw();
         this.moveLeft(push1);
       }
-    } else if ((keyCode === 68 || keyCode === 39) && this.gamePause == false) {
+    } else if ((keyCode === this.rightKey) && this.gamePause == false) {
       if (this.myCarIndex != 2) {
         var push1 = {};
-        push1.prevPos = this.myCar.x;
+        push1.prevPos = this.myCar[0].x;
         push1.prevIndex = this.myCarIndex;
         this.myCarIndex++;
         if (this.myCarIndex == 3) {
           this.myCarIndex = 0;
         }
-        this.myCar.lane = this.lanes[this.myCarIndex];
-        this.myCar.setPosition();
+        this.myCar[0].lane = this.lanes[this.myCarIndex];
+        this.myCar[0].setPosition();
         push1.nextIndex = this.myCarIndex;
-        push1.nextPos = this.myCar.x;
-        //this.myCar.draw();
+        push1.nextPos = this.myCar[0].x;
+        //this.myCar[0].draw();
         this.moveRight(push1);
 
       }
-    } else if ((keyCode === 87 || keyCode === 38) && this.gamePause == false) {
-      if (that.bulletCounter > 0) {
+    } else if ((keyCode === this.upKey) && this.gamePause == false) {
+      if (that.myCar[0].bulletCounter > 0) {
         that.createBullets();
-        that.bulletCounter--;
-        that.ammoDiv.innerHTML = 'Ammo: <h1>' + that.bulletCounter + '</h1>';
+        that.myCar[0].bulletCounter--;
+        that.ammoDiv.innerHTML = 'Ammo: <h1>' + that.myCar[0].bulletCounter + '</h1>';
       }
     }
   }
@@ -374,18 +391,18 @@ function CarLaneGame(width, height) {
           clearInterval(int1);
         } else {
           push1.prevPos = push1.prevPos - 20;
-          this.myCar.element.style.left = push1.prevPos + 'px';
+          this.myCar[0].element.style.left = push1.prevPos + 'px';
         }
       } else {
         if (push1.prevPos >= push1.nextPos) {
           clearInterval(int1);
         } else {
           push1.prevPos = push1.prevPos + 10;
-          this.myCar.element.style.left = push1.prevPos + 'px';
+          this.myCar[0].element.style.left = push1.prevPos + 'px';
           if (push1.prevPos < (push1.nextPos - 20)) {
-            this.myCar.element.style.transform = 'rotate(' + 45 + 'deg)';
+            this.myCar[0].element.style.transform = 'rotate(' + 45 + 'deg)';
           } else {
-            this.myCar.element.style.transform = 'rotate(' + 0 + 'deg)';
+            this.myCar[0].element.style.transform = 'rotate(' + 0 + 'deg)';
           }
         }
       }
@@ -403,18 +420,18 @@ function CarLaneGame(width, height) {
           clearInterval(int2);
         } else {
           push1.prevPos = push1.prevPos + 20;
-          this.myCar.element.style.left = push1.prevPos + 'px';
+          this.myCar[0].element.style.left = push1.prevPos + 'px';
         }
       } else {
         if (push1.prevPos <= push1.nextPos) {
           clearInterval(int2);
         } else {
           push1.prevPos = push1.prevPos - 10;
-          this.myCar.element.style.left = push1.prevPos + 'px';
+          this.myCar[0].element.style.left = push1.prevPos + 'px';
           if (push1.prevPos > (push1.nextPos + 20)) {
-            this.myCar.element.style.transform = 'rotate(' + -45 + 'deg)';
+            this.myCar[0].element.style.transform = 'rotate(' + -45 + 'deg)';
           } else {
-            this.myCar.element.style.transform = 'rotate(' + 0 + 'deg)';
+            this.myCar[0].element.style.transform = 'rotate(' + 0 + 'deg)';
           }
         }
       }
@@ -451,8 +468,8 @@ function CarLaneGame(width, height) {
   }
 
   this.checkCollisionWithBullets = function (car, carIndex) {
-    for (var i = 0; i < that.bullets.length; i++) {
-      var bullet = that.bullets[i];
+    for (var i = 0; i < that.myCar[0].bullets.length; i++) {
+      var bullet = that.myCar[0].bullets[i];
       if (car.x < bullet.x + bullet.width &&
         car.x + car.carModel.carWidth > bullet.x &&
         car.y < bullet.y + bullet.height &&
@@ -462,7 +479,7 @@ function CarLaneGame(width, height) {
         that.container.removeChild(car.element);
         that.otherVehicles.splice(carIndex, 1);
         that.container.removeChild(bullet.element);
-        that.bullets.splice(i, 1);
+        that.myCar[0].bullets.splice(i, 1);
         boom.init();
         this.booms.push(boom);
       }
@@ -470,7 +487,7 @@ function CarLaneGame(width, height) {
   }
 
   this.checkCollision = function () {
-    var mycar = that.myCar;
+    var mycar = that.myCar[0];
     for (var i = 0; i < that.otherVehicles.length; i++) {
       var car2 = that.otherVehicles[i];
       if (mycar.x < car2.x + car2.carModel.carWidth &&
@@ -497,10 +514,10 @@ function CarLaneGame(width, height) {
   }
 
   this.removeBullets = function () {
-    for (var i = 0; i < that.bullets.length; i++) {
-      if (that.bullets[i].y <= (-that.bullets[i].height)) {
-        that.container.removeChild(that.bullets[i].element);
-        that.bullets.splice(i, 1);
+    for (var i = 0; i < that.myCar[0].bullets.length; i++) {
+      if (that.myCar[0].bullets[i].y <= (-that.myCar[0].bullets[i].height)) {
+        that.container.removeChild(that.myCar[0].bullets[i].element);
+        that.myCar[0].bullets.splice(i, 1);
       }
     }
   }
@@ -508,8 +525,8 @@ function CarLaneGame(width, height) {
   this.levelCheck = function () {
     if ((this.scoreCount % this.scoreInterval) == 0 && this.scoreCount != 0) {
       this.level++;
-      this.bulletCounter = this.level;
-      this.ammoDiv.innerHTML = 'Ammo: <h1>' + this.bulletCounter + '</h1>';
+      this.myCar[0].bulletCounter = this.level;
+      this.ammoDiv.innerHTML = 'Ammo: <h1>' + this.myCar[0].bulletCounter + '</h1>';
       this.levelDiv.innerHTML = 'Level: ' + this.level;
       clearInterval(this.start);
       this.increaseBy += 1;
@@ -523,7 +540,7 @@ function CarLaneGame(width, height) {
 
   this.gameOver = function () {
     clearInterval(this.start);
-    this.endBoom = new Boom(this.myCar.x, this.myCar.y, this.container);
+    this.endBoom = new Boom(this.myCar[0].x, this.myCar[0].y, this.container);
     this.endBoom.init();
     this.gamePause = true;
     if (this.highScore < this.scoreCount) {
@@ -538,9 +555,8 @@ function CarLaneGame(width, height) {
     this.scoreInterval = 40;
     this.spawnTime = getRandom(300, 400);
     this.bgIncrease = 0;
-    this.bulletCounter = 1;
-    this.bulletSpawnTime = 0;
-    this.bullets = [];
+    this.myCar[0].bulletCounter = 1;
+    this.myCar[0].bulletSpawnTime = 0;
     this.start = setInterval(this.gaming.bind(this), this.transition);
     this.tryAgainBtn.style.display = 'block';
     this.pauseBtn.style.display = 'none';
@@ -549,6 +565,9 @@ function CarLaneGame(width, height) {
   this.removeAllCarDivs = function () {
     for (var i = 0; i < this.otherVehicles.length; i++) {
       that.otherVehicles[i].element.parentElement.removeChild(that.otherVehicles[i].element);
+    }
+    for (var j = 0; j < this.myCar[0].bullets.length; j++) {
+      that.myCar[0].bullets[j].element.parentElement.removeChild(that.myCar[0].bullets[j].element);
     }
   }
 
@@ -621,8 +640,8 @@ function Car(parentDiv, lane, containerWidth, containerHeight, myCar, carNo) {
 }
 
 function Bullet(parentDiv, myCar) {
-  this.height = 16;
-  this.width = 16;
+  this.height = 12;
+  this.width = 12;
   this.x;
   this.y;
   this.element;
@@ -639,7 +658,7 @@ function Bullet(parentDiv, myCar) {
     bulletDiv.classList.add('bullet');
     bulletDiv.style.width = that.width + 'px';
     bulletDiv.style.height = that.height + 'px';
-    bulletDiv.style.backgroundColor = 'brown';
+    bulletDiv.style.backgroundColor = 'yellow';
     bulletDiv.style.borderRadius = '50%';
     bulletDiv.style.border = '2px solid white';
     parentDiv.appendChild(bulletDiv);
