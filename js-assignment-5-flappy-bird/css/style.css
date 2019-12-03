@@ -1,0 +1,10 @@
+@font-face {
+  font-family: font011;
+  src: url(flappyFont.TTF);
+}
+
+.container-div {
+  font-family: font011;
+  position: relative;
+  overflow: hidden;
+}
