@@ -142,7 +142,7 @@ function CarLaneGame(width, height, leftKey, rightKey, upKey) {
     controlsDiv.style.textAlign = 'left';
     controlsDiv.style.fontSize = '12px';
     controlsDiv.style.marginTop = '30px';
-    controlsDiv.innerHTML = '<h3>CONTROLS:</h3><p>A or Left arrow to move left lane.</p><p>D or Right arrow to move right lane.</p><p>W or Up arrow to shoot bullets.</p>';
+    controlsDiv.innerHTML = '<h3>CONTROLS:</h3><p>A or Left arrow to move left lane.</p><p>D or Right arrow to move right lane.</p><p>W or Up arrow to shoot bullet.</p>';
     readDiv.appendChild(controlsDiv);
 
     var logo = document.createElement('div')
