@@ -146,7 +146,7 @@ function CarLaneGame(width, height, leftKey, rightKey, upKey) {
     readDiv.appendChild(controlsDiv);
 
     var logo = document.createElement('div')
-    logo.style.background = "url('./images/logo.gif') no-repeat center";
+    logo.style.background = "url('./images/logo1.gif') no-repeat center";
     logo.style.backgroundSize = 'contain';
     logo.style.width = 300 + 'px';
     logo.style.height = 400 + 'px';
