@@ -230,9 +230,9 @@ function Game(width, height, keycode, keychar) {
         if (that.scoreCount > that.highScore) {
           that.highScore = that.scoreCount;
           (window.localStorage.setItem('highScore', (that.highScore).toString()));
-          that.highScore = parseInt(window.localStorage.getItem('highScore'));
           that.highscoreDiv.innerHTML = that.highScore;
         }
+        that.highScore = parseInt(window.localStorage.getItem('highScore'));
         console.log('game-over');
         that.gameOver();
         that.bird.dieMotion();
