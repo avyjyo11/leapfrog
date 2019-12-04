@@ -197,6 +197,8 @@ function Game(width, height, keycode) {
   this.reStartBtnEvent = function () {
     that.removeAllPipes();
     this.scoreCount = 0;
+    this.scoreDiv.innerHTML = this.scoreCount;
+    that.scorepointDiv.innerHTML = this.scoreCount;
     that.gameState = 0;
     this.gameCounter = 0;
   }
@@ -228,8 +230,9 @@ function Game(width, height, keycode) {
       case 2:
         //GAME OVER STATE
         //that.gameOver();
-        if (this.scoreCount > this.highScore) {
-          this.highScore = this.scoreCount;
+        if (that.scoreCount > that.highScore) {
+          that.highScore = that.scoreCount;
+          that.highscoreDiv.innerHTML = that.highScore;
         }
         console.log('game-over');
         that.gameOver();
@@ -298,8 +301,8 @@ function Game(width, height, keycode) {
       if ((that.pipes[i].centerX + that.pipes[i].width) == that.bird.x) {
         that.scoreCount++;
         that.scoreDiv.innerHTML = that.scoreCount;
-        this.scorepointDiv.innerHTML = this.scoreCount;
-        this.highscoreDiv.innerHTML = this.highScore;
+        that.scorepointDiv.innerHTML = that.scoreCount;
+        that.highscoreDiv.innerHTML = that.highScore;
       }
     }
   }
