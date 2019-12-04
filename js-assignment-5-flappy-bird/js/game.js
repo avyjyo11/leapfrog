@@ -25,7 +25,7 @@ function Game(width, height, keycode, keychar) {
   this.gameCounter = 0;
   this.gameState = 0;
   this.scoreCount = 0;
-  this.highScore = parseInt(window.localStorage.getItem('highScore')) || 0;
+  this.highScore = parseInt(window.localStorage.getItem('highScore'));
   this.overDiv;
   this.scorepointDiv;
   this.highscoreDiv;
@@ -335,4 +335,8 @@ function Game(width, height, keycode, keychar) {
 
 function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
+}
+
+if (window.localStorage.getItem('highScore') == '') {
+  window.localStorage.setItem('highScore', '0');
 }
