@@ -1,20 +1,21 @@
 var game1 = new Game();
 game1.init();
-var game2 = new Game(600, 700, 38);
+var game2 = new Game(600, 700, 38, 'Up Arrow');
 game2.init();
 
-function Game(width, height, keycode) {
+function Game(width, height, keycode, keychar) {
   this.width = width || 600;
   this.height = height || 700;
   this.container;
   this.scoreDiv;
   this.getReadyDiv;
   this.startScreenDiv;
+  this.keychar = keychar || 'Space';
   this.playBtn;
   this.keycode = keycode || 32;
   this.foreGround;
   this.pipes = [];
-  this.gap;
+  this.gap = 160;
   this.bird;
   this.frameRate = 10;
   this.gameLoop;
@@ -66,7 +67,9 @@ function Game(width, height, keycode) {
     getReadyDiv.style.height = 360 + 'px';
     getReadyDiv.style.zIndex = '290';
     getReadyDiv.style.textAlign = 'center';
+    getReadyDiv.style.fontSize = '30px';
     getReadyDiv.classList.add('get-ready');
+    getReadyDiv.innerHTML = 'Press ' + that.keychar;
     that.container.appendChild(getReadyDiv);
     that.getReadyDiv = getReadyDiv;
 
@@ -196,11 +199,8 @@ function Game(width, height, keycode) {
 
   this.reStartBtnEvent = function () {
     that.removeAllPipes();
-    this.scoreCount = 0;
-    this.scoreDiv.innerHTML = this.scoreCount;
-    that.scorepointDiv.innerHTML = this.scoreCount;
+    that.scoreCount = 0;
     that.gameState = 0;
-    this.gameCounter = 0;
   }
 
   this.gaming = function () {
@@ -256,6 +256,8 @@ function Game(width, height, keycode) {
   }
 
   this.getReady = function () {
+    that.scoreDiv.innerHTML = that.scoreCount;
+    that.scorepointDiv.innerHTML = that.scoreCount;
     that.scoreDiv.style.display = 'none';
     that.getReadyDiv.style.display = 'block';
     that.overDiv.style.display = 'none';
@@ -282,7 +284,7 @@ function Game(width, height, keycode) {
     that.gameCounter += 2;
     if (that.gameCounter >= that.spawnTime) {
       var centery = getRandom(140, that.height - that.foreGround.height - 100);
-      var pipe = new Pipes(that.width, centery, 180, that.container);
+      var pipe = new Pipes(that.width, centery, that.gap, that.container);
       pipe.init();
       that.pipes.push(pipe);
       that.gameCounter = 0;
