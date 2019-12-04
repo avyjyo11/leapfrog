@@ -25,7 +25,7 @@ function Game(width, height, keycode, keychar) {
   this.gameCounter = 0;
   this.gameState = 0;
   this.scoreCount = 0;
-  this.highScore = 0;
+  this.highScore = parseInt(window.localStorage.getItem('highScore')) || 0;
   this.overDiv;
   this.scorepointDiv;
   this.highscoreDiv;
@@ -79,8 +79,6 @@ function Game(width, height, keycode, keychar) {
     getReadyPic.style.width = 350 + 'px';
     getReadyPic.style.height = 260 + 'px';
     that.getReadyDiv.appendChild(getReadyPic);
-
-    //that.getReadyDiv.innerHTML = 'Press Space';
 
     var scoreDiv = document.createElement('div');
     scoreDiv.innerHTML = this.scoreCount;
@@ -229,9 +227,10 @@ function Game(width, height, keycode, keychar) {
         break;
       case 2:
         //GAME OVER STATE
-        //that.gameOver();
         if (that.scoreCount > that.highScore) {
           that.highScore = that.scoreCount;
+          (window.localStorage.setItem('highScore', (that.highScore).toString()));
+          that.highScore = parseInt(window.localStorage.getItem('highScore'));
           that.highscoreDiv.innerHTML = that.highScore;
         }
         console.log('game-over');
