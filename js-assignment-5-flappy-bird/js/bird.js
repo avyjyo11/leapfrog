@@ -58,10 +58,8 @@ function Bird(spaceWidth, spaceHeight, parent) {
     this.draw();
   }
 
-  this.flap = function (e) {
-    if (e.keyCode === 32) {
-      that.speed = -that.jump;
-    }
+  this.flap = function () {
+    that.speed = -that.jump;
   }
 
   this.dieMotion = function () {

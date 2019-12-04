@@ -1,11 +1,17 @@
 var game1 = new Game();
 game1.init();
+var game2 = new Game(600, 700, 38);
+game2.init();
 
-function Game() {
-  this.width = 600;
-  this.height = 700;
+function Game(width, height, keycode) {
+  this.width = width || 600;
+  this.height = height || 700;
   this.container;
   this.scoreDiv;
+  this.getReadyDiv;
+  this.startScreenDiv;
+  this.playBtn;
+  this.keycode = keycode || 32;
   this.foreGround;
   this.pipes = [];
   this.gap;
@@ -19,10 +25,18 @@ function Game() {
   this.gameState = 0;
   this.scoreCount = 0;
   this.highScore = 0;
+  this.overDiv;
+  this.scorepointDiv;
+  this.highscoreDiv;
+  this.reStartBtn;
   var that = this;
 
   this.init = function () {
-    this.createContainer();
+    that.createContainer();
+    that.creataStartScreen();
+    that.createOverScreen();
+    that.playBtn.addEventListener('click', that.playBtnEvent);
+    that.reStartBtn.addEventListener('click', that.reStartBtnEvent);
     document.addEventListener('keydown', that.spaceBar);
     that.gameLoop = setInterval(that.gaming, this.frameRate);
   }
@@ -44,6 +58,27 @@ function Game() {
     body.appendChild(container);
     this.container = container;
 
+    var getReadyDiv = document.createElement('div');
+    getReadyDiv.style.position = 'absolute';
+    getReadyDiv.style.top = 100 + 'px';
+    getReadyDiv.style.left = 160 + 'px';
+    getReadyDiv.style.width = 350 + 'px';
+    getReadyDiv.style.height = 360 + 'px';
+    getReadyDiv.style.zIndex = '290';
+    getReadyDiv.style.textAlign = 'center';
+    getReadyDiv.classList.add('get-ready');
+    that.container.appendChild(getReadyDiv);
+    that.getReadyDiv = getReadyDiv;
+
+    var getReadyPic = document.createElement('img');
+    getReadyPic.src = './images/get-ready.png';
+    getReadyPic.alt = 'getready';
+    getReadyPic.style.width = 350 + 'px';
+    getReadyPic.style.height = 260 + 'px';
+    that.getReadyDiv.appendChild(getReadyPic);
+
+    //that.getReadyDiv.innerHTML = 'Press Space';
+
     var scoreDiv = document.createElement('div');
     scoreDiv.innerHTML = this.scoreCount;
     scoreDiv.style.position = 'absolute';
@@ -55,6 +90,7 @@ function Game() {
     scoreDiv.style.fontSize = '60px';
     scoreDiv.style.color = 'white';
     scoreDiv.style.zIndex = '200';
+    scoreDiv.classList.add('score-div');
     that.container.appendChild(scoreDiv);
     that.scoreDiv = scoreDiv;
 
@@ -65,6 +101,104 @@ function Game() {
     var bird = new Bird(this.width, this.height - that.foreGround.height, this.container);
     bird.init();
     this.bird = bird;
+  }
+
+  this.creataStartScreen = function () {
+    var startScreenDiv = document.createElement('div');
+    startScreenDiv.style.position = 'absolute';
+    startScreenDiv.style.top = 0 + 'px';
+    startScreenDiv.style.left = 0 + 'px';
+    startScreenDiv.style.textAlign = 'center';
+    startScreenDiv.style.width = this.width + 'px';
+    startScreenDiv.style.height = this.height + 'px';
+    startScreenDiv.style.fontSize = '60px';
+    startScreenDiv.style.color = 'white';
+    startScreenDiv.style.zIndex = '500';
+    startScreenDiv.style.background = 'url("./images/bg.png") top left';
+    startScreenDiv.style.backgroundSize = 'contain';
+    startScreenDiv.classList.add('start-screen');
+    that.container.appendChild(startScreenDiv);
+    that.startScreenDiv = startScreenDiv;
+
+    var logo = document.createElement('div');
+    logo.style.margin = '60px auto';
+    logo.style.background = 'url("./images/logoTitle.png") center';
+    logo.style.backgroundSize = 'contain';
+    logo.style.width = '440px';
+    logo.style.height = '140px';
+    logo.classList.add('logo');
+    that.startScreenDiv.appendChild(logo);
+
+    var playBtn = document.createElement('button');
+    playBtn.style.margin = '100px auto';
+    playBtn.style.display = 'block';
+    playBtn.style.background = 'url("./images/play-button.png") center';
+    playBtn.style.backgroundSize = 'cover';
+    playBtn.style.width = '200px';
+    playBtn.style.height = '120px';
+    playBtn.style.border = 'none';
+    playBtn.classList.add('playBtn');
+    that.startScreenDiv.appendChild(playBtn);
+    that.playBtn = playBtn;
+  }
+
+  this.createOverScreen = function () {
+    var over = document.createElement('div');
+    over.style.position = 'absolute';
+    over.style.background = 'url(images/game-over.png)';
+    over.style.backgroundSize = 'cover';
+    over.style.width = '480px';
+    over.style.height = '370px';
+    over.style.zIndex = '100';
+    over.style.left = '60px';
+    over.style.top = '60px';
+    that.container.appendChild(over);
+    that.overDiv = over;
+
+    var score = document.createElement('div');
+    score.innerHTML = this.scoreCount;
+    score.style.position = 'absolute';
+    score.style.top = '240px';
+    score.style.left = '420px';
+    score.style.fontSize = '40px';
+    score.style.zIndex = '100';
+    score.style.color = 'white';
+    that.container.appendChild(score);
+    that.scorepointDiv = score;
+
+    var high = document.createElement('div');
+    high.innerHTML = this.highScore;
+    high.style.position = 'absolute';
+    high.style.top = '340px';
+    high.style.left = '420px';
+    high.style.fontSize = '40px';
+    high.style.zIndex = '100';
+    high.style.color = 'white';
+    that.container.appendChild(high);
+    that.highscoreDiv = high;
+
+    var reStartBtn = document.createElement('div');
+    reStartBtn.style.background = 'url(images/startBtn.png)';
+    reStartBtn.style.position = 'absolute';
+    reStartBtn.style.top = '450px';
+    reStartBtn.style.left = '220px';
+    reStartBtn.style.zIndex = '100';
+    reStartBtn.style.width = '180px';
+    reStartBtn.style.height = '70px';
+    reStartBtn.style.backgroundSize = 'cover';
+    that.container.appendChild(reStartBtn);
+    that.reStartBtn = reStartBtn;
+  }
+
+  this.playBtnEvent = function () {
+    that.container.removeChild(that.startScreenDiv);
+  }
+
+  this.reStartBtnEvent = function () {
+    that.removeAllPipes();
+    this.scoreCount = 0;
+    that.gameState = 0;
+    this.gameCounter = 0;
   }
 
   this.gaming = function () {
@@ -105,9 +239,13 @@ function Game() {
   }
 
   this.spaceBar = function (e) {
-    if (e.keyCode === 32) {
+    //console.log(String.fromCharCode(38));
+    if (e.keyCode === that.keycode) {
       if (that.gameState != 2) {
-        that.bird.flap(e);
+        if (that.gameState == 0) {
+          that.getReadyDiv.style.display = 'none';
+        }
+        that.bird.flap();
         that.flapFrames = 0;
         that.gameState = 1;
       }
@@ -116,10 +254,19 @@ function Game() {
 
   this.getReady = function () {
     that.scoreDiv.style.display = 'none';
+    that.getReadyDiv.style.display = 'block';
+    that.overDiv.style.display = 'none';
+    that.scorepointDiv.style.display = 'none';
+    that.highscoreDiv.style.display = 'none';
+    that.reStartBtn.style.display = 'none';
   }
 
   this.gameOver = function () {
     that.scoreDiv.style.display = 'none';
+    that.overDiv.style.display = 'block';
+    that.scorepointDiv.style.display = 'block';
+    that.highscoreDiv.style.display = 'block';
+    that.reStartBtn.style.display = 'block';
   }
 
   this.moveForeGround = function () {
@@ -151,6 +298,8 @@ function Game() {
       if ((that.pipes[i].centerX + that.pipes[i].width) == that.bird.x) {
         that.scoreCount++;
         that.scoreDiv.innerHTML = that.scoreCount;
+        this.scorepointDiv.innerHTML = this.scoreCount;
+        this.highscoreDiv.innerHTML = this.highScore;
       }
     }
   }
