@@ -25,7 +25,7 @@ function Game(width, height, keycode, keychar) {
   this.gameCounter = 0;
   this.gameState = 0;
   this.scoreCount = 0;
-  this.highScore = parseInt(window.localStorage.getItem('highScore'));
+  this.highScore = parseInt(window.localStorage.getItem('highScore')) || 0;
   this.overDiv;
   this.scorepointDiv;
   this.highscoreDiv;

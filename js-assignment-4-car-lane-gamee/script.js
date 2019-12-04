@@ -1,3 +1,7 @@
+if (window.localStorage.getItem('carHigh') == '') {
+  window.localStorage.setItem('carHigh', '0');
+}
+
 var game1 = new CarLaneGame(412, 650, 65, 68, 87);
 game1.init();
 var game2 = new CarLaneGame(412, 650, 37, 39, 38);
@@ -18,7 +22,7 @@ function CarLaneGame(width, height, leftKey, rightKey, upKey) {
   this.spawnTime = getRandom(300, 400);
   this.bgIncrease = 0;
   this.increaseBy = 1;
-  this.highScore = 0;
+  this.highScore = parseInt(window.localStorage.getItem('carHigh')) || 0;
   this.backGround;
   this.myCar = [];
   this.myCarIndex = 1;
@@ -226,7 +230,7 @@ function CarLaneGame(width, height, leftKey, rightKey, upKey) {
     highScoreDiv.style.textAlign = 'center';
     highScoreDiv.style.lineHeight = 60 + 'px';
     highScoreDiv.style.marginBottom = '30px';
-    highScoreDiv.innerHTML = 'HighScore: ' + this.highScore;
+    highScoreDiv.innerHTML = 'HighScore: ' + that.highScore;
     highScoreDiv.setAttribute('class', 'highscore-div');
     scoreBoard.appendChild(highScoreDiv);
     this.highScoreDiv = highScoreDiv;
@@ -545,8 +549,10 @@ function CarLaneGame(width, height, leftKey, rightKey, upKey) {
     this.gamePause = true;
     if (this.highScore < this.scoreCount) {
       this.highScore = this.scoreCount;
+      (window.localStorage.setItem('carHigh', (that.highScore).toString()));
       this.highScoreDiv.innerHTML = 'HighScore: ' + this.highScore;
     }
+    that.highScore = parseInt(window.localStorage.getItem('carHigh'));
     this.scoreCount = 0;
     this.transition = 10;
     this.increaseBy = 1;
