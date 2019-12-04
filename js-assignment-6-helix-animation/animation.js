@@ -1,4 +1,4 @@
-var animation1 = new Animation(500, 500);
+var animation1 = new Animation(600, 600);
 animation1.init();
 
 function Animation(width, height) {
@@ -17,7 +17,8 @@ function Animation(width, height) {
   this.init = function () {
     this.createContainer();
     //this.createBalls();
-    window.requestAnimationFrame(that.animation);
+    requestAnimationFrame(that.animation);
+    //that.render;
   }
 
   this.createContainer = function () {
@@ -46,7 +47,7 @@ function Animation(width, height) {
     that.context.fillStyle = "#043a4a";
     that.context.rect(0, 0, that.canvas.width, that.canvas.height);
     that.context.fill();
-    that.phase = (window.requestAnimationFrame(that.animation)) * that.speed;
+    that.phase = requestAnimationFrame(that.animation) * that.speed;
     for (var strand = 0; strand < 2; strand++) {
       var strandPhase = that.phase + that.wavelength(strand, 0, 2, 0, 2 * Math.PI);
       for (var col = 0; col < that.totalCols; col++) {
