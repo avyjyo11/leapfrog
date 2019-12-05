@@ -34,7 +34,7 @@ function Pipes(centerX, centerY, gap, parent) {
     bottomElement.style.position = 'absolute';
     bottomElement.style.width = this.width + 'px';
     bottomElement.style.height = this.height + 'px';
-    bottomElement.style.zIndex = '50';
+    bottomElement.style.zIndex = '10';
     bottomElement.style.background = 'url("./images/pipeDown.png") center';
     bottomElement.style.backgroundSize = 'contain';
     parent.appendChild(bottomElement);

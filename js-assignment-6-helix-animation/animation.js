@@ -11,12 +11,13 @@ function Animation(width, height) {
   this.totalCols = 15;
   this.phase = 0;
   this.ballSize = 12;
+  this.helixBalls = [];
   this.colors = ["#ffae73", "#feaa77", "#fea57c", "#fea081", "#fe9b86", "#fa968b", "#f59190", "#f08c95", "#eb879a", "#e6829f", "#e17da4"];
   var that = this;
 
   this.init = function () {
     this.createContainer();
-    //this.createBalls();
+    that.createBalls();
     requestAnimationFrame(that.animation);
     //that.render;
   }
@@ -57,7 +58,6 @@ function Animation(width, height) {
           var y = (that.canvas.height / 3) + row * 0.032 * this.canvas.width + Math.sin(strandPhase + colOffset) * (that.canvas.width / 10);
           var sizeOffset = (Math.cos(strandPhase - (row / that.totalRows) + colOffset) + 1) * (this.canvas.width / 1000);
           var ballSizeNow = sizeOffset * that.ballSize;
-
           that.context.beginPath();
           that.context.clearRect(0, that.canvas.width, that.canvas.width, that.canvas.height);
           that.context.arc(x, y, ballSizeNow, 0, 2 * Math.PI);
@@ -68,6 +68,16 @@ function Animation(width, height) {
       }
     }
 
+  }
+
+  this.createBalls = function () {
+    for (var col = 0; col < that.totalCols; col++) {
+      for (var row = 0; row < that.totalRows; row++) {
+        var helixBall = new HelixBall(that.canvas);
+        helixBall.create();
+        this.helixBalls.push(helixBall);
+      }
+    }
   }
 
   this.wavelength = function (value, low1, high1, low2, high2) {

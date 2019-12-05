@@ -16,7 +16,7 @@ function ForeGround(width, height, parent) {
     element.style.position = 'absolute';
     element.style.width = this.width + 'px';
     element.style.height = this.height + 'px';
-    element.style.zIndex = '10';
+    element.style.zIndex = '20';
     element.style.background = 'url("./images/foreground.png") center';
     element.style.backgroundRepeat = 'repeat-x';
     element.style.backgroundSize = 'contain';
