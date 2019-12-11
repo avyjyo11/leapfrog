@@ -4,11 +4,12 @@ function Player(gameUI) {
   this.y;
   this.width = 40;
   this.height = 60;
-  this.speed = 2;
-  this.gravity = 0.1;
+  this.speed = 3;
+  this.jumpSpeed = 3;
+  this.fallSpeed = 0;
+  this.gravity = 0.2;
   this.jumping = false;
   this.grounded = false;
-  this.invulnerable = false;
   this.sX = 5; // sprite x
   this.sY = 38; // sprite y
   this.sWidth = 20;
@@ -18,16 +19,22 @@ function Player(gameUI) {
   this.init = function () {
     this.x = 100;
     this.y = gameUI.viewHeight / 2;
-    this.draw();
   }
 
   this.setPosition = function () {
     if (this.jumping) {
-      this.y = this.y - this.speed;
+      if (this.jumpSpeed > 0) {
+        //this.jumpSpeed -= this.gravity;
+        this.y -= this.jumpSpeed;
+      } else {
+        this.jumping = false;
+      }
     } else if (this.grounded) {
-      this.y = this.y;
+      this.jumpSpeed = 3;
+      this.fallSpeed = 0;
     } else {
-      this.y = this.y + this.speed;
+      this.y += this.fallSpeed;
+      this.fallSpeed += this.gravity;
     }
   }
 
