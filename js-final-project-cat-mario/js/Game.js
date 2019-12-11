@@ -1,5 +1,7 @@
-var game1 = new Game();
-game1.init();
+setTimeout(function () {
+  var game1 = new Game();
+  game1.init();
+}, 100)
 
 function Game() {
   this.translatePoint = 2;
@@ -15,11 +17,13 @@ function Game() {
   var that = this;
 
   this.init = function () {
+    this.map = levelMaps.levelsObj.map;
     this.gameUI = new GameUI();
+    this.gameUI.row = that.map.length;
+    that.gameUI.column = that.map[0].length;
     this.gameUI.setCanvas();
     this.element = new Element(that.gameUI);
     this.getPlayer();
-    this.map = levelMaps.getMap(1);
     this.keyBinds();
     //setInterval(this.startGame, 1000 / 10);
     that.startGame();
@@ -74,7 +78,32 @@ function Game() {
             that.checkPlayerElementCollision();
             break;
           case 5:
-            that.element.brick();
+            that.element.brickBox();
+            that.element.draw();
+            that.checkPlayerElementCollision();
+            break;
+          case 6:
+            that.element.blockBox();
+            that.element.draw();
+            that.checkPlayerElementCollision();
+            break;
+          case 7:
+            that.element.pipeLeft();
+            that.element.draw();
+            that.checkPlayerElementCollision();
+            break;
+          case 8:
+            that.element.pipeRight();
+            that.element.draw();
+            that.checkPlayerElementCollision();
+            break;
+          case 9:
+            that.element.pipeTopLeft();
+            that.element.draw();
+            that.checkPlayerElementCollision();
+            break;
+          case 10:
+            that.element.pipeTopRight();
             that.element.draw();
             that.checkPlayerElementCollision();
             break;
@@ -134,7 +163,7 @@ function Game() {
       that.player.grounded = true;
       that.player.jumping = false;
     } else if (collisionDirection == 'l') {
-      that.player.x = that.element.x + that.player.width;
+      that.player.x = that.element.x + that.element.width;
     } else if (collisionDirection == 'r') {
       that.player.x = that.element.x - that.player.width;
     } else if (collisionDirection == 't') {

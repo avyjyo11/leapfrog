@@ -6,12 +6,14 @@ function GameUI() {
   this.viewHeight; //15 rows
   this.maxWidth;
   this.image;
+  this.row;
+  this.column;
   var that = this;
 
   this.setCanvas = function () {
     this.viewPort = that.tileSize * 17;
-    this.viewHeight = that.tileSize * 15;
-    this.maxWidth = that.tileSize * 34;
+    this.viewHeight = that.tileSize * this.row;
+    this.maxWidth = that.tileSize * this.column;
     this.image = new Image();
     that.image.src = 'images/all-sprites.png';
     this.canvas = document.getElementById('mainCanvas');

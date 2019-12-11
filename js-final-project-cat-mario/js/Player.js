@@ -2,10 +2,10 @@ function Player(gameUI) {
   this.type = 'small';
   this.x;
   this.y;
-  this.width = 40;
-  this.height = 60;
-  this.speed = 3;
-  this.jumpSpeed = 3;
+  this.width = 32;
+  this.height = 50;
+  this.speed = 5;
+  this.jumpSpeed = this.speed;
   this.fallSpeed = 0;
   this.gravity = 0.2;
   this.jumping = false;
@@ -14,6 +14,8 @@ function Player(gameUI) {
   this.sY = 38; // sprite y
   this.sWidth = 20;
   this.sHeight = 34;
+  this.enemies = [];
+  this.powerUps = [];
   var that = this;
 
   this.init = function () {
@@ -30,7 +32,7 @@ function Player(gameUI) {
         this.jumping = false;
       }
     } else if (this.grounded) {
-      this.jumpSpeed = 3;
+      this.jumpSpeed = this.speed;
       this.fallSpeed = 0;
     } else {
       this.y += this.fallSpeed;
@@ -41,7 +43,5 @@ function Player(gameUI) {
   this.draw = function () {
     gameUI.draw(this.sX, this.sY, this.sWidth, this.sHeight, this.x, this.y, this.width, this.height);
   }
-
-  this.resetPos = function () {}
 
 }
