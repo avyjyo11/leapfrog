@@ -1,4 +1,4 @@
-function Element(gameUI) {
+function Element() {
   this.type;
   this.sX = 0;
   this.sY = 275;
@@ -8,6 +8,7 @@ function Element(gameUI) {
   this.y;
   this.width = 40;
   this.height = 40;
+  this.gravity = 0.2;
   var that = this;
 
   this.platform = function () {

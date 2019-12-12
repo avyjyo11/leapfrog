@@ -1,48 +1,37 @@
-setTimeout(function () {
-  var game1 = new Game();
-  game1.init();
-}, 100)
-
-function Game() {
+function Game(levelData) {
   this.translatePoint = 2;
-  this.player;
   this.element;
-  this.gameUI;
   this.map;
   this.animation;
   this.pressCounter = 0;
   this.translatedDist = 0;
   this.centerPos = 0;
   this.keys = [];
+  this.enemies = [];
+  this.counter = 0;
   var that = this;
 
   this.init = function () {
-    this.map = levelMaps.levelsObj.map;
-    this.gameUI = new GameUI();
-    this.gameUI.row = that.map.length;
-    that.gameUI.column = that.map[0].length;
-    this.gameUI.setCanvas();
-    this.element = new Element(that.gameUI);
-    this.getPlayer();
+    this.map = levelData.map;
+    gameUI.row = that.map.length;
+    gameUI.column = that.map[0].length;
+    gameUI.maxWidth = gameUI.tileSize * gameUI.column;
+    player.init();
+    this.element = new Element();
     this.keyBinds();
     //setInterval(this.startGame, 1000 / 10);
     that.startGame();
   }
 
-  this.getPlayer = function () {
-    var player = new Player(that.gameUI);
-    player.init();
-    this.player = player;
-  }
-
   this.startGame = function () {
-    that.gameUI.clear();
+    gameUI.clear();
     //that.gameUI.context.fillStyle = '#a0b4fa';
     //that.gameUI.context.fillRect(0, 0, that.gameUI.viewPort, that.gameUI.viewHeight);
+    that.moveEnemies();
     that.movePlayer();
     that.drawLevels();
-    that.player.setPosition();
-    that.player.draw();
+    player.setPosition();
+    player.draw();
     that.wallCollision();
     //that.gameUI.translate(-1, 0);
     this.animation = window.requestAnimationFrame(that.startGame);
@@ -50,7 +39,10 @@ function Game() {
 
   this.drawLevels = function () {
     var tileSize = 40;
-    that.player.grounded = false;
+    player.grounded = false;
+    for (var i = 0; i < that.enemies.length; i++) {
+      that.enemies[i].grounded = false;
+    }
     //console.log(map);
     for (var row = 0; row < that.map.length; row++) {
       for (var column = 0; column < that.map[row].length; column++) {
@@ -61,54 +53,91 @@ function Game() {
             that.element.platform();
             that.element.draw();
             that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
             break;
           case 2:
             that.element.ground();
             that.element.draw();
             that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
             break;
           case 3:
             that.element.questionBox();
             that.element.draw();
             that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
             break;
           case 4:
             that.element.uselessBox();
             that.element.draw();
             that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
             break;
           case 5:
             that.element.brickBox();
             that.element.draw();
             that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
             break;
           case 6:
             that.element.blockBox();
             that.element.draw();
             that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
             break;
           case 7:
             that.element.pipeLeft();
             that.element.draw();
             that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
             break;
           case 8:
             that.element.pipeRight();
             that.element.draw();
             that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
             break;
           case 9:
             that.element.pipeTopLeft();
             that.element.draw();
             that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
             break;
           case 10:
             that.element.pipeTopRight();
             that.element.draw();
             that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
+            break;
+          case 11:
+            var enemy = new Enemy();
+            enemy.setAttribute(1);
+            enemy.x = column * tileSize;
+            enemy.y = row * tileSize;
+            enemy.draw();
+            that.enemies.push(enemy);
+            that.map[row][column] = 0;
+            break;
+          case 12:
+            var enemy = new Enemy();
+            enemy.setAttribute(2);
+            enemy.x = (column * tileSize) + tileSize - enemy.width;
+            enemy.y = (row * tileSize) + tileSize - enemy.height;
+            enemy.draw();
+            that.enemies.push(enemy);
+            that.map[row][column] = 0;
             break;
         }
       }
+    }
+  }
+
+  this.moveEnemies = function () {
+    for (var i = 0; i < that.enemies.length; i++) {
+      that.enemies[i].setPositionX();
+      that.enemies[i].setPositionY();
+      that.enemies[i].draw();
+      that.checkPlayerEnemyCollision(that.enemies[i], i);
     }
   }
 
@@ -156,60 +185,101 @@ function Game() {
   }
 
   this.checkPlayerElementCollision = function () {
-    var collisionDirection = this.collisionCheck(that.player, that.element);
+    var collisionDirection = this.collisionCheck(player, that.element);
 
     if (collisionDirection == 'b') {
-      that.player.y = that.element.y - that.player.height;
-      that.player.grounded = true;
-      that.player.jumping = false;
+      player.y = that.element.y - player.height;
+      player.grounded = true;
+      player.jumping = false;
+      this.pressCounter = 0;
     } else if (collisionDirection == 'l') {
-      that.player.x = that.element.x + that.element.width;
+      player.x = that.element.x + that.element.width;
     } else if (collisionDirection == 'r') {
-      that.player.x = that.element.x - that.player.width;
+      player.x = that.element.x - player.width;
     } else if (collisionDirection == 't') {
-      that.player.grounded = false;
-      that.player.jumping = false;
+      player.grounded = false;
+      player.jumping = false;
+      player.jumpInertia = false;
+      player.pressCounter = 30;
+    }
+  }
+
+  this.checkPlayerEnemyCollision = function (enemy, index) {
+    var collisionDirection = this.collisionCheck(player, enemy);
+
+    if (collisionDirection == 'b') {
+      player.grounded = false;
+      player.jumping = true;
+      player.jumpInertia = false;
+      this.pressCounter = 0;
+      that.enemies.splice(index, 1);
+    } else if (collisionDirection == 'l') {
+      player.x = enemy.x + enemy.width;
+      that.gameOver();
+    } else if (collisionDirection == 'r') {
+      player.x = enemy.x - player.width;
+      that.gameOver();
+    } else if (collisionDirection == 't') {
+      that.gameOver();
+    }
+  }
+
+  this.checkEnemyElementCollision = function (enemy) {
+    for (var i = 0; i < that.enemies.length; i++) {
+      var enemy = that.enemies[i];
+      var collisionDirection = this.collisionCheck(enemy, that.element);
+      if (collisionDirection == 'b') {
+        enemy.y = that.element.y - enemy.height;
+        enemy.grounded = true;
+        enemy.jumping = false;
+        this.counter = 0;
+      } else if (collisionDirection == 'l' || collisionDirection == 'r') {
+        enemy.speed = -enemy.speed;
+      } else if (collisionDirection == 't') {
+        enemy.grounded = false;
+        enemy.jumping = false;
+        enemy.jumpInertia = false;
+      }
     }
   }
 
   this.movePlayer = function () {
     if (that.keys[37] || that.keys[65]) {
       //left btn
-      that.player.x -= that.player.speed;
+      player.moveLeft();
     } else if (that.keys[39] || that.keys[68]) {
       //right btn
       this.checkPlayerPos();
-      that.player.x += that.player.speed;
+      player.moveRight();
     }
 
-    if ((that.keys[38] || that.keys[87]) && this.pressCounter < 30) {
+    if ((player.grounded || that.pressCounter < 20) && (that.keys[38] || that.keys[87])) {
       //jump btn
-      // this.pressCounter++;
-      that.player.jumping = true;
-      that.player.grounded = false;
-    } else {
-      that.player.jumping = false;
-      if (this.player.grounded) {
-        that.pressCounter = 0;
-      }
+      console.log('jumping');
+      this.pressCounter++;
+      player.jumping = true;
+      player.grounded = false;
     }
   }
 
   this.checkPlayerPos = function () {
-    this.centerPos = this.translatedDist + that.gameUI.viewPort / 2;
+    this.centerPos = this.translatedDist + gameUI.viewPort / 2;
     //side scrolling as mario reaches center of screen
-    if (that.player.x > that.centerPos && that.centerPos + that.gameUI.viewPort / 2 < that.gameUI.maxWidth) {
-      that.gameUI.translate(-that.player.speed, 0);
-      that.translatedDist += that.player.speed;
+    if (player.x > that.centerPos && that.centerPos + gameUI.viewPort / 2 < gameUI.maxWidth) {
+      gameUI.translate(-player.speed, 0);
+      that.translatedDist += player.speed;
     }
   }
 
   this.wallCollision = function () {
-    if (that.player.x >= that.gameUI.maxWidth - that.player.width) {
-      that.player.x = that.gameUI.maxWidth - that.player.width;
-    } else if (that.player.x <= that.translatedDist) {
-      that.player.x = that.translatedDist + 1;
+    if (player.x >= gameUI.maxWidth - player.width) {
+      player.x = gameUI.maxWidth - player.width;
+    } else if (player.x <= that.translatedDist) {
+      player.x = that.translatedDist + 1;
     }
   }
 
+  that.gameOver = function () {
+    console.log('game-over');
+  }
 }
