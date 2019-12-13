@@ -6,6 +6,8 @@ function Element() {
   this.sHeight = 30;
   this.x;
   this.y;
+  this.row;
+  this.column;
   this.width = 40;
   this.height = 40;
   this.gravity = 0.2;

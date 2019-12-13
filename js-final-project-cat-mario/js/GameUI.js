@@ -35,4 +35,16 @@ function GameUI() {
     that.context.clearRect(0, 0, that.maxWidth, that.viewHeight);
   }
 
+  this.makeBox = function (x, y, width, height) {
+    that.context.rect(x, y, width, height);
+    that.context.fillStyle = 'black';
+    that.context.fill();
+  }
+
+  this.writeText = function (text, x, y) {
+    that.context.font = '20px supermario256';
+    that.context.fillStyle = 'white';
+    that.context.fillText(text, x, y);
+  }
+
 }

@@ -1,44 +1,114 @@
 function Game(levelData) {
   this.translatePoint = 2;
   this.element;
-  this.map;
+  this.background;
+  this.level = 1;
+  this.map = [];
   this.animation;
+  this.frameRate = 60;
   this.pressCounter = 0;
+  this.gameOverCounter = 0;
   this.translatedDist = 0;
   this.centerPos = 0;
   this.keys = [];
+  this.coins = [];
+  this.trollElements = [];
   this.enemies = [];
-  this.counter = 0;
+  this.extras = [];
+  this.gameState = 0;
+  this.life = 3;
   var that = this;
 
-  this.init = function () {
-    this.map = levelData.map;
-    gameUI.row = that.map.length;
-    gameUI.column = that.map[0].length;
-    gameUI.maxWidth = gameUI.tileSize * gameUI.column;
-    player.init();
-    this.element = new Element();
+  this.begin = function () {
+    this.startScreen();
     this.keyBinds();
-    //setInterval(this.startGame, 1000 / 10);
-    that.startGame();
+    document.body.addEventListener('keydown', function (e) {
+      if (e.keyCode == 13) {
+        console.log('enter pressed');
+        window.cancelAnimationFrame(that.animation);
+        that.animation = window.requestAnimationFrame(that.startGame);
+      }
+    })
+  }
+
+  this.startScreen = function () {
+    gameUI.maxWidth = gameUI.viewPort;
+    gameUI.clear();
+    gameUI.canvas.style.backgroundColor = '#a0b4fa';
+    that.gameInit();
+    that.drawEnvironments();
+    that.drawLevels();
+    player.init();
+    player.draw();
+    gameUI.makeBox((gameUI.viewPort / 3) - 20, player.y, 310, 50);
+    gameUI.writeText('Press Enter To Start', gameUI.viewPort / 3, player.y + 30);
   }
 
   this.startGame = function () {
+    switch (that.gameState) {
+      case 0:
+        that.gameInit();
+        that.gameState = 1;
+        console.log('game-init');
+        break;
+      case 1:
+        that.gameRunning();
+        break;
+      case 2:
+        that.gameOver();
+        break;
+    }
+    that.animation = window.requestAnimationFrame(that.startGame);
+  }
+
+  this.gameInit = function () {
+    for (var i = 0; i < levelData[this.level].length; i++) {
+      this.map[i] = levelData[this.level][i].slice();
+    }
+    //console.log("this.map", this.map);
+    gameUI.row = that.map.length;
+    gameUI.column = that.map[0].length;
+    gameUI.maxWidth = gameUI.tileSize * gameUI.column;
+    gameUI.canvas.style.backgroundColor = '#a0b4fa';
+    player.init();
+    if (this.element == null)
+      this.element = new Element();
+    if (this.background == null)
+      this.background = new Background();
+    //that.startGame();
+  }
+
+  this.gameRunning = function () {
     gameUI.clear();
-    //that.gameUI.context.fillStyle = '#a0b4fa';
-    //that.gameUI.context.fillRect(0, 0, that.gameUI.viewPort, that.gameUI.viewHeight);
-    that.moveEnemies();
+    that.drawEnvironments();
     that.movePlayer();
+    that.moveEnemies();
+    that.moveCoins();
     that.drawLevels();
-    player.setPosition();
+    player.moveY();
     player.draw();
     that.wallCollision();
-    //that.gameUI.translate(-1, 0);
-    this.animation = window.requestAnimationFrame(that.startGame);
+    that.checkPlayerFall();
+  }
+
+  that.drawEnvironments = function () {
+    var tileSize = gameUI.tileSize;
+    for (var row = 0; row < that.map.length; row++) {
+      for (var column = 0; column < that.map[row].length; column++) {
+        switch (that.map[row][column]) {
+          case 30:
+            that.background.x = column * tileSize;
+            that.background.y = row * tileSize;
+            that.background.hill();
+            that.background.draw();
+            break;
+        }
+      }
+    }
   }
 
   this.drawLevels = function () {
-    var tileSize = 40;
+    var tileSize = gameUI.tileSize;
     player.grounded = false;
     for (var i = 0; i < that.enemies.length; i++) {
       that.enemies[i].grounded = false;
@@ -46,67 +116,79 @@ function Game(levelData) {
     //console.log(map);
     for (var row = 0; row < that.map.length; row++) {
       for (var column = 0; column < that.map[row].length; column++) {
+        that.element.row = row;
+        that.element.column = column;
         that.element.x = column * tileSize;
         that.element.y = row * tileSize;
         switch (that.map[row][column]) {
           case 1:
             that.element.platform();
             that.element.draw();
-            that.checkPlayerElementCollision();
+            if (that.gameState == 1)
+              that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 2:
             that.element.ground();
             that.element.draw();
-            that.checkPlayerElementCollision();
+            if (that.gameState == 1)
+              that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 3:
             that.element.questionBox();
             that.element.draw();
-            that.checkPlayerElementCollision();
+            if (that.gameState == 1)
+              that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 4:
             that.element.uselessBox();
             that.element.draw();
-            that.checkPlayerElementCollision();
+            if (that.gameState == 1)
+              that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 5:
             that.element.brickBox();
             that.element.draw();
-            that.checkPlayerElementCollision();
+            if (that.gameState == 1)
+              that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 6:
             that.element.blockBox();
             that.element.draw();
-            that.checkPlayerElementCollision();
+            if (that.gameState == 1)
+              that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 7:
             that.element.pipeLeft();
             that.element.draw();
-            that.checkPlayerElementCollision();
+            if (that.gameState == 1)
+              that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 8:
             that.element.pipeRight();
             that.element.draw();
-            that.checkPlayerElementCollision();
+            if (that.gameState == 1)
+              that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 9:
             that.element.pipeTopLeft();
             that.element.draw();
-            that.checkPlayerElementCollision();
+            if (that.gameState == 1)
+              that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 10:
             that.element.pipeTopRight();
             that.element.draw();
-            that.checkPlayerElementCollision();
+            if (that.gameState == 1)
+              that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 11:
@@ -134,16 +216,34 @@ function Game(levelData) {
 
   this.moveEnemies = function () {
     for (var i = 0; i < that.enemies.length; i++) {
-      that.enemies[i].setPositionX();
-      that.enemies[i].setPositionY();
-      that.enemies[i].draw();
-      that.checkPlayerEnemyCollision(that.enemies[i], i);
+      var enemy = that.enemies[i];
+      if (player.x > (enemy.x - gameUI.viewPort) && player.x < (enemy.x + gameUI.viewPort)) {
+        enemy.moveX();
+        enemy.moveY();
+        enemy.draw();
+        if (that.gameState == 1) {
+          that.checkPlayerEnemyCollision(that.enemies[i], i);
+        }
+      }
+    }
+  }
+
+  this.moveCoins = function () {
+    for (var i = 0; i < that.coins.length; i++) {
+      if (that.coins[i].counter < 16) {
+        var coin = that.coins[i];
+        coin.move();
+        coin.draw();
+      } else {
+        that.coins.splice(i, 1);
+      }
     }
   }
 
   this.keyBinds = function () {
     document.body.addEventListener('keydown', function (e) {
       that.keys[e.keyCode] = true;
+      console.log(e.keyCode);
     });
 
     document.body.addEventListener('keyup', function (e) {
@@ -201,6 +301,28 @@ function Game(levelData) {
       player.jumping = false;
       player.jumpInertia = false;
       player.pressCounter = 30;
+      that.afterCollision(that.element);
+    }
+  }
+
+  this.afterCollision = function (element) {
+    if (element.type == 5) {
+      that.map[element.row][element.column] = 0;
+    }
+    if (element.type == 3) {
+      var no = Math.floor(Math.random() * 2);
+      that.map[element.row][element.column] = 4;
+      if (no == 0) {
+        var coin = new Coin();
+        coin.setPos(element.x, element.y - 16);
+        that.coins.push(coin);
+      } else {
+        var enemy = new Enemy();
+        enemy.setAttribute(1);
+        enemy.x = element.x;
+        enemy.y = element.y - 16;
+        that.enemies.push(enemy);
+      }
     }
   }
 
@@ -211,20 +333,21 @@ function Game(levelData) {
       player.grounded = false;
       player.jumping = true;
       player.jumpInertia = false;
-      this.pressCounter = 0;
+      that.pressCounter = 30;
+      player.fallSpeed = 0;
       that.enemies.splice(index, 1);
     } else if (collisionDirection == 'l') {
       player.x = enemy.x + enemy.width;
-      that.gameOver();
+      that.playerDie();
     } else if (collisionDirection == 'r') {
       player.x = enemy.x - player.width;
-      that.gameOver();
+      that.playerDie();
     } else if (collisionDirection == 't') {
-      that.gameOver();
+      that.playerDie();
     }
   }
 
-  this.checkEnemyElementCollision = function (enemy) {
+  this.checkEnemyElementCollision = function () {
     for (var i = 0; i < that.enemies.length; i++) {
       var enemy = that.enemies[i];
       var collisionDirection = this.collisionCheck(enemy, that.element);
@@ -232,7 +355,6 @@ function Game(levelData) {
         enemy.y = that.element.y - enemy.height;
         enemy.grounded = true;
         enemy.jumping = false;
-        this.counter = 0;
       } else if (collisionDirection == 'l' || collisionDirection == 'r') {
         enemy.speed = -enemy.speed;
       } else if (collisionDirection == 't') {
@@ -244,21 +366,28 @@ function Game(levelData) {
   }
 
   this.movePlayer = function () {
-    if (that.keys[37] || that.keys[65]) {
-      //left btn
-      player.moveLeft();
-    } else if (that.keys[39] || that.keys[68]) {
-      //right btn
-      this.checkPlayerPos();
-      player.moveRight();
-    }
+    if (that.gameState == 1) {
+      if (that.keys[37] || that.keys[65]) {
+        //left btn
+        player.moveLeft();
+      } else if (that.keys[39] || that.keys[68]) {
+        //right btn
+        this.checkPlayerPos();
+        player.moveRight();
+      }
 
-    if ((player.grounded || that.pressCounter < 20) && (that.keys[38] || that.keys[87])) {
-      //jump btn
-      console.log('jumping');
-      this.pressCounter++;
-      player.jumping = true;
-      player.grounded = false;
+      if ((player.grounded && that.pressCounter < 10) && (that.keys[38] || that.keys[87])) {
+        //jump btn
+        that.pressCounter++;
+        player.jumping = true;
+        player.grounded = false;
+      }
+    }
+  }
+
+  this.checkPlayerFall = function () {
+    if (player.y > (gameUI.viewHeight + gameUI.viewHeight / 2)) {
+      that.playerDie();
     }
   }
 
@@ -279,7 +408,56 @@ function Game(levelData) {
     }
   }
 
-  that.gameOver = function () {
-    console.log('game-over');
+  this.playerDie = function () {
+    that.gameState = 2;
+    player.jumpInertia = false;
+    player.grounded = false;
+    player.jumping = true;
+    player.sX = 97;
+    player.sY = 38;
   }
+
+  this.gameOver = function () {
+    that.gameOverCounter++;
+    if (that.gameOverCounter < 150) {
+      gameUI.clear();
+      that.drawEnvironments();
+      that.moveEnemies();
+      that.drawLevels();
+      player.moveY();
+      player.draw();
+    } else if (that.gameOverCounter == 151) {
+      gameUI.translate(that.translatedDist, 0);
+    } else if (that.gameOverCounter < 400) {
+      gameUI.clear();
+      gameUI.canvas.style.backgroundColor = 'black';
+      player.x = gameUI.viewPort / 2 - 50;
+      player.y = gameUI.viewHeight / 2 - 50;
+      player.draw();
+      gameUI.writeText('x ' + that.life, player.x + 50, player.y + 30);
+    } else if (that.gameOverCounter == 401) {
+      that.life--;
+      that.resetAll();
+      player.resetAll();
+      that.gameOverCounter = 0;
+      that.gameState = 0;
+    }
+  }
+
+  this.resetAll = function () {
+    this.element = null;
+    this.background = null;
+    this.level = 1;
+    this.map = [];
+    this.pressCounter = 0;
+    this.translatedDist = 0;
+    this.centerPos = 0;
+    this.keys = [];
+    this.coins = [];
+    this.trollElements = [];
+    this.enemies = [];
+    this.extras = [];
+  }
+
+
 }

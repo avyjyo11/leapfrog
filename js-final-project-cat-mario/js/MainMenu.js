@@ -3,21 +3,24 @@ mainMenu.startScreen();
 
 function MainMenu() {
   this.level;
+  this.gameState;
   var that = this;
 
   this.startScreen = function () {
     gameUI.setCanvas();
-    this.level = 1;
-    this.startLevel(this.level);
+    this.startLevel();
+    //console.log('game-over');
   }
 
-  this.startLevel = function (level) {
-    levelMaps.getJSONMap(level, afterGetMap);
+  this.startLevel = function () {
+    levelMaps.getJSONMap(afterGetMap);
 
     function afterGetMap(levelData) {
-      var game1 = new Game(levelData);
-      game1.init();
+      var game = new Game(levelData);
+      game.begin();
     }
+
+
   }
 
 }

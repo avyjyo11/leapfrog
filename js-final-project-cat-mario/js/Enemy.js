@@ -1,7 +1,5 @@
 function Enemy() {
   this.type;
-  this.vX = 0;
-  this.vY = 0;
   this.x;
   this.y;
   this.width;
@@ -47,15 +45,7 @@ function Enemy() {
     }
   }
 
-  this.moveLeft = function () {
-    this.x -= this.speed;
-  }
-
-  this.moveRight = function () {
-    this.x += this.speed;
-  }
-
-  this.setPositionY = function () {
+  this.moveY = function () {
     if (this.jumping) {
       this.y -= this.jumpSpeed;
       this.jumping = false;
@@ -77,7 +67,7 @@ function Enemy() {
     }
   }
 
-  this.setPositionX = function () {
+  this.moveX = function () {
     this.x = this.x - this.speed;
   }
 

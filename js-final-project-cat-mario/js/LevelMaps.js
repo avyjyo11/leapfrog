@@ -1,12 +1,11 @@
 var levelMaps = new LevelMaps();
 
 function LevelMaps() {
-  this.levelObj;
   var that = this;
 
-  this.getJSONMap = function (level, callback) {
+  this.getJSONMap = function (callback) {
     var request = new XMLHttpRequest();
-    request.open('GET', './js/levels/level' + level + '.json', true);
+    request.open('GET', './js/levels/levels.json', true);
     request.onload = function () {
       if (request.status >= 200 && request.status < 400) {
         // Success!
