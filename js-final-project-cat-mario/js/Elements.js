@@ -73,6 +73,12 @@ function Element() {
     that.sY = 439;
   }
 
+  this.invisibleBox = function () {
+    that.type = 21;
+    that.sX = 400;
+    this.sY = 0;
+  }
+
   this.draw = function () {
     gameUI.draw(this.sX, this.sY, this.sWidth, this.sHeight, this.x, this.y, this.width, this.height);
   }

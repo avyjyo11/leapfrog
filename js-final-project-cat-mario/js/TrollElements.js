@@ -1,7 +1,5 @@
 function TrollElements() {
   this.type;
-  this.vX = 0;
-  this.vY = 0;
   this.x;
   this.y;
   this.width;
@@ -23,5 +21,4 @@ function TrollElements() {
     gameUI.draw(this.sX, this.sY, this.sWidth, this.sHeight, this.x, this.y, this.width, this.height);
   }
 
-  
 }

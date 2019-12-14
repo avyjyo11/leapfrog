@@ -4,6 +4,7 @@ function Game(levelData) {
   this.background;
   this.level = 1;
   this.map = [];
+  this.spawnMap = [];
   this.animation;
   this.frameRate = 60;
   this.pressCounter = 0;
@@ -11,10 +12,9 @@ function Game(levelData) {
   this.translatedDist = 0;
   this.centerPos = 0;
   this.keys = [];
-  this.coins = [];
+  this.extras = [];
   this.trollElements = [];
   this.enemies = [];
-  this.extras = [];
   this.gameState = 0;
   this.life = 3;
   var that = this;
@@ -49,7 +49,7 @@ function Game(levelData) {
       case 0:
         that.gameInit();
         that.gameState = 1;
-        console.log('game-init');
+        //console.log('game-init');
         break;
       case 1:
         that.gameRunning();
@@ -65,7 +65,9 @@ function Game(levelData) {
     for (var i = 0; i < levelData[this.level].length; i++) {
       this.map[i] = levelData[this.level][i].slice();
     }
-    //console.log("this.map", this.map);
+    for (var i = 0; i < levelData[this.level].length; i++) {
+      this.spawnMap[i] = levelData[this.level + '-troll'][i].slice();
+    }
     gameUI.row = that.map.length;
     gameUI.column = that.map[0].length;
     gameUI.maxWidth = gameUI.tileSize * gameUI.column;
@@ -75,7 +77,6 @@ function Game(levelData) {
       this.element = new Element();
     if (this.background == null)
       this.background = new Background();
-    //that.startGame();
   }
 
   this.gameRunning = function () {
@@ -83,7 +84,7 @@ function Game(levelData) {
     that.drawEnvironments();
     that.movePlayer();
     that.moveEnemies();
-    that.moveCoins();
+    that.moveExtras();
     that.drawLevels();
     player.moveY();
     player.draw();
@@ -96,10 +97,16 @@ function Game(levelData) {
     for (var row = 0; row < that.map.length; row++) {
       for (var column = 0; column < that.map[row].length; column++) {
         switch (that.map[row][column]) {
-          case 30:
+          case 50:
             that.background.x = column * tileSize;
             that.background.y = row * tileSize;
             that.background.hill();
+            that.background.draw();
+            break;
+          case 51:
+            that.background.x = column * tileSize;
+            that.background.y = row * tileSize;
+            that.background.cloud();
             that.background.draw();
             break;
         }
@@ -120,80 +127,76 @@ function Game(levelData) {
         that.element.column = column;
         that.element.x = column * tileSize;
         that.element.y = row * tileSize;
+        if (that.spawnMap[row][column] != 0) {
+          if (player.x > column * tileSize) {
+            that.map[row][column] = 0;
+            //that.checkBoundary();
+          }
+        }
         switch (that.map[row][column]) {
           case 1:
             that.element.platform();
             that.element.draw();
-            if (that.gameState == 1)
-              that.checkPlayerElementCollision();
+            that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 2:
             that.element.ground();
             that.element.draw();
-            if (that.gameState == 1)
-              that.checkPlayerElementCollision();
+            that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 3:
             that.element.questionBox();
             that.element.draw();
-            if (that.gameState == 1)
-              that.checkPlayerElementCollision();
+            that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 4:
             that.element.uselessBox();
             that.element.draw();
-            if (that.gameState == 1)
-              that.checkPlayerElementCollision();
+            that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 5:
             that.element.brickBox();
             that.element.draw();
-            if (that.gameState == 1)
-              that.checkPlayerElementCollision();
+            that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 6:
             that.element.blockBox();
             that.element.draw();
-            if (that.gameState == 1)
-              that.checkPlayerElementCollision();
+            that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 7:
             that.element.pipeLeft();
             that.element.draw();
-            if (that.gameState == 1)
-              that.checkPlayerElementCollision();
+            that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 8:
             that.element.pipeRight();
             that.element.draw();
-            if (that.gameState == 1)
-              that.checkPlayerElementCollision();
+            that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 9:
             that.element.pipeTopLeft();
             that.element.draw();
-            if (that.gameState == 1)
-              that.checkPlayerElementCollision();
+            that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 10:
             that.element.pipeTopRight();
             that.element.draw();
-            if (that.gameState == 1)
-              that.checkPlayerElementCollision();
+            that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
             break;
           case 11:
             var enemy = new Enemy();
-            enemy.setAttribute(1);
+            enemy.pawn();
             enemy.x = column * tileSize;
             enemy.y = row * tileSize;
             enemy.draw();
@@ -202,12 +205,20 @@ function Game(levelData) {
             break;
           case 12:
             var enemy = new Enemy();
-            enemy.setAttribute(2);
+            enemy.pawn();
             enemy.x = (column * tileSize) + tileSize - enemy.width;
             enemy.y = (row * tileSize) + tileSize - enemy.height;
             enemy.draw();
             that.enemies.push(enemy);
             that.map[row][column] = 0;
+            break;
+          case 21:
+            that.element.invisibleBox();
+            that.element.draw();
+            if (player.y >= (that.element.y + that.element.width / 2)) {
+              if (that.gameState == 1)
+                that.checkPlayerElementCollision();
+            }
             break;
         }
       }
@@ -218,8 +229,7 @@ function Game(levelData) {
     for (var i = 0; i < that.enemies.length; i++) {
       var enemy = that.enemies[i];
       if (player.x > (enemy.x - gameUI.viewPort) && player.x < (enemy.x + gameUI.viewPort)) {
-        enemy.moveX();
-        enemy.moveY();
+        enemy.movement();
         enemy.draw();
         if (that.gameState == 1) {
           that.checkPlayerEnemyCollision(that.enemies[i], i);
@@ -228,14 +238,23 @@ function Game(levelData) {
     }
   }
 
-  this.moveCoins = function () {
-    for (var i = 0; i < that.coins.length; i++) {
-      if (that.coins[i].counter < 16) {
-        var coin = that.coins[i];
-        coin.move();
-        coin.draw();
-      } else {
-        that.coins.splice(i, 1);
+  this.moveExtras = function () {
+    for (var i = 0; i < that.extras.length; i++) {
+      if (that.extras[i].type == 1) {
+        var coin = that.extras[i];
+        if (coin.coinCounter < 16) {
+          coin.moveCoin();
+          coin.draw();
+        } else {
+          that.extras.splice(i, 1);
+        }
+      } else if (that.extras[i].type == 2) {
+        var brickBall = that.extras[i];
+        brickBall.moveDestroyedBrick();
+        brickBall.draw();
+        if (brickBall.y > (gameUI.viewHeight + gameUI.viewHeight / 2)) {
+          that.extras.splice(i, 1);
+        }
       }
     }
   }
@@ -268,7 +287,7 @@ function Game(levelData) {
       var offsetY = hHeights - Math.abs(vY);
 
       if (offsetX >= offsetY) {
-        if (vY > 0) {
+        if (vY > 0 && vY < 45) {
           collisionDirection = 't';
         } else if (vY < 0) {
           collisionDirection = 'b';
@@ -285,44 +304,61 @@ function Game(levelData) {
   }
 
   this.checkPlayerElementCollision = function () {
-    var collisionDirection = this.collisionCheck(player, that.element);
-
-    if (collisionDirection == 'b') {
-      player.y = that.element.y - player.height;
-      player.grounded = true;
-      player.jumping = false;
-      this.pressCounter = 0;
-    } else if (collisionDirection == 'l') {
-      player.x = that.element.x + that.element.width;
-    } else if (collisionDirection == 'r') {
-      player.x = that.element.x - player.width;
-    } else if (collisionDirection == 't') {
-      player.grounded = false;
-      player.jumping = false;
-      player.jumpInertia = false;
-      player.pressCounter = 30;
-      that.afterCollision(that.element);
+    if (that.gameState == 1) {
+      var collisionDirection = this.collisionCheck(player, that.element);
+      if (collisionDirection == 'b') {
+        player.y = that.element.y - player.height;
+        player.grounded = true;
+        player.jumping = false;
+        that.pressCounter = 0;
+      } else if (collisionDirection == 'l') {
+        player.x = that.element.x + that.element.width;
+      } else if (collisionDirection == 'r') {
+        player.x = that.element.x - player.width;
+        that.afterCollisionLeft(that.element);
+      } else if (collisionDirection == 't' && (player.jumpInertia || player.jumping)) {
+        player.grounded = false;
+        player.jumping = false;
+        player.jumpInertia = false;
+        player.pressCounter = 30;
+        that.afterCollisionBottom(that.element);
+      }
     }
   }
 
-  this.afterCollision = function (element) {
+  this.afterCollisionBottom = function (element) {
     if (element.type == 5) {
       that.map[element.row][element.column] = 0;
-    }
-    if (element.type == 3) {
+      for (var index = 1; index <= 4; index++) {
+        var brickBall = new ExtraElements();
+        brickBall.destroyedBrick(index);
+        brickBall.setPos(element.x + 13, element.y + 13);
+        that.extras.push(brickBall);
+      }
+    } else if (element.type == 3) {
       var no = Math.floor(Math.random() * 2);
       that.map[element.row][element.column] = 4;
       if (no == 0) {
-        var coin = new Coin();
+        var coin = new ExtraElements();
+        coin.coin();
         coin.setPos(element.x, element.y - 16);
-        that.coins.push(coin);
+        that.extras.push(coin);
       } else {
         var enemy = new Enemy();
-        enemy.setAttribute(1);
+        enemy.pawn();
         enemy.x = element.x;
         enemy.y = element.y - 16;
         that.enemies.push(enemy);
       }
+    } else if (element.type == 21) {
+      //console.log('its working');
+      that.map[element.row][element.column] = 4;
+    }
+  }
+
+  this.afterCollisionLeft = function (element) {
+    if (element.type == 9) {
+      console.log(that.spawnMap[element.column]);
     }
   }
 
@@ -334,7 +370,7 @@ function Game(levelData) {
       player.jumping = true;
       player.jumpInertia = false;
       that.pressCounter = 30;
-      player.fallSpeed = 0;
+      player.fallSpeedVar = 0;
       that.enemies.splice(index, 1);
     } else if (collisionDirection == 'l') {
       player.x = enemy.x + enemy.width;
@@ -376,7 +412,7 @@ function Game(levelData) {
         player.moveRight();
       }
 
-      if ((player.grounded && that.pressCounter < 10) && (that.keys[38] || that.keys[87])) {
+      if ((player.grounded || (player.jumpInertia && that.pressCounter < 10)) && (that.keys[38] || that.keys[87])) {
         //jump btn
         that.pressCounter++;
         player.jumping = true;
@@ -395,8 +431,8 @@ function Game(levelData) {
     this.centerPos = this.translatedDist + gameUI.viewPort / 2;
     //side scrolling as mario reaches center of screen
     if (player.x > that.centerPos && that.centerPos + gameUI.viewPort / 2 < gameUI.maxWidth) {
-      gameUI.translate(-player.speed, 0);
-      that.translatedDist += player.speed;
+      gameUI.translate(-player.SPEED, 0);
+      that.translatedDist += player.SPEED;
     }
   }
 
@@ -410,6 +446,8 @@ function Game(levelData) {
 
   this.playerDie = function () {
     that.gameState = 2;
+    player.jumpSpeedVar = player.JUMPSPEED;
+    player.fallSpeedVar = player.FALLSPEED;
     player.jumpInertia = false;
     player.grounded = false;
     player.jumping = true;

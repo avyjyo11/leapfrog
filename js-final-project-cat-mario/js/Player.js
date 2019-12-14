@@ -6,11 +6,13 @@ function Player() {
   this.y;
   this.width = 32;
   this.height = 50;
-  this.speed = 3;
-  this.jumpSpeed = (this.speed) + 5;
+  this.SPEED = 3;
+  this.JUMPSPEED = this.SPEED + 4;
+  this.FALLSPEED = 0;
+  this.jumpSpeedVar = this.JUMPSPEED;
+  this.fallSpeedVar = this.FALLSPEED;
+  this.gravity = 0.24;
   this.jumpInertia = false;
-  this.fallSpeed = 0;
-  this.gravity = 0.2;
   this.jumping = false;
   this.grounded = false;
   this.sX; // sprite x
@@ -27,46 +29,36 @@ function Player() {
   }
 
   this.moveLeft = function () {
-    this.x -= this.speed;
-    if (this.grounded) {
-      this.sX = 320;
-      this.sY = 38;
-    } else {
-      this.sX = 256;
-      this.sY = 38;
-    }
+    this.x -= this.SPEED;
+    this.sX = 320;
+    this.sY = 38;
   }
 
   this.moveRight = function () {
-    this.x += this.speed;
-    if (this.grounded || !this.grounded) {
-      this.sX = 5;
-      this.sY = 38;
-    } else {
-      this.sX = 65;
-      this.sY = 38;
-    }
+    this.x += this.SPEED;
+    this.sX = 5;
+    this.sY = 38;
   }
 
   this.moveY = function () {
     if (this.jumping) {
-      this.y -= this.jumpSpeed;
+      this.y -= this.jumpSpeedVar;
       this.jumping = false;
       this.jumpInertia = true;
     } else if (this.jumpInertia) {
-      this.jumpSpeed -= this.gravity;
-      if (this.jumpSpeed > 0) {
-        this.y = this.y - this.jumpSpeed;
+      this.jumpSpeedVar -= this.gravity;
+      if (this.jumpSpeedVar > 0) {
+        this.y = this.y - this.jumpSpeedVar;
       } else {
-        this.jumpSpeed = (this.speed) + 5;
+        this.jumpSpeedVar = this.JUMPSPEED;
         this.jumpInertia = false;
       }
     } else if (this.grounded) {
-      this.jumpSpeed = (this.speed) + 5;
-      this.fallSpeed = 0;
+      this.jumpSpeedVar = this.JUMPSPEED;
+      this.fallSpeedVar = this.FALLSPEED;
     } else {
-      this.y += this.fallSpeed;
-      this.fallSpeed += this.gravity;
+      this.y += this.fallSpeedVar;
+      this.fallSpeedVar += this.gravity;
     }
   }
 
@@ -75,11 +67,10 @@ function Player() {
   }
 
   this.resetAll = function () {
-    this.speed = 3;
-    this.jumpSpeed = (this.speed) + 5;
-    this.jumpInertia = false;
-    this.fallSpeed = 0;
+    this.jumpSpeedVar = this.JUMPSPEED;
+    this.fallSpeedVar = this.FALLSPEED;
     this.gravity = 0.2;
+    this.jumpInertia = false;
     this.jumping = false;
     this.grounded = false;
   }
