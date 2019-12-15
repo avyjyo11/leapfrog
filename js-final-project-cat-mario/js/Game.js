@@ -17,6 +17,7 @@ function Game(levelData) {
   this.enemies = [];
   this.gameState = 0;
   this.life = 3;
+  this.start = false;
   var that = this;
 
   this.begin = function () {
@@ -25,6 +26,10 @@ function Game(levelData) {
     document.body.addEventListener('keydown', function (e) {
       if (e.keyCode == 13) {
         console.log('enter pressed');
+        if (!(that.start)) {
+          that.resetAll();
+          that.start = true;
+        }
         window.cancelAnimationFrame(that.animation);
         that.animation = window.requestAnimationFrame(that.startGame);
       }
@@ -65,9 +70,6 @@ function Game(levelData) {
     for (var i = 0; i < levelData[this.level].length; i++) {
       this.map[i] = levelData[this.level][i].slice();
     }
-    for (var i = 0; i < levelData[this.level].length; i++) {
-      this.spawnMap[i] = levelData[this.level + '-troll'][i].slice();
-    }
     gameUI.row = that.map.length;
     gameUI.column = that.map[0].length;
     gameUI.maxWidth = gameUI.tileSize * gameUI.column;
@@ -86,6 +88,7 @@ function Game(levelData) {
     that.moveEnemies();
     that.moveExtras();
     that.drawLevels();
+    that.moveTrollElements();
     player.moveY();
     player.draw();
     that.wallCollision();
@@ -97,13 +100,14 @@ function Game(levelData) {
     for (var row = 0; row < that.map.length; row++) {
       for (var column = 0; column < that.map[row].length; column++) {
         switch (that.map[row][column]) {
-          case 50:
+          //81 to 99 for backgrounds
+          case 81:
             that.background.x = column * tileSize;
             that.background.y = row * tileSize;
             that.background.hill();
             that.background.draw();
             break;
-          case 51:
+          case 82:
             that.background.x = column * tileSize;
             that.background.y = row * tileSize;
             that.background.cloud();
@@ -116,6 +120,8 @@ function Game(levelData) {
 
   this.drawLevels = function () {
     var tileSize = gameUI.tileSize;
+    var saveX1, saveX2;
+    var trollCount = 0;
     player.grounded = false;
     for (var i = 0; i < that.enemies.length; i++) {
       that.enemies[i].grounded = false;
@@ -123,17 +129,25 @@ function Game(levelData) {
     //console.log(map);
     for (var row = 0; row < that.map.length; row++) {
       for (var column = 0; column < that.map[row].length; column++) {
+        if (that.map[row][column] == 42 || that.map[row][column] == 43 || that.map[row][column] == 44) {
+          trollCount++;
+        } else {
+          trollCount = 0;
+        }
+        if (trollCount == 1) {
+          saveX1 = column * tileSize;
+          var c = column;
+          while (that.map[row][c] == 42 || that.map[row][c] == 43 || that.map[row][c] == 44) {
+            saveX2 = (c * tileSize) + tileSize;
+            c++;
+          }
+        }
         that.element.row = row;
         that.element.column = column;
         that.element.x = column * tileSize;
         that.element.y = row * tileSize;
-        if (that.spawnMap[row][column] != 0) {
-          if (player.x > column * tileSize) {
-            that.map[row][column] = 0;
-            //that.checkBoundary();
-          }
-        }
         switch (that.map[row][column]) {
+          //1 to 20 for elements
           case 1:
             that.element.platform();
             that.element.draw();
@@ -195,15 +209,15 @@ function Game(levelData) {
             that.checkEnemyElementCollision();
             break;
           case 11:
-            var enemy = new Enemy();
-            enemy.pawn();
-            enemy.x = column * tileSize;
-            enemy.y = row * tileSize;
-            enemy.draw();
-            that.enemies.push(enemy);
-            that.map[row][column] = 0;
+            that.element.invisibleBox();
+            that.element.draw();
+            if (player.y >= (that.element.y + that.element.width / 2)) {
+              if (that.gameState == 1)
+                that.checkPlayerElementCollision();
+            }
             break;
-          case 12:
+            //21 to 40 for enemies
+          case 21:
             var enemy = new Enemy();
             enemy.pawn();
             enemy.x = (column * tileSize) + tileSize - enemy.width;
@@ -212,13 +226,68 @@ function Game(levelData) {
             that.enemies.push(enemy);
             that.map[row][column] = 0;
             break;
-          case 21:
-            that.element.invisibleBox();
-            that.element.draw();
-            if (player.y >= (that.element.y + that.element.width / 2)) {
-              if (that.gameState == 1)
-                that.checkPlayerElementCollision();
-            }
+          case 22:
+            var enemy = new Enemy();
+            enemy.pawnFromBox();
+            enemy.x = (column * tileSize) + tileSize - enemy.width;
+            enemy.y = (row * tileSize) + tileSize - enemy.height;
+            enemy.draw();
+            that.enemies.push(enemy);
+            that.map[row][column] = 0;
+            break;
+          case 23:
+            var enemy = new Enemy();
+            enemy.flyer();
+            enemy.x = (column * tileSize) + tileSize - enemy.width + tileSize / 2;
+            enemy.y = (row * tileSize) + tileSize - enemy.height;
+            enemy.draw();
+            that.enemies.push(enemy);
+            //because this type enemy only spawns from pipes
+            that.map[row][column] = 7;
+            break;
+          case 24:
+            var enemy = new Enemy();
+            enemy.kingPawn();
+            enemy.x = (column * tileSize) + tileSize - enemy.width;
+            enemy.y = (row * tileSize) + tileSize - enemy.height;
+            enemy.draw();
+            that.enemies.push(enemy);
+            that.map[row][column] = 0;
+            console.log('kingPawn');
+            console.log(that.enemies);
+            break;
+            //41 to 60 for troll elements
+          case 41:
+            var troll = new TrollElements();
+            troll.setPos(that.element.x, that.element.y);
+            troll.irritatingBox();
+            troll.draw();
+            that.trollElements.push(troll);
+            that.map[row][column] = 0;
+            break;
+          case 42:
+            var troll = new TrollElements();
+            troll.setPos(that.element.x, that.element.y);
+            troll.fallingBox(saveX1, saveX2, 2);
+            troll.draw();
+            that.trollElements.push(troll);
+            that.map[row][column] = 0;
+            break;
+          case 43:
+            var troll = new TrollElements();
+            troll.setPos(that.element.x, that.element.y);
+            troll.fallingBox(saveX1, saveX2, 3);
+            troll.draw();
+            that.trollElements.push(troll);
+            that.map[row][column] = 0;
+            break;
+          case 44:
+            var troll = new TrollElements();
+            troll.setPos(that.element.x, that.element.y);
+            troll.fallingBox(saveX1, saveX2, 4);
+            troll.draw();
+            that.trollElements.push(troll);
+            that.map[row][column] = 0;
             break;
         }
       }
@@ -228,11 +297,25 @@ function Game(levelData) {
   this.moveEnemies = function () {
     for (var i = 0; i < that.enemies.length; i++) {
       var enemy = that.enemies[i];
-      if (player.x > (enemy.x - gameUI.viewPort) && player.x < (enemy.x + gameUI.viewPort)) {
+      if (player.x + player.width > (enemy.x - gameUI.viewPort) && player.x < (enemy.x + enemy.width + gameUI.viewPort) && enemy.y > -(gameUI.viewHeight) && enemy.y < gameUI.viewHeight + gameUI.viewHeight) {
         enemy.movement();
         enemy.draw();
-        if (that.gameState == 1) {
+        if (that.gameState == 1)
           that.checkPlayerEnemyCollision(that.enemies[i], i);
+      } else if (enemy.x + enemy.width + gameUI.viewPort < player.x) {
+        that.enemies.splice(i, 1);
+      }
+    }
+  }
+
+  that.moveTrollElements = function () {
+    for (var i = 0; i < that.trollElements.length; i++) {
+      var troll = that.trollElements[i];
+      if (player.x + player.width > (troll.x - gameUI.viewPort) && player.x < (troll.x + gameUI.viewPort)) {
+        troll.movement();
+        troll.draw();
+        if (that.gameState == 1) {
+          that.checkPlayerTrollCollision(that.trollElements[i], i);
         }
       }
     }
@@ -262,7 +345,6 @@ function Game(levelData) {
   this.keyBinds = function () {
     document.body.addEventListener('keydown', function (e) {
       that.keys[e.keyCode] = true;
-      console.log(e.keyCode);
     });
 
     document.body.addEventListener('keyup', function (e) {
@@ -345,13 +427,12 @@ function Game(levelData) {
         that.extras.push(coin);
       } else {
         var enemy = new Enemy();
-        enemy.pawn();
+        enemy.pawnFromBox(element.y);
         enemy.x = element.x;
-        enemy.y = element.y - 16;
+        enemy.y = element.y - 10;
         that.enemies.push(enemy);
       }
     } else if (element.type == 21) {
-      //console.log('its working');
       that.map[element.row][element.column] = 4;
     }
   }
@@ -366,12 +447,16 @@ function Game(levelData) {
     var collisionDirection = this.collisionCheck(player, enemy);
 
     if (collisionDirection == 'b') {
-      player.grounded = false;
-      player.jumping = true;
-      player.jumpInertia = false;
-      that.pressCounter = 30;
-      player.fallSpeedVar = 0;
-      that.enemies.splice(index, 1);
+      if (enemy.type == 1) {
+        player.grounded = false;
+        player.jumping = true;
+        player.jumpInertia = false;
+        that.pressCounter = 30;
+        player.fallSpeedVar = 0;
+        that.enemies.splice(index, 1);
+      } else if (enemy.type == 3) {
+        that.playerDie();
+      }
     } else if (collisionDirection == 'l') {
       player.x = enemy.x + enemy.width;
       that.playerDie();
@@ -383,20 +468,44 @@ function Game(levelData) {
     }
   }
 
+  this.checkPlayerTrollCollision = function (troll, index) {
+    var collisionDirection = this.collisionCheck(player, troll);
+    if (collisionDirection == 'b') {
+      player.y = troll.y - player.height;
+      player.grounded = true;
+      player.jumping = false;
+      that.pressCounter = 0;
+    } else if (collisionDirection == 'l') {
+      if (troll.type == 1)
+        player.x = troll.x + troll.width;
+      else
+        that.playerDie();
+    } else if (collisionDirection == 'r') {
+      if (troll.type == 1)
+        player.x = troll.x - player.width;
+      else
+        that.playerDie();
+    } else if (collisionDirection == 't') {
+      that.playerDie();
+    }
+  }
+
   this.checkEnemyElementCollision = function () {
     for (var i = 0; i < that.enemies.length; i++) {
       var enemy = that.enemies[i];
-      var collisionDirection = this.collisionCheck(enemy, that.element);
-      if (collisionDirection == 'b') {
-        enemy.y = that.element.y - enemy.height;
-        enemy.grounded = true;
-        enemy.jumping = false;
-      } else if (collisionDirection == 'l' || collisionDirection == 'r') {
-        enemy.speed = -enemy.speed;
-      } else if (collisionDirection == 't') {
-        enemy.grounded = false;
-        enemy.jumping = false;
-        enemy.jumpInertia = false;
+      if (enemy.type != 2) {
+        var collisionDirection = this.collisionCheck(enemy, that.element);
+        if (collisionDirection == 'b') {
+          enemy.y = that.element.y - enemy.height;
+          enemy.grounded = true;
+          enemy.jumping = false;
+        } else if (collisionDirection == 'l' || collisionDirection == 'r') {
+          enemy.speed = -enemy.speed;
+        } else if (collisionDirection == 't') {
+          enemy.grounded = false;
+          enemy.jumping = false;
+          enemy.jumpInertia = false;
+        }
       }
     }
   }
@@ -457,11 +566,14 @@ function Game(levelData) {
 
   this.gameOver = function () {
     that.gameOverCounter++;
-    if (that.gameOverCounter < 150) {
+    if (that.gameOverCounter == 1) {
+      that.life--;
+    } else if (that.gameOverCounter < 150) {
       gameUI.clear();
       that.drawEnvironments();
       that.moveEnemies();
       that.drawLevels();
+      that.moveTrollElements();
       player.moveY();
       player.draw();
     } else if (that.gameOverCounter == 151) {
@@ -474,7 +586,6 @@ function Game(levelData) {
       player.draw();
       gameUI.writeText('x ' + that.life, player.x + 50, player.y + 30);
     } else if (that.gameOverCounter == 401) {
-      that.life--;
       that.resetAll();
       player.resetAll();
       that.gameOverCounter = 0;
