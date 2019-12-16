@@ -2,7 +2,7 @@ var mainMenu = new MainMenu();
 mainMenu.startScreen();
 
 function MainMenu() {
-  this.level;
+  this.level = 1;
   this.gameState;
   var that = this;
 
@@ -16,11 +16,9 @@ function MainMenu() {
     levelMaps.getJSONMap(afterGetMap);
 
     function afterGetMap(levelData) {
-      var game = new Game(levelData);
+      var game = new Game(levelData, that.level);
       game.begin();
     }
-
-
   }
 
 }

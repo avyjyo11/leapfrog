@@ -41,9 +41,9 @@ function GameUI() {
     that.context.fill();
   }
 
-  this.writeText = function (text, x, y) {
+  this.writeText = function (text, x, y, color) {
     that.context.font = '20px supermario256';
-    that.context.fillStyle = 'white';
+    that.context.fillStyle = 'white' || color;
     that.context.fillText(text, x, y);
   }
 

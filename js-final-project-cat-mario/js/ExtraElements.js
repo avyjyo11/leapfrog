@@ -53,6 +53,16 @@ function ExtraElements() {
     }
   }
 
+  this.checkpointBox = function () {
+    this.type = 3;
+    this.sX = 351;
+    this.sY = 201;
+    this.sWidth = 30;
+    this.sHeight = 60;
+    this.width = 40;
+    this.height = 80;
+  }
+
   this.setPos = function (x, y) {
     this.x = x;
     this.y = y;
@@ -77,6 +87,10 @@ function ExtraElements() {
     }
 
     that.x -= that.speed;
+  }
+
+  this.movement = function () {
+
   }
 
 }

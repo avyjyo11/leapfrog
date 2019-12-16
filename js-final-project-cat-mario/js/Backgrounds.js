@@ -22,8 +22,12 @@ function Background() {
 
   this.grass = function () {
     that.type = 2;
-    that.sX = 146;
-    this.sY = 64;
+    that.sX = 159;
+    this.sY = 409;
+    this.sWidth = 64;
+    this.sHeight = 30;
+    this.width = 88;
+    this.height = 40;
   }
 
   this.cloud = function () {
@@ -34,6 +38,16 @@ function Background() {
     this.sHeight = 44;
     this.width = 110;
     this.height = 60;
+  }
+
+  this.castle = function () {
+    that.type = 4;
+    that.sX = 255;
+    this.sY = 413;
+    that.sWidth = 96;
+    this.sHeight = 90;
+    this.width = 120;
+    this.height = 120;
   }
 
   this.draw = function () {

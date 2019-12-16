@@ -1,8 +1,8 @@
-function Game(levelData) {
+function Game(levelData, level) {
   this.translatePoint = 2;
   this.element;
   this.background;
-  this.level = 1;
+  this.level = level;
   this.map = [];
   this.spawnMap = [];
   this.animation;
@@ -18,6 +18,9 @@ function Game(levelData) {
   this.gameState = 0;
   this.life = 3;
   this.start = false;
+  this.saveCheckpointPos = 0;
+  this.savePlayerX = 100;
+  this.savePlayerY = gameUI.viewHeight / 2;
   var that = this;
 
   this.begin = function () {
@@ -32,8 +35,13 @@ function Game(levelData) {
         }
         window.cancelAnimationFrame(that.animation);
         that.animation = window.requestAnimationFrame(that.startGame);
+      } else if (e.keyCode == 80) {
+        window.cancelAnimationFrame(that.animation);
+        gameUI.makeBox(that.translatedDist + (gameUI.viewPort / 3) - 20, gameUI.viewHeight / 3, 310, 50);
+        gameUI.writeText('Press Enter To Play', that.translatedDist + gameUI.viewPort / 3, gameUI.viewHeight / 3 + 30);
       }
     })
+
   }
 
   this.startScreen = function () {
@@ -43,7 +51,6 @@ function Game(levelData) {
     that.gameInit();
     that.drawEnvironments();
     that.drawLevels();
-    player.init();
     player.draw();
     gameUI.makeBox((gameUI.viewPort / 3) - 20, player.y, 310, 50);
     gameUI.writeText('Press Enter To Start', gameUI.viewPort / 3, player.y + 30);
@@ -73,8 +80,8 @@ function Game(levelData) {
     gameUI.row = that.map.length;
     gameUI.column = that.map[0].length;
     gameUI.maxWidth = gameUI.tileSize * gameUI.column;
-    gameUI.canvas.style.backgroundColor = '#a0b4fa';
-    player.init();
+    gameUI.canvas.style.backgroundColor = levelData[this.level + '-bg']; //'#a0b4fa';
+    player.init(that.savePlayerX, that.savePlayerY)
     if (this.element == null)
       this.element = new Element();
     if (this.background == null)
@@ -93,6 +100,7 @@ function Game(levelData) {
     player.draw();
     that.wallCollision();
     that.checkPlayerFall();
+    gameUI.writeText('Press P To Pause', gameUI.viewPort / 3, 30, 'black');
   }
 
   that.drawEnvironments = function () {
@@ -110,9 +118,29 @@ function Game(levelData) {
           case 82:
             that.background.x = column * tileSize;
             that.background.y = row * tileSize;
+            that.background.grass();
+            that.background.draw();
+            break;
+          case 83:
+            that.background.x = column * tileSize;
+            that.background.y = row * tileSize;
             that.background.cloud();
             that.background.draw();
             break;
+          case 84:
+            that.background.x = column * tileSize;
+            that.background.y = row * tileSize;
+            that.background.castle();
+            that.background.draw();
+            break;
+          case 80:
+            var checkpoint = new ExtraElements();
+            checkpoint.x = column * tileSize;
+            checkpoint.y = row * tileSize - tileSize;
+            checkpoint.checkpointBox();
+            checkpoint.draw();
+            that.extras.push(checkpoint);
+            that.map[row][column] = 0;
         }
       }
     }
@@ -211,10 +239,22 @@ function Game(levelData) {
           case 11:
             that.element.invisibleBox();
             that.element.draw();
-            if (player.y >= (that.element.y + that.element.width / 2)) {
+            if (player.y >= (that.element.y + that.element.width / 2) && (player.jumping || player.jumpInertia)) {
               if (that.gameState == 1)
                 that.checkPlayerElementCollision();
             }
+            break;
+          case 12:
+            that.element.pole();
+            that.element.draw();
+            that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
+            break;
+          case 13:
+            that.element.poleTop();
+            that.element.draw();
+            that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
             break;
             //21 to 40 for enemies
           case 21:
@@ -253,8 +293,37 @@ function Game(levelData) {
             enemy.draw();
             that.enemies.push(enemy);
             that.map[row][column] = 0;
-            console.log('kingPawn');
-            console.log(that.enemies);
+            break;
+          case 25:
+            var enemy = new Enemy();
+            enemy.flyerDown();
+            enemy.x = (column * tileSize) + tileSize - enemy.width + tileSize / 2;
+            enemy.y = (row * tileSize) - enemy.height;
+            enemy.draw();
+            that.enemies.push(enemy);
+            that.map[row][column] = 0;
+            break;
+          case 26:
+            var enemy = new Enemy();
+            enemy.turtle();
+            enemy.x = (column * tileSize) + tileSize - enemy.width;
+            enemy.y = (row * tileSize) + tileSize - enemy.height;
+            enemy.draw();
+            that.enemies.push(enemy);
+            that.map[row][column] = 0;
+            break;
+          case 40:
+            if (player.x + player.width > column * tileSize) {
+              for (var i = 0; i < 4; i++) {
+                var enemy = new Enemy();
+                enemy.pawn();
+                enemy.x = ((column + i) * tileSize) + tileSize - enemy.width;
+                enemy.y = (row * tileSize) - enemy.height;
+                enemy.draw();
+                that.enemies.push(enemy);
+              }
+              that.map[row][column] = 0;
+            }
             break;
             //41 to 60 for troll elements
           case 41:
@@ -289,6 +358,25 @@ function Game(levelData) {
             that.trollElements.push(troll);
             that.map[row][column] = 0;
             break;
+          case 45:
+            var troll = new TrollElements();
+            troll.setPos(that.element.x, that.element.y);
+            troll.trollCloud();
+            troll.draw();
+            that.trollElements.push(troll);
+            that.map[row][column] = 0;
+            break;
+          case 46:
+            if (player.x + player.width > column * tileSize && player.jumping) {
+              var troll = new TrollElements();
+              troll.x = (column + 4) * tileSize;
+              troll.y = (row - 1) * tileSize;
+              troll.yellowRect();
+              that.trollElements.push(troll);
+              that.map[row][column] = 0;
+              console.log(that.trollElements);
+            }
+            break;
         }
       }
     }
@@ -300,8 +388,12 @@ function Game(levelData) {
       if (player.x + player.width > (enemy.x - gameUI.viewPort) && player.x < (enemy.x + enemy.width + gameUI.viewPort) && enemy.y > -(gameUI.viewHeight) && enemy.y < gameUI.viewHeight + gameUI.viewHeight) {
         enemy.movement();
         enemy.draw();
-        if (that.gameState == 1)
+        if (that.gameState == 1) {
           that.checkPlayerEnemyCollision(that.enemies[i], i);
+          if (enemy.type == 8) {
+            that.checkEnemyEnemyCollision(enemy);
+          }
+        }
       } else if (enemy.x + enemy.width + gameUI.viewPort < player.x) {
         that.enemies.splice(i, 1);
       }
@@ -315,7 +407,8 @@ function Game(levelData) {
         troll.movement();
         troll.draw();
         if (that.gameState == 1) {
-          that.checkPlayerTrollCollision(that.trollElements[i], i);
+          that.checkPlayerTrollCollision(that.trollElements[i]);
+          that.checkEnemyTrollCollision(that.trollElements[i]);
         }
       }
     }
@@ -336,6 +429,15 @@ function Game(levelData) {
         brickBall.moveDestroyedBrick();
         brickBall.draw();
         if (brickBall.y > (gameUI.viewHeight + gameUI.viewHeight / 2)) {
+          that.extras.splice(i, 1);
+        }
+      } else if (that.extras[i].type == 3) {
+        var checkpoint = that.extras[i];
+        checkpoint.draw();
+        if (player.x > checkpoint.x && player.x < checkpoint.x + checkpoint.width && player.y > checkpoint.y && player.y < checkpoint.y + checkpoint.height) {
+          that.saveCheckpointPos = that.translatedDist;
+          that.savePlayerX = checkpoint.x;
+          that.savePlayerY = checkpoint.y;
           that.extras.splice(i, 1);
         }
       }
@@ -397,7 +499,6 @@ function Game(levelData) {
         player.x = that.element.x + that.element.width;
       } else if (collisionDirection == 'r') {
         player.x = that.element.x - player.width;
-        that.afterCollisionLeft(that.element);
       } else if (collisionDirection == 't' && (player.jumpInertia || player.jumping)) {
         player.grounded = false;
         player.jumping = false;
@@ -432,14 +533,8 @@ function Game(levelData) {
         enemy.y = element.y - 10;
         that.enemies.push(enemy);
       }
-    } else if (element.type == 21) {
+    } else if (element.type == 11) {
       that.map[element.row][element.column] = 4;
-    }
-  }
-
-  this.afterCollisionLeft = function (element) {
-    if (element.type == 9) {
-      console.log(that.spawnMap[element.column]);
     }
   }
 
@@ -447,22 +542,40 @@ function Game(levelData) {
     var collisionDirection = this.collisionCheck(player, enemy);
 
     if (collisionDirection == 'b') {
+      player.grounded = false;
+      player.jumping = true;
+      player.jumpInertia = false;
+      that.pressCounter = 30;
+      player.fallSpeedVar = 0;
       if (enemy.type == 1) {
-        player.grounded = false;
-        player.jumping = true;
-        player.jumpInertia = false;
-        that.pressCounter = 30;
-        player.fallSpeedVar = 0;
         that.enemies.splice(index, 1);
       } else if (enemy.type == 3) {
         that.playerDie();
+      } else if (enemy.type == 6) {
+        enemy.turtleStop();
+      } else if (enemy.type == 7) {
+        enemy.turtleGo();
+        if (player.x + (player.width / 2) < enemy.x + (enemy.width / 2)) {
+          enemy.speed = -enemy.speed;
+        }
+      } else if (enemy.type == 8) {
+        enemy.turtleStop();
       }
     } else if (collisionDirection == 'l') {
       player.x = enemy.x + enemy.width;
-      that.playerDie();
+      if (enemy.type == 7) {
+        enemy.turtleGo();
+      } else {
+        that.playerDie();
+      }
     } else if (collisionDirection == 'r') {
       player.x = enemy.x - player.width;
-      that.playerDie();
+      if (enemy.type == 7) {
+        enemy.turtleGo();
+        enemy.speed = -enemy.speed;
+      } else {
+        that.playerDie();
+      }
     } else if (collisionDirection == 't') {
       that.playerDie();
     }
@@ -475,17 +588,32 @@ function Game(levelData) {
       player.grounded = true;
       player.jumping = false;
       that.pressCounter = 0;
+      if (troll.type == 5) {
+        troll.sX = 477;
+        troll.sY = 134;
+        that.playerDie();
+      }
     } else if (collisionDirection == 'l') {
-      if (troll.type == 1)
+      if (troll.type == 5) {
+        troll.sX = 477;
+        troll.sY = 134;
+        that.playerDie();
+      } else {
         player.x = troll.x + troll.width;
-      else
-        that.playerDie();
+      }
     } else if (collisionDirection == 'r') {
-      if (troll.type == 1)
-        player.x = troll.x - player.width;
-      else
+      if (troll.type == 5) {
+        troll.sX = 477;
+        troll.sY = 134;
         that.playerDie();
+      } else {
+        player.x = troll.x - player.width;
+      }
     } else if (collisionDirection == 't') {
+      if (troll.type == 5) {
+        troll.sX = 477;
+        troll.sY = 134;
+      }
       that.playerDie();
     }
   }
@@ -493,7 +621,7 @@ function Game(levelData) {
   this.checkEnemyElementCollision = function () {
     for (var i = 0; i < that.enemies.length; i++) {
       var enemy = that.enemies[i];
-      if (enemy.type != 2) {
+      if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && !enemy.dead) {
         var collisionDirection = this.collisionCheck(enemy, that.element);
         if (collisionDirection == 'b') {
           enemy.y = that.element.y - enemy.height;
@@ -505,6 +633,46 @@ function Game(levelData) {
           enemy.grounded = false;
           enemy.jumping = false;
           enemy.jumpInertia = false;
+        }
+      }
+    }
+  }
+
+  this.checkEnemyTrollCollision = function (troll) {
+    for (var i = 0; i < that.enemies.length; i++) {
+      var enemy = that.enemies[i];
+      if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && !enemy.dead) {
+        var collisionDirection = this.collisionCheck(enemy, troll);
+        if (collisionDirection == 'b') {
+          enemy.y = troll.y - enemy.height;
+          enemy.grounded = true;
+          enemy.jumping = false;
+        } else if (collisionDirection == 'l' || collisionDirection == 'r') {
+          enemy.speed = -enemy.speed;
+        } else if (collisionDirection == 't') {
+          enemy.grounded = false;
+          enemy.jumping = false;
+          enemy.jumpInertia = false;
+        }
+      }
+    }
+  }
+
+  this.checkEnemyEnemyCollision = function (enemy) {
+    for (var j = 0; j < that.enemies.length; j++) {
+      var enemy2 = that.enemies[j];
+      if (enemy != enemy2) {
+        var collisionDirection = this.collisionCheck(enemy, enemy2);
+        if (collisionDirection == 'b') {
+          enemy2.jumping = true;
+          enemy2.dead = true;
+          if (enemy2.type == 1)
+            enemy2.sY = 121;
+        } else if (collisionDirection == 'l' || collisionDirection == 'r') {
+          enemy2.jumping = true;
+          enemy2.dead = true;
+          if (enemy2.type == 1)
+            enemy2.sY = 121;
         }
       }
     }
@@ -586,6 +754,7 @@ function Game(levelData) {
       player.draw();
       gameUI.writeText('x ' + that.life, player.x + 50, player.y + 30);
     } else if (that.gameOverCounter == 401) {
+      gameUI.translate(-that.saveCheckpointPos, 0);
       that.resetAll();
       player.resetAll();
       that.gameOverCounter = 0;
@@ -599,8 +768,8 @@ function Game(levelData) {
     this.level = 1;
     this.map = [];
     this.pressCounter = 0;
-    this.translatedDist = 0;
-    this.centerPos = 0;
+    this.translatedDist = that.saveCheckpointPos;
+    this.centerPos = this.translatedDist + gameUI.viewPort / 2;
     this.keys = [];
     this.coins = [];
     this.trollElements = [];

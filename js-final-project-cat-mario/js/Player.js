@@ -7,6 +7,7 @@ function Player() {
   this.width = 32;
   this.height = 50;
   this.SPEED = 3;
+  this.speedVar = this.SPEED;
   this.JUMPSPEED = this.SPEED + 4;
   this.FALLSPEED = 0;
   this.jumpSpeedVar = this.JUMPSPEED;
@@ -15,15 +16,17 @@ function Player() {
   this.jumpInertia = false;
   this.jumping = false;
   this.grounded = false;
+  this.move = false;
+  this.moveInertia = false;
   this.sX; // sprite x
   this.sY; // sprite y
   this.sWidth = 20;
   this.sHeight = 34;
   var that = this;
 
-  this.init = function () {
-    this.x = 100;
-    this.y = gameUI.viewHeight / 2;
+  this.init = function (x, y) {
+    this.x = x;
+    this.y = y;
     this.sX = 5;
     this.sY = 38;
   }

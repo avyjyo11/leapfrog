@@ -17,6 +17,7 @@ function Enemy() {
   this.grounded = false;
   this.move = false;
   this.pawnFromBoxTopY;
+  this.dead = false;
   var that = this;
 
   this.draw = function () {
@@ -67,6 +68,50 @@ function Enemy() {
     this.move = true;
   }
 
+  this.flyerDown = function () {
+    this.type = 5;
+    this.sX = 100;
+    this.sY = 120;
+    this.sWidth = 29;
+    this.sHeight = 42;
+    this.width = 40;
+    this.height = 54;
+  }
+
+  this.turtle = function () {
+    this.type = 6;
+    this.sX = 33;
+    this.sY = 76;
+    this.sWidth = 30;
+    this.sHeight = 38;
+    this.width = 40;
+    this.height = 50;
+    this.move = true;
+  }
+
+  this.turtleStop = function () {
+    this.type = 7;
+    this.sX = 66;
+    this.sY = 77;
+    this.sWidth = 30;
+    this.sHeight = 27;
+    this.width = 40;
+    this.height = 40;
+    this.move = true;
+  }
+
+  this.turtleGo = function () {
+    this.type = 8;
+    this.sX = 66;
+    this.sY = 77;
+    this.sWidth = 30;
+    this.sHeight = 27;
+    this.width = 40;
+    this.height = 40;
+    this.move = true;
+    this.speed = 6;
+  }
+
   this.movePawn = function () {
     if (this.jumping) {
       this.jumpSpeed -= this.gravity;
@@ -84,11 +129,15 @@ function Enemy() {
       this.fallSpeed += this.gravity;
     }
 
-    this.x = this.x - this.speed;
+    this.x -= this.speed;
   }
 
   this.moveFlyer = function () {
     this.y -= this.jumpSpeed;
+  }
+
+  this.moveFlyerDown = function () {
+    this.y += this.jumpSpeed;
   }
 
   this.movePawnFromBox = function () {
@@ -96,6 +145,44 @@ function Enemy() {
     if (this.y + this.height < this.pawnFromBoxTopY) {
       that.type = 1;
     }
+  }
+
+  this.moveTurtleStop = function () {
+    if (this.jumping) {
+      this.jumpSpeed -= this.gravity;
+      if (this.jumpSpeed > 0) {
+        this.y = this.y - this.jumpSpeed;
+      } else {
+        this.jumpSpeed = this.JUMPSPEED;
+        this.jumping = false;
+      }
+    } else if (this.grounded) {
+      this.jumpSpeed = this.JUMPSPEED;
+      this.fallSpeed = 0;
+    } else {
+      this.y += this.fallSpeed;
+      this.fallSpeed += this.gravity;
+    }
+  }
+
+  this.moveTurtleGo = function () {
+    if (this.jumping) {
+      this.jumpSpeed -= this.gravity;
+      if (this.jumpSpeed > 0) {
+        this.y = this.y - this.jumpSpeed;
+      } else {
+        this.jumpSpeed = this.JUMPSPEED;
+        this.jumping = false;
+      }
+    } else if (this.grounded) {
+      this.jumpSpeed = this.JUMPSPEED;
+      this.fallSpeed = 0;
+    } else {
+      this.y += this.fallSpeed;
+      this.fallSpeed += this.gravity;
+    }
+
+    this.x -= this.speed;
   }
 
   this.moveKingPawn = function () {
@@ -123,7 +210,7 @@ function Enemy() {
   }
 
   this.checkPlayerPos = function () {
-    if (this.type == 3) {
+    if (this.type == 3 || this.type == 5) {
       if (player.x + player.width > that.x - 20) {
         that.move = true;
       }
@@ -133,7 +220,7 @@ function Enemy() {
   this.movement = function () {
     that.checkPlayerPos();
     if (this.move) {
-      if (this.type == 1) {
+      if (this.type == 1 || this.type == 6) {
         that.movePawn();
       } else if (this.type == 2) {
         that.movePawnFromBox();
@@ -141,6 +228,12 @@ function Enemy() {
         that.moveFlyer();
       } else if (this.type == 4) {
         that.moveKingPawn();
+      } else if (this.type == 5) {
+        that.moveFlyerDown();
+      } else if (this.type == 7) {
+        that.moveTurtleStop();
+      } else if (this.type == 8) {
+        that.moveTurtleGo();
       }
     }
   }

@@ -74,9 +74,21 @@ function Element() {
   }
 
   this.invisibleBox = function () {
-    that.type = 21;
+    that.type = 11;
     that.sX = 400;
     this.sY = 0;
+  }
+
+  this.pole = function () {
+    that.type = 12;
+    that.sX = 462;
+    this.sY = 218;
+  }
+
+  this.poleTop = function () {
+    that.type = 13;
+    that.sX = 498;
+    this.sY = 218;
   }
 
   this.draw = function () {

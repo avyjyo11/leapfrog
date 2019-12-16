@@ -60,6 +60,27 @@ function TrollElements() {
     this.saveX2 = saveX2;
   }
 
+  this.trollCloud = function () {
+    that.type = 5;
+    that.sX = 352;
+    this.sY = 403;
+    that.sWidth = 70;
+    this.sHeight = 44;
+    this.width = 110;
+    this.height = 60;
+  }
+
+  this.yellowRect = function () {
+    that.type = 6;
+    that.sX = 253;
+    this.sY = 233;
+    that.sWidth = 96;
+    this.sHeight = 10;
+    this.width = 154;
+    this.height = 14;
+    this.move = true;
+  }
+
   this.moveIrritatingBox = function () {
     that.y = player.y - 16 - that.width;
   }
@@ -72,6 +93,10 @@ function TrollElements() {
     that.y += that.fallSpeed;
   }
 
+  this.moveYellowRect = function () {
+    this.x -= this.JUMPSPEED;
+  }
+
   this.movement = function () {
     this.moveChecker();
     if (this.move) {
@@ -79,6 +104,8 @@ function TrollElements() {
         that.moveIrritatingBox();
       } else if (this.type == 2 || this.type == 3 || this.type == 4) {
         that.moveFallingBox();
+      } else if (this.type == 6) {
+        that.moveYellowRect();
       }
     }
   }
