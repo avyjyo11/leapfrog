@@ -65,6 +65,7 @@ function Game(levelData, level) {
         break;
       case 1:
         that.gameRunning();
+        gameUI.writeText('Press P To Pause', gameUI.viewPort / 3, 30, 'black');
         break;
       case 2:
         that.gameOver();
@@ -100,7 +101,6 @@ function Game(levelData, level) {
     player.draw();
     that.wallCollision();
     that.checkPlayerFall();
-    gameUI.writeText('Press P To Pause', gameUI.viewPort / 3, 30, 'black');
   }
 
   that.drawEnvironments = function () {
