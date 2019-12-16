@@ -1,4 +1,6 @@
 function Game(levelData, level) {
+  this.gamesound;
+  this.bgm;
   this.translatePoint = 2;
   this.element;
   this.background;
@@ -24,6 +26,9 @@ function Game(levelData, level) {
   var that = this;
 
   this.begin = function () {
+    this.gamesound = new GameSound();
+    that.gamesound.init();
+    this.bgm = levelData[this.level + '-bgm'];
     this.startScreen();
     this.keyBinds();
     document.body.addEventListener('keydown', function (e) {
@@ -60,6 +65,7 @@ function Game(levelData, level) {
     switch (that.gameState) {
       case 0:
         that.gameInit();
+        that.gamesound.play(that.bgm);
         that.gameState = 1;
         //console.log('game-init');
         break;
@@ -512,6 +518,7 @@ function Game(levelData, level) {
   this.afterCollisionBottom = function (element) {
     if (element.type == 5) {
       that.map[element.row][element.column] = 0;
+      that.gamesound.play('blockbreak');
       for (var index = 1; index <= 4; index++) {
         var brickBall = new ExtraElements();
         brickBall.destroyedBrick(index);
@@ -520,21 +527,24 @@ function Game(levelData, level) {
       }
     } else if (element.type == 3) {
       var no = Math.floor(Math.random() * 2);
-      that.map[element.row][element.column] = 4;
       if (no == 0) {
         var coin = new ExtraElements();
         coin.coin();
         coin.setPos(element.x, element.y - 16);
         that.extras.push(coin);
+        that.gamesound.play('coin');
       } else {
         var enemy = new Enemy();
         enemy.pawnFromBox(element.y);
         enemy.x = element.x;
         enemy.y = element.y - 10;
         that.enemies.push(enemy);
+        that.gamesound.play('dokan');
       }
+      that.map[element.row][element.column] = 4;
     } else if (element.type == 11) {
       that.map[element.row][element.column] = 4;
+      that.gamesound.play('jumpBlock');
     }
   }
 
@@ -547,6 +557,7 @@ function Game(levelData, level) {
       player.jumpInertia = false;
       that.pressCounter = 30;
       player.fallSpeedVar = 0;
+      that.gamesound.play('humi');
       if (enemy.type == 1) {
         that.enemies.splice(index, 1);
       } else if (enemy.type == 3) {
@@ -663,14 +674,10 @@ function Game(levelData, level) {
       var enemy2 = that.enemies[j];
       if (enemy != enemy2) {
         var collisionDirection = this.collisionCheck(enemy, enemy2);
-        if (collisionDirection == 'b') {
+        if (collisionDirection == 'b' || collisionDirection == 'l' || collisionDirection == 'r') {
           enemy2.jumping = true;
           enemy2.dead = true;
-          if (enemy2.type == 1)
-            enemy2.sY = 121;
-        } else if (collisionDirection == 'l' || collisionDirection == 'r') {
-          enemy2.jumping = true;
-          enemy2.dead = true;
+          that.gamesound.play('humi');
           if (enemy2.type == 1)
             enemy2.sY = 121;
         }
@@ -694,6 +701,8 @@ function Game(levelData, level) {
         that.pressCounter++;
         player.jumping = true;
         player.grounded = false;
+        if (this.pressCounter == 1)
+          this.gamesound.play('jump');
       }
     }
   }
@@ -730,6 +739,8 @@ function Game(levelData, level) {
     player.jumping = true;
     player.sX = 97;
     player.sY = 38;
+    that.gamesound.stop(that.bgm);
+    that.gamesound.play('death');
   }
 
   this.gameOver = function () {
@@ -776,6 +787,8 @@ function Game(levelData, level) {
     this.enemies = [];
     this.extras = [];
   }
+
+  
 
 
 }
