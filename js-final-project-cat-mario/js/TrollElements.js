@@ -18,9 +18,13 @@ function TrollElements() {
   this.saveX1;
   this.saveX2;
   this.move;
+  this.trollBlockBoxHit = false;
   var that = this;
 
   this.draw = function () {
+    if (that.trollBlockBoxHit) {
+      gameUI.draw(399, 300, 46, 46, this.x - 10, this.y - 10, 60, 60);
+    }
     gameUI.draw(this.sX, this.sY, this.sWidth, this.sHeight, this.x, this.y, this.width, this.height);
   }
 
@@ -44,13 +48,13 @@ function TrollElements() {
     that.type = type;
     if (type == 2) {
       that.sX = 0;
-      this.sY = 275;
+      this.sY = 275 + ((gameUI.blockSet - 1) * 33);
     } else if (type == 3) {
       that.sX = 132;
-      this.sY = 275;
+      this.sY = 275 + ((gameUI.blockSet - 1) * 33);
     } else if (type == 4) {
       that.sX = 165;
-      this.sY = 275;
+      this.sY = 275 + ((gameUI.blockSet - 1) * 33);
     }
     this.sWidth = 30;
     this.sHeight = 30;
@@ -79,6 +83,16 @@ function TrollElements() {
     this.width = 154;
     this.height = 14;
     this.move = true;
+  }
+
+  this.trollBlockBox = function () {
+    that.type = 7;
+    that.sX = 99;
+    this.sY = 275 + ((gameUI.blockSet - 1) * 33);
+    this.sWidth = 30;
+    this.sHeight = 30;
+    this.width = 40;
+    this.height = 40;
   }
 
   this.moveIrritatingBox = function () {

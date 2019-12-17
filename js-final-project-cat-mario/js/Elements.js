@@ -12,20 +12,21 @@ function Element() {
   this.height = 40;
   this.gravity = 0.2;
   var that = this;
+  console.log(gameUI.blockSet);
 
   this.platform = function () {
     that.type = 1;
     that.sX = 132;
-    this.sY = 275;
+    this.sY = 275 + ((gameUI.blockSet - 1) * 33);
   }
 
   this.ground = function () {
     that.type = 2;
     that.sX = 165;
-    this.sY = 275;
+    this.sY = 275 + ((gameUI.blockSet - 1) * 33);
   }
 
-  this.questionBox = function () {
+  this.coinBox = function () {
     that.type = 3;
     that.sX = 33;
     this.sY = 275;
@@ -34,19 +35,19 @@ function Element() {
   this.uselessBox = function () {
     that.type = 4;
     that.sX = 66;
-    this.sY = 275;
+    this.sY = 275 + ((gameUI.blockSet - 1) * 33);
   }
 
   this.brickBox = function () {
     that.type = 5;
     that.sX = 0;
-    this.sY = 275;
+    this.sY = 275 + ((gameUI.blockSet - 1) * 33);
   }
 
   this.blockBox = function () {
     that.type = 6;
     that.sX = 99;
-    this.sY = 275;
+    this.sY = 275 + ((gameUI.blockSet - 1) * 33);
   }
 
   this.pipeLeft = function () {
@@ -89,6 +90,30 @@ function Element() {
     that.type = 13;
     that.sX = 498;
     this.sY = 218;
+  }
+
+  this.enemyBox = function () {
+    that.type = 14;
+    that.sX = 33;
+    this.sY = 275;
+  }
+
+  this.trollStarBox = function () {
+    that.type = 15;
+    that.sX = 33;
+    this.sY = 275;
+  }
+
+  this.trollPowerBox = function () {
+    that.type = 16;
+    that.sX = 33;
+    this.sY = 275;
+  }
+
+  this.finishLine = function () {
+    that.type = 100;
+    that.sX = 400;
+    this.sY = 0;
   }
 
   this.draw = function () {

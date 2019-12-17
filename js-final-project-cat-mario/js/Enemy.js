@@ -10,19 +10,21 @@ function Enemy() {
   this.sHeight = 30;
   this.speed = 0.5;
   this.JUMPSPEED = 7;
-  this.jumpSpeed = 7;
+  this.jumpSpeed = this.JUMPSPEED;
   this.fallSpeed = 0;
   this.gravity = 0.2;
   this.jumping = false;
   this.grounded = false;
   this.move = false;
-  this.pawnFromBoxTopY;
+  this.boxTopY;
   this.dead = false;
   var that = this;
 
   this.draw = function () {
     gameUI.draw(this.sX, this.sY, this.sWidth, this.sHeight, this.x, this.y, this.width, this.height);
   }
+
+  //attribute functions
 
   this.pawn = function () {
     this.type = 1;
@@ -44,7 +46,7 @@ function Enemy() {
     this.width = 40;
     this.height = 40;
     this.move = true;
-    this.pawnFromBoxTopY = elementY;
+    this.boxTopY = elementY;
   }
 
   this.flyer = function () {
@@ -112,18 +114,70 @@ function Enemy() {
     this.speed = 6;
   }
 
+  this.trollStar = function () {
+    this.type = 9;
+    this.sX = 99;
+    this.sY = 199;
+    this.sWidth = 28;
+    this.sHeight = 31;
+    this.width = 40;
+    this.height = 40;
+    this.move = true;
+    this.speed = -this.speed;
+  }
+
+  this.trollStarFromBox = function (elementY) {
+    this.type = 10;
+    this.sX = 97;
+    this.sY = 239;
+    this.sWidth = 28;
+    this.sHeight = 31;
+    this.width = 40;
+    this.height = 40;
+    this.move = true;
+    this.boxTopY = elementY;
+  }
+
+  this.trollPowerUp = function () {
+    this.type = 11;
+    this.sX = 33;
+    this.sY = 199;
+    this.sWidth = 29;
+    this.sHeight = 30;
+    this.width = 40;
+    this.height = 40;
+    this.move = true;
+    this.speed = -this.speed;
+  }
+
+  this.trollPowerUpFromBox = function (elementY) {
+    this.type = 12;
+    this.sX = 33;
+    this.sY = 199;
+    this.sWidth = 30;
+    this.sHeight = 30;
+    this.width = 40;
+    this.height = 40;
+    this.move = true;
+    this.boxTopY = elementY;
+  }
+
+  //move functions
+
   this.movePawn = function () {
     if (this.jumping) {
       this.jumpSpeed -= this.gravity;
       if (this.jumpSpeed > 0) {
         this.y = this.y - this.jumpSpeed;
       } else {
-        this.jumpSpeed = Math.abs(this.speed) + 4.5;
+        this.jumpSpeed = this.JUMPSPEED;
         this.jumping = false;
       }
     } else if (this.grounded) {
-      this.jumpSpeed = Math.abs(this.speed) + 4.5;
+      this.jumpSpeed = this.JUMPSPEED;
       this.fallSpeed = 0;
+      if (that.type == 9)
+        that.jumping = true;
     } else {
       this.y += this.fallSpeed;
       this.fallSpeed += this.gravity;
@@ -142,8 +196,13 @@ function Enemy() {
 
   this.movePawnFromBox = function () {
     this.y -= (this.speed + 0.5);
-    if (this.y + this.height < this.pawnFromBoxTopY) {
-      that.type = 1;
+    if (this.y + this.height < this.boxTopY) {
+      if (that.type == 2)
+        that.pawn();
+      else if (that.type == 10)
+        that.trollStar();
+      else if (that.type == 12)
+        that.trollPowerUp();
     }
   }
 
@@ -209,6 +268,8 @@ function Enemy() {
     this.x = this.x - this.speed;
   }
 
+  //checking and movements
+
   this.checkPlayerPos = function () {
     if (this.type == 3 || this.type == 5) {
       if (player.x + player.width > that.x - 20) {
@@ -220,9 +281,9 @@ function Enemy() {
   this.movement = function () {
     that.checkPlayerPos();
     if (this.move) {
-      if (this.type == 1 || this.type == 6) {
+      if (this.type == 1 || this.type == 6 || this.type == 9 || this.type == 11) {
         that.movePawn();
-      } else if (this.type == 2) {
+      } else if (this.type == 2 || this.type == 10 || this.type == 12) {
         that.movePawnFromBox();
       } else if (this.type == 3) {
         that.moveFlyer();

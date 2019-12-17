@@ -1,10 +1,12 @@
-function Game(levelData, level) {
+function Game(levelMaps, levelData, level) {
   this.gamesound;
   this.bgm;
   this.translatePoint = 2;
+  this.blockSet;
   this.element;
   this.background;
   this.level = level;
+  this.levelBlockSet;
   this.map = [];
   this.spawnMap = [];
   this.animation;
@@ -26,9 +28,11 @@ function Game(levelData, level) {
   var that = this;
 
   this.begin = function () {
+    this.resetAll();
     this.gamesound = new GameSound();
     that.gamesound.init();
     this.bgm = levelData[this.level + '-bgm'];
+    gameUI.blockSet = levelData[this.level + '-blockSet'];
     this.startScreen();
     this.keyBinds();
     document.body.addEventListener('keydown', function (e) {
@@ -45,14 +49,14 @@ function Game(levelData, level) {
         gameUI.makeBox(that.translatedDist + (gameUI.viewPort / 3) - 20, gameUI.viewHeight / 3, 310, 50);
         gameUI.writeText('Press Enter To Play', that.translatedDist + gameUI.viewPort / 3, gameUI.viewHeight / 3 + 30);
       }
-    })
+    });
 
   }
 
   this.startScreen = function () {
     gameUI.maxWidth = gameUI.viewPort;
     gameUI.clear();
-    gameUI.canvas.style.backgroundColor = '#a0b4fa';
+    gameUI.canvas.style.backgroundColor = levelData[this.level + '-bgcolor'];
     that.gameInit();
     that.drawEnvironments();
     that.drawLevels();
@@ -81,13 +85,14 @@ function Game(levelData, level) {
   }
 
   this.gameInit = function () {
-    for (var i = 0; i < levelData[this.level].length; i++) {
-      this.map[i] = levelData[this.level][i].slice();
+    for (var i = 0; i < levelMaps[this.level].length; i++) {
+      this.map[i] = levelMaps[this.level][i].slice();
     }
     gameUI.row = that.map.length;
     gameUI.column = that.map[0].length;
     gameUI.maxWidth = gameUI.tileSize * gameUI.column;
-    gameUI.canvas.style.backgroundColor = levelData[this.level + '-bg']; //'#a0b4fa';
+    gameUI.canvas.style.backgroundColor = levelData[this.level + '-bgcolor']; //'#a0b4fa';
+    gameUI.blockSet = levelData[this.level + '-blockSet'];
     player.init(that.savePlayerX, that.savePlayerY)
     if (this.element == null)
       this.element = new Element();
@@ -195,7 +200,7 @@ function Game(levelData, level) {
             that.checkEnemyElementCollision();
             break;
           case 3:
-            that.element.questionBox();
+            that.element.coinBox();
             that.element.draw();
             that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
@@ -258,6 +263,24 @@ function Game(levelData, level) {
             break;
           case 13:
             that.element.poleTop();
+            that.element.draw();
+            that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
+            break;
+          case 14:
+            that.element.enemyBox();
+            that.element.draw();
+            that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
+            break;
+          case 15:
+            that.element.trollStarBox();
+            that.element.draw();
+            that.checkPlayerElementCollision();
+            that.checkEnemyElementCollision();
+            break;
+          case 16:
+            that.element.trollPowerBox();
             that.element.draw();
             that.checkPlayerElementCollision();
             that.checkEnemyElementCollision();
@@ -376,12 +399,25 @@ function Game(levelData, level) {
             if (player.x + player.width > column * tileSize && player.jumping) {
               var troll = new TrollElements();
               troll.x = (column + 4) * tileSize;
-              troll.y = (row - 1) * tileSize;
+              troll.y = (row - 2) * tileSize;
               troll.yellowRect();
               that.trollElements.push(troll);
               that.map[row][column] = 0;
               console.log(that.trollElements);
             }
+            break;
+          case 47:
+            var troll = new TrollElements();
+            troll.setPos(that.element.x, that.element.y);
+            troll.trollBlockBox();
+            troll.draw();
+            that.trollElements.push(troll);
+            that.map[row][column] = 0;
+            break;
+          case 100:
+            that.element.finishLine();
+            that.element.draw();
+            that.checkPlayerElementCollision();
             break;
         }
       }
@@ -496,6 +532,9 @@ function Game(levelData, level) {
   this.checkPlayerElementCollision = function () {
     if (that.gameState == 1) {
       var collisionDirection = this.collisionCheck(player, that.element);
+      if (that.element.type == 100) {
+        that.stageCleared();
+      }
       if (collisionDirection == 'b') {
         player.y = that.element.y - player.height;
         player.grounded = true;
@@ -526,21 +565,24 @@ function Game(levelData, level) {
         that.extras.push(brickBall);
       }
     } else if (element.type == 3) {
-      var no = Math.floor(Math.random() * 2);
-      if (no == 0) {
-        var coin = new ExtraElements();
-        coin.coin();
-        coin.setPos(element.x, element.y - 16);
-        that.extras.push(coin);
-        that.gamesound.play('coin');
-      } else {
-        var enemy = new Enemy();
+      var coin = new ExtraElements();
+      coin.coin();
+      coin.setPos(element.x, element.y - 16);
+      that.extras.push(coin);
+      that.gamesound.play('coin');
+      that.map[element.row][element.column] = 4;
+    } else if (element.type == 14 || element.type == 15 || element.type == 16) {
+      var enemy = new Enemy();
+      if (element.type == 14)
         enemy.pawnFromBox(element.y);
-        enemy.x = element.x;
-        enemy.y = element.y - 10;
-        that.enemies.push(enemy);
-        that.gamesound.play('dokan');
-      }
+      else if (element.type == 15)
+        enemy.trollStarFromBox(element.y);
+      else if (element.type == 16)
+        enemy.trollPowerUpFromBox(element.y);
+      enemy.x = element.x;
+      enemy.y = element.y - 10;
+      that.enemies.push(enemy);
+      that.gamesound.play('dokan');
       that.map[element.row][element.column] = 4;
     } else if (element.type == 11) {
       that.map[element.row][element.column] = 4;
@@ -599,23 +641,35 @@ function Game(levelData, level) {
       player.grounded = true;
       player.jumping = false;
       that.pressCounter = 0;
-      if (troll.type == 5) {
-        troll.sX = 477;
-        troll.sY = 134;
+      if (troll.type == 5 || troll.type == 7) {
+        if (troll.type == 5) {
+          troll.sX = 477;
+          troll.sY = 134;
+        } else if (troll.type == 7) {
+          troll.trollBlockBoxHit = true;
+        }
         that.playerDie();
       }
     } else if (collisionDirection == 'l') {
-      if (troll.type == 5) {
-        troll.sX = 477;
-        troll.sY = 134;
+      if (troll.type == 5 || troll.type == 7) {
+        if (troll.type == 5) {
+          troll.sX = 477;
+          troll.sY = 134;
+        } else if (troll.type == 7) {
+          troll.trollBlockBoxHit = true;
+        }
         that.playerDie();
       } else {
         player.x = troll.x + troll.width;
       }
     } else if (collisionDirection == 'r') {
-      if (troll.type == 5) {
-        troll.sX = 477;
-        troll.sY = 134;
+      if (troll.type == 5 || troll.type == 7) {
+        if (troll.type == 5) {
+          troll.sX = 477;
+          troll.sY = 134;
+        } else if (troll.type == 7) {
+          troll.trollBlockBoxHit = true;
+        }
         that.playerDie();
       } else {
         player.x = troll.x - player.width;
@@ -632,7 +686,7 @@ function Game(levelData, level) {
   this.checkEnemyElementCollision = function () {
     for (var i = 0; i < that.enemies.length; i++) {
       var enemy = that.enemies[i];
-      if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && !enemy.dead) {
+      if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && enemy.type != 12 && enemy.type != 10 && !enemy.dead) {
         var collisionDirection = this.collisionCheck(enemy, that.element);
         if (collisionDirection == 'b') {
           enemy.y = that.element.y - enemy.height;
@@ -652,7 +706,7 @@ function Game(levelData, level) {
   this.checkEnemyTrollCollision = function (troll) {
     for (var i = 0; i < that.enemies.length; i++) {
       var enemy = that.enemies[i];
-      if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && !enemy.dead) {
+      if (enemy.type != 2 && enemy.type != 10 && enemy.type != 12 && enemy.type != 3 && enemy.type != 5 && !enemy.dead) {
         var collisionDirection = this.collisionCheck(enemy, troll);
         if (collisionDirection == 'b') {
           enemy.y = troll.y - enemy.height;
@@ -774,9 +828,9 @@ function Game(levelData, level) {
   }
 
   this.resetAll = function () {
+    gameUI.clear();
     this.element = null;
     this.background = null;
-    this.level = 1;
     this.map = [];
     this.pressCounter = 0;
     this.translatedDist = that.saveCheckpointPos;
@@ -788,7 +842,14 @@ function Game(levelData, level) {
     this.extras = [];
   }
 
-  
+  this.stageCleared = function () {
+    that.stageClearCounter++;
+    if(that.stageClearCounter == 1){
+      that.gamesound.play('clear');
+    }else if(that.stageClearCounter < 200) {
+      
+    }
+  }
 
 
 }

@@ -1,15 +1,22 @@
 @font-face {
-  font-family: supermario256;
-  src: url('../font/supermario256.ttf');
+  font-family: catMarioFont;
+  src: url('../font/catMarioFont.ttf');
 }
 
 .main-wrapper {
   width: 100%;
 }
 
-#mainCanvas {
+.main-container {
   display: block;
   margin: 20px auto;
+  background-color: black;
   border: 2px solid black;
+  position: relative;
+}
+
+#mainCanvas {
+  margin: 20px auto;
+  display: block;
   /*background-color: #a0b4fa;*/
 }

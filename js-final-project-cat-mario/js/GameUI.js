@@ -10,6 +10,7 @@ function GameUI() {
   this.image;
   this.row;
   this.column;
+  this.blockSet;
   var that = this;
 
   this.setCanvas = function () {
@@ -21,6 +22,7 @@ function GameUI() {
     that.context = that.canvas.getContext('2d');
     that.canvas.width = that.viewPort;
     that.canvas.height = that.viewHeight;
+    that.canvas.style.border = '2px solid white';
   }
 
   this.draw = function (sX, sY, sWidth, sHeight, x, y, width, height) {
@@ -42,9 +44,17 @@ function GameUI() {
   }
 
   this.writeText = function (text, x, y, color) {
-    that.context.font = '20px supermario256';
+    that.context.font = '20px catMarioFont';
     that.context.fillStyle = color || 'white';
     that.context.fillText(text, x, y);
+  }
+
+  this.show = function () {
+    that.canvas.style.display = 'block';
+  }
+
+  this.hide = function () {
+    that.canvas.style.display = 'none';
   }
 
 }
