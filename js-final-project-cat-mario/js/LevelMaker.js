@@ -96,7 +96,7 @@ function LevelMaker(container) {
   this.saveLevelStorage = function () {
     that.savedLevel++;
     let saveMapString = '';
-    window.localStorage.setItem('savedLevel', (that.savedLevel).toString());
+    //window.localStorage.setItem('savedLevel', (that.savedLevel).toString());
     for (var i = 0; i < that.saveMap.length; i++) {
       let eachRow = [];
       eachRow = that.saveMap[i];
@@ -108,13 +108,16 @@ function LevelMaker(container) {
     saveMapString = '[' + saveMapString + ']';
     saveMapString = ', "Save-' + that.savedLevel + '" : ' + saveMapString;
     that.levelMapString = that.levelMapString + saveMapString;
-    window.localStorage.setItem('savedMapString', that.levelMapString);
+    //window.localStorage.setItem('savedMapString', that.levelMapString);
+    console.log('that.savedlevel ', that.savedLevel);
+    console.log('that.levelMapString ', that.levelMapString);
   }
 
   this.saveLevelDataStorage = function () {
     var saveDataString = ', "Save-' + that.savedLevel + '-bgcolor" : "' + that.levelDataObj.bgcolor + '", "Save-' + that.savedLevel + '-blockSet": ' + that.levelDataObj.blockSet + ', "Save-' + that.savedLevel + '-bgm": "' + that.levelDataObj.bgm + '"';
     that.levelDataString = that.levelDataString + saveDataString;
-    window.localStorage.setItem('savedDataString', that.levelDataString);
+    //window.localStorage.setItem('savedDataString', that.levelDataString);
+    console.log('that.levelDataString ', that.levelDataString);
   }
 
   this.setSaveMap = function () {
@@ -162,6 +165,13 @@ function LevelMaker(container) {
       ['yellow-rect', 46],
       ['troll-block-box', 47],
       ['troll-invisible-cloud', 48],
+      ['hill', 81],
+      ['grass', 82],
+      ['cloud', 83],
+      ['castle', 84],
+      ['tree-1', 85],
+      ['tree-2', 86],
+      ['checkpoint', 80],
       ['finish-line', 100],
       ['none', 0]
     ]
@@ -206,6 +216,7 @@ function LevelMaker(container) {
         tr.appendChild(td);
 
         td.addEventListener('mousedown', function (e) {
+          e.preventDefault();
           that.mouseDown = true;
           var tile = e.target;
           if (tile.className != "") {
@@ -214,7 +225,7 @@ function LevelMaker(container) {
           }
           if (that.selectedBlock != null && that.selectedBlock != 'none')
             tile.classList.add(that.selectedBlock);
-          console.log(tile.className);
+          //console.log(tile.className);
         });
 
         td.addEventListener('mouseover', function (e) {
@@ -226,7 +237,7 @@ function LevelMaker(container) {
             }
             if (that.selectedBlock != null && that.selectedBlock != 'none')
               tile.classList.add(that.selectedBlock);
-            console.log(tile.className);
+            //console.log(tile.className);
           }
         });
 

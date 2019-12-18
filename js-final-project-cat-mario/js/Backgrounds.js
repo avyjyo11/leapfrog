@@ -50,6 +50,26 @@ function Background() {
     this.height = 120;
   }
 
+  this.tree1 = function () {
+    that.type = 5;
+    that.sX = 162;
+    this.sY = 463;
+    that.sWidth = 26;
+    this.sHeight = 39;
+    this.width = 40;
+    this.height = 60;
+  }
+
+  this.tree2 = function () {
+    that.type = 6;
+    that.sX = 194;
+    this.sY = 450;
+    that.sWidth = 26;
+    this.sHeight = 52;
+    this.width = 40;
+    this.height = 80;
+  }
+
   this.draw = function () {
     gameUI.draw(this.sX, this.sY, this.sWidth, this.sHeight, this.x, this.y, this.width, this.height);
   }

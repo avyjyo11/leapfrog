@@ -105,6 +105,10 @@ function TrollElements() {
     this.height = 60;
   }
 
+  this.circleQuestion = function () {
+
+  }
+
   this.moveIrritatingBox = function () {
     that.y = player.y - 16 - that.width;
   }

@@ -153,6 +153,18 @@ function Game(levelMaps, levelData, level) {
             that.background.castle();
             that.background.draw();
             break;
+          case 85:
+            that.background.x = column * tileSize;
+            that.background.y = (row * tileSize) - tileSize / 2;
+            that.background.tree1();
+            that.background.draw();
+            break;
+          case 86:
+            that.background.x = column * tileSize;
+            that.background.y = (row * tileSize) - tileSize;
+            that.background.tree2();
+            that.background.draw();
+            break;
           case 80:
             var checkpoint = new ExtraElements();
             checkpoint.x = column * tileSize;
@@ -445,8 +457,8 @@ function Game(levelMaps, levelData, level) {
         enemy.draw();
         if (that.gameState == 1 && !enemy.dead) {
           that.checkPlayerEnemyCollision(that.enemies[i], i);
-          if (enemy.type == 8) {
-            that.checkEnemyEnemyCollision(enemy);
+          if (enemy.type == 8 || enemy.type == 11) {
+            that.checkEnemyEnemyCollision(enemy, i);
           }
         }
       } else if (enemy.x + enemy.width + gameUI.viewPort < player.x) {
@@ -740,7 +752,19 @@ function Game(levelMaps, levelData, level) {
   this.checkEnemyElementCollision = function () {
     for (var i = 0; i < that.enemies.length; i++) {
       var enemy = that.enemies[i];
-      if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && enemy.type != 12 && enemy.type != 10 && !enemy.dead) {
+      if (enemy.type == 13) {
+        var collisionDirection = this.collisionCheck(enemy, that.element);
+        if (collisionDirection == 'b') {
+          that.map[that.element.row][that.element.column] = 0;
+          that.gamesound.play('blockbreak');
+          for (var index = 1; index <= 4; index++) {
+            var brickBall = new ExtraElements();
+            brickBall.destroyedBrick(index);
+            brickBall.setPos(that.element.x + 13, that.element.y + 13);
+            that.extras.push(brickBall);
+          }
+        }
+      } else if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && enemy.type != 12 && enemy.type != 10 && !enemy.dead) {
         var collisionDirection = this.collisionCheck(enemy, that.element);
         if (collisionDirection == 'b') {
           enemy.y = that.element.y - enemy.height;
@@ -781,17 +805,24 @@ function Game(levelMaps, levelData, level) {
     }
   }
 
-  this.checkEnemyEnemyCollision = function (enemy) {
+  this.checkEnemyEnemyCollision = function (enemy, enemyI) {
     for (var j = 0; j < that.enemies.length; j++) {
       var enemy2 = that.enemies[j];
-      if (enemy != enemy2) {
+      if (enemy != enemy2 && !enemy2.dead) {
         var collisionDirection = this.collisionCheck(enemy, enemy2);
         if (collisionDirection == 'b' || collisionDirection == 'l' || collisionDirection == 'r') {
-          enemy2.jumping = true;
-          enemy2.dead = true;
-          that.gamesound.play('humi');
-          if (enemy2.type == 1)
-            enemy2.sY = 121;
+          if (enemy.type == 8) {
+            enemy2.jumping = true;
+            enemy2.dead = true;
+            that.gamesound.play('humi');
+            if (enemy2.type == 1)
+              enemy2.sY = 121;
+          } else if (enemy.type == 11) {
+            enemy2.bigPawn();
+            enemy2.x = enemy2.x - 20;
+            enemy2.y = enemy2.y - 35;
+            that.enemies.splice(enemyI, 1);
+          }
         }
       }
     }

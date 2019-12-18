@@ -63,8 +63,21 @@ function Player() {
     if (this.type == 'big') {
 
     } else {
-      this.sX = 320;
-      this.sY = 38;
+      if (this.jumpInertia || this.jumping) {
+        this.sX = 256;
+        this.sY = 38;
+        this.sWidth = 24;
+        this.sHeight = 34;
+        this.width = 38;
+        this.height = 50;
+      } else {
+        this.sX = 320;
+        this.sY = 38;
+        this.sWidth = 20;
+        this.sHeight = 34;
+        this.width = 32;
+        this.height = 50;
+      }
     }
   }
 
@@ -73,8 +86,21 @@ function Player() {
     if (this.type == 'big') {
 
     } else {
-      this.sX = 5;
-      this.sY = 38;
+      if (this.jumpInertia || this.jumping) {
+        this.sX = 65;
+        this.sY = 38;
+        this.sWidth = 24;
+        this.sHeight = 34;
+        this.width = 38;
+        this.height = 50;
+      } else {
+        this.sX = 5;
+        this.sY = 38;
+        this.sWidth = 20;
+        this.sHeight = 34;
+        this.width = 32;
+        this.height = 50;
+      }
     }
   }
 

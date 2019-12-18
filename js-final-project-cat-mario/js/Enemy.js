@@ -67,7 +67,7 @@ function Enemy() {
     this.sHeight = 33;
     this.width = 44;
     this.height = 44;
-    this.move = true;
+    this.JUMPSPEED = 8;
   }
 
   this.flyerDown = function () {
@@ -87,7 +87,7 @@ function Enemy() {
     this.sY = 76;
     this.sWidth = 30;
     this.sHeight = 38;
-    this.width = 40;
+    this.width = 42;
     this.height = 50;
     this.move = true;
   }
@@ -98,7 +98,7 @@ function Enemy() {
     this.sY = 77;
     this.sWidth = 30;
     this.sHeight = 27;
-    this.width = 40;
+    this.width = 42;
     this.height = 40;
     this.move = true;
   }
@@ -109,7 +109,7 @@ function Enemy() {
     this.sY = 77;
     this.sWidth = 30;
     this.sHeight = 27;
-    this.width = 40;
+    this.width = 42;
     this.height = 40;
     this.move = true;
     this.speed = 6;
@@ -164,6 +164,17 @@ function Enemy() {
     this.boxTopY = elementY;
   }
 
+  this.bigPawn = function () {
+    this.type = 13;
+    this.sX = 34;
+    this.sY = 128;
+    this.sWidth = 63;
+    this.sHeight = 53;
+    this.width = 85;
+    this.height = 75;
+    this.move = true;
+  }
+
   //move functions
 
   this.movePawn = function () {
@@ -185,7 +196,8 @@ function Enemy() {
       this.fallSpeed += this.gravity;
     }
 
-    this.x -= this.speed;
+    if (this.type != 13)
+      this.x -= this.speed;
   }
 
   this.moveFlyer = function () {
@@ -277,13 +289,17 @@ function Enemy() {
       if (player.x + player.width > that.x - 20) {
         that.move = true;
       }
+    } else if (this.type == 4) {
+      if (player.x + player.width > that.x - 70) {
+        that.move = true;
+      }
     }
   }
 
   this.movement = function () {
     that.checkPlayerPos();
     if (this.move) {
-      if (this.type == 1 || this.type == 6 || this.type == 9 || this.type == 11) {
+      if (this.type == 1 || this.type == 6 || this.type == 9 || this.type == 11 || this.type == 13) {
         that.movePawn();
       } else if (this.type == 2 || this.type == 10 || this.type == 12) {
         that.movePawnFromBox();

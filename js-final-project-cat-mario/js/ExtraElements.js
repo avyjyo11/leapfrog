@@ -34,7 +34,7 @@ function ExtraElements() {
   this.destroyedBrick = function (index) {
     this.type = 2;
     this.sX = 464;
-    this.sY = 271;
+    this.sY = 271 + ((gameUI.blockSet - 1) * 24);
     this.sWidth = 15;
     this.sHeight = 17;
     this.width = 15;
