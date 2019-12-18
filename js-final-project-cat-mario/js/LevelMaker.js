@@ -1,24 +1,49 @@
+if (window.localStorage.getItem('savedLevel') == null) {
+  window.localStorage.setItem('savedLevel', '0');
+}
+
+if (window.localStorage.getItem('savedMapString') == null) {
+  window.localStorage.setItem('savedMapString', '');
+}
+
+if (window.localStorage.getItem('savedDataString') == null) {
+  window.localStorage.setItem('savedDataString', '');
+}
+
 function LevelMaker(container) {
+  this.savedLevel = 0;
   this.levelDataObj = {
     bgcolor: "#a0b4fa",
     bgm: 'puyo',
     blockSet: 1
   };
-  this.levelMapObj = {};
+  this.levelMapString;
+  this.levelDataString;
   this.container = container;
   this.tileSize = gameUI.tileSize;
   this.mapScreen;
   this.row = 15;
-  this.column = 136;
+  this.column = 137;
   this.elements;
   this.trollElements;
   this.setSettingBtn;
   this.allBlocks;
+  this.selectedBlock;
+  this.selectedBlockIndex;
+  this.saveMapBtn;
+  this.saveMap = [];
   var that = this;
 
   this.init = function () {
+    this.savedLevel = parseInt(window.localStorage.getItem('savedLevel'));
+    this.levelMapString = window.localStorage.getItem('savedMapString');
+    this.levelDataString = window.localStorage.getItem('savedDataString');
+    console.log('that.savedlevel ', that.savedLevel);
+    console.log('that.levelMapString ', that.levelMapString);
+    console.log('that.levelDataString ', that.levelDataString);
     this.setVariables();
     this.setLayout();
+    this.setSaveMap();
 
     that.setSettingBtn.addEventListener('click', function (e) {
       var bgcolor = document.getElementById('bg-color-select').value;
@@ -30,9 +55,77 @@ function LevelMaker(container) {
         blockSet: blockset
       }
       that.setVariables();
-      console.log(that.allBlocks);
       that.mapScreen.style.backgroundColor = that.levelDataObj.bgcolor;
     });
+
+    that.saveMapBtn.addEventListener('click', function () {
+      const saveMap = [];
+      let newArray = [];
+      var table = document.getElementsByTagName('table')[0];
+      var trList = table.childNodes;
+      for (var i = 0; i < that.row; i++) {
+        var tdList = trList[i].childNodes;
+        for (var j = 0; j < that.column; j++) {
+          if (tdList[j].className != "") {
+            //console.log(i, j);
+            let value;
+            for (var m = 0; m < that.allBlocks.length - 1; m++) {
+              if (tdList[j].className == that.allBlocks[m][0]) {
+                value = that.allBlocks[m][1];
+              }
+            }
+            newArray.push(value);
+          } else {
+            newArray.push(0);
+          }
+        }
+        saveMap.push(newArray);
+        newArray = [];
+      }
+      that.saveMap = saveMap;
+      that.saveLevelStorage();
+      that.saveLevelDataStorage();
+    });
+  }
+
+  this.saveLevelStorage = function () {
+    that.savedLevel++;
+    let saveMapString = '';
+    window.localStorage.setItem('savedLevel', (that.savedLevel).toString());
+    for (var i = 0; i < that.saveMap.length; i++) {
+      let eachRow = [];
+      eachRow = that.saveMap[i];
+      if (i != that.saveMap.length - 1)
+        saveMapString = saveMapString + '[' + eachRow.toString() + '],';
+      else
+        saveMapString = saveMapString + '[' + eachRow.toString() + ']';
+    }
+    saveMapString = '[' + saveMapString + ']';
+    saveMapString = ', "Save-' + that.savedLevel + '" : ' + saveMapString;
+    that.levelMapString = that.levelMapString + saveMapString;
+    console.log('that.savedLevel', that.savedLevel);
+    console.log('that.levelMapString ', that.levelMapString);
+    window.localStorage.setItem('savedMapString', that.levelMapString);
+  }
+
+  this.saveLevelDataStorage = function () {
+    var saveDataString = ', "Save-' + that.savedLevel + '-bgcolor" : "' + that.levelDataObj.bgcolor + '", "Save-' + that.savedLevel + '-blockSet": ' + that.levelDataObj.blockSet + ', "Save-' + that.savedLevel + '-bgm": "' + that.levelDataObj.bgm + '"';
+    that.levelDataString = that.levelDataString + saveDataString;
+    console.log(that.levelDataString);
+    window.localStorage.setItem('savedDataString', that.levelDataString);
+  }
+
+  this.setSaveMap = function () {
+    var saveMap = [];
+    var newArray = [];
+    for (var i = 0; i < that.row; i++) {
+      for (var j = 0; j < that.column; j++) {
+        newArray[j] = 0;
+      }
+      saveMap.push(newArray);
+      newArray = [];
+    }
+    that.saveMap = saveMap;
   }
 
   this.setVariables = function () {
@@ -67,6 +160,7 @@ function LevelMaker(container) {
       ['yellow-rect', 46],
       ['troll-block-box', 47],
       ['finish-line', 100],
+      ['none', 0]
     ]
     that.allBlocks = allBlocks;
   }
@@ -103,17 +197,23 @@ function LevelMaker(container) {
       for (var j = 0; j < that.column; j++) {
         var td = document.createElement('td');
         td.style.boxSizing = 'border-box';
-        if (i == 13) {
-          td.setAttribute('class', 'block-box-1');
-        }
         td.style.width = that.tileSize + 'px';
         td.style.height = that.tileSize + 'px';
         td.style.border = '1px solid blue';
         tr.appendChild(td);
+
+        td.addEventListener('click', function (e) {
+          var tile = e.target;
+          if (tile.className != "") {
+            var clas = tile.className;
+            tile.classList.remove(clas);
+          }
+          if (that.selectedBlock != null && that.selectedBlock != 'none')
+            tile.classList.add(that.selectedBlock);
+          console.log(tile.className);
+        });
       }
     }
-
-
 
     var selectionScreen = document.createElement('div');
     selectionScreen.style.position = 'absolute';
@@ -134,7 +234,6 @@ function LevelMaker(container) {
     selectionScreenInner.style.right = 0 + 'px';
     selectionScreenInner.style.top = 0 + 'px';
     selectionScreenInner.style.backgroundColor = 'green';
-
     selectionScreen.appendChild(selectionScreenInner);
 
     var levelSetting = document.createElement('div');
@@ -208,6 +307,40 @@ function LevelMaker(container) {
     blocksSelection.innerHTML = 'Block Selection';
     selectionScreenInner.appendChild(blocksSelection);
 
-  }
+    var ul = document.createElement('ul');
+    ul.style.textDecoration = 'none';
+    ul.style.listStyle = 'none';
+    ul.style.border = '1px solid black';
+    blocksSelection.appendChild(ul);
+    for (var i = 0; i < that.allBlocks.length; i++) {
+      var li = document.createElement('li');
+      li.innerHTML = that.allBlocks[i][0];
 
+      ul.appendChild(li);
+
+      li.addEventListener('click', function (e) {
+        var list = document.getElementsByTagName('li');
+        for (var i = 0; i < list.length; i++) {
+          if (e.target == list[i]) {
+            that.selectedBlock = that.allBlocks[i][0];
+            console.log(that.selectedBlock);
+          }
+        }
+      });
+    }
+
+    var saveMapBtn = document.createElement('button');
+    saveMapBtn.innerHTML = 'Save Map';
+    saveMapBtn.style.display = 'block';
+    saveMapBtn.style.fontFamily = 'catMarioFont';
+    saveMapBtn.style.fontSize = '14px';
+    saveMapBtn.style.color = 'white';
+    saveMapBtn.style.margin = '0 auto';
+    saveMapBtn.style.marginTop = '20px';
+    saveMapBtn.style.padding = '14px';
+    saveMapBtn.style.backgroundColor = '#000000';
+    saveMapBtn.style.border = '0px';
+    selectionScreenInner.appendChild(saveMapBtn);
+    this.saveMapBtn = saveMapBtn;
+  }
 }

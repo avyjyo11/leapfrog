@@ -1,6 +1,9 @@
 levelMaps.getJSONMap(afterGetMap);
 
 function afterGetMap(levelMaps, levelData) {
+  var Map = JSON.stringify(levelMaps);
+  var arr = Map.split('}');
+  //console.log(arr[0]);
   var mainMenu = new MainMenu(levelMaps, levelData);
   mainMenu.startFxn();
   //console.log(Object.keys(levelMaps));

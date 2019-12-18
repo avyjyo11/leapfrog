@@ -111,8 +111,8 @@ function Element() {
 
   this.finishLine = function () {
     that.type = 100;
-    that.sX = 400;
-    this.sY = 0;
+    that.sX = 384;
+    this.sY = 201;
   }
 
   this.draw = function () {

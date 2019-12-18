@@ -23,7 +23,8 @@ function Game(levelMaps, levelData, level) {
   this.life = 3;
   this.start = false;
   this.saveCheckpointPos = 0;
-  this.savePlayerX = 100;
+  this.initialPlayerX = 84;
+  this.savePlayerX = this.initialPlayerX;
   this.savePlayerY = gameUI.viewHeight / 2;
   var that = this;
 
@@ -31,7 +32,6 @@ function Game(levelMaps, levelData, level) {
     this.resetAll();
     this.gamesound = new GameSound();
     that.gamesound.init();
-    this.bgm = levelData[this.level + '-bgm'];
     gameUI.blockSet = levelData[this.level + '-blockSet'];
     this.startScreen();
     this.keyBinds();
@@ -62,7 +62,7 @@ function Game(levelMaps, levelData, level) {
     that.drawLevels();
     player.draw();
     gameUI.makeBox(0, gameUI.viewHeight / 2, gameUI.viewPort, 50);
-    gameUI.writeText('Press Enter To Start', gameUI.viewPort / 4, player.y + 30);
+    gameUI.writeText('Press Enter To Start', gameUI.viewPort / 4, gameUI.viewHeight / 2 + 30);
     gameUI.writeText('Arrow Keys or WASD For Movements', 40, 30, 'black');
     gameUI.writeText('Press P To Pause the Game', 40, 60, 'black');
   }
@@ -93,6 +93,7 @@ function Game(levelMaps, levelData, level) {
   }
 
   this.gameInit = function () {
+    this.bgm = levelData[this.level + '-bgm'];
     for (var i = 0; i < levelMaps[this.level].length; i++) {
       this.map[i] = levelMaps[this.level][i].slice();
     }
@@ -101,7 +102,7 @@ function Game(levelMaps, levelData, level) {
     gameUI.maxWidth = gameUI.tileSize * gameUI.column;
     gameUI.canvas.style.backgroundColor = levelData[this.level + '-bgcolor']; //'#a0b4fa';
     gameUI.blockSet = levelData[this.level + '-blockSet'];
-    player.init(that.savePlayerX, that.savePlayerY)
+    player.init(that.savePlayerX, that.savePlayerY);
     if (this.element == null)
       this.element = new Element();
     if (this.background == null)
@@ -829,6 +830,10 @@ function Game(levelMaps, levelData, level) {
     player.jumping = true;
     player.sX = 97;
     player.sY = 38;
+    player.sWidth = 20;
+    player.sHeight = 34;
+    player.width = 32;
+    player.height = 50;
     that.gamesound.stop(that.bgm);
     that.gamesound.play('death');
   }
@@ -914,7 +919,7 @@ function Game(levelMaps, levelData, level) {
         }
       }
       that.saveCheckpointPos = 0;
-      that.savePlayerX = 100;
+      that.savePlayerX = that.initialPlayerX;
       that.savePlayerY = gameUI.viewHeight / 2;
       player.resetAll();
       that.resetAll();
