@@ -21,6 +21,10 @@
   /*background-color: #a0b4fa;*/
 }
 
+.active {
+  color: white;
+}
+
 .block-box-1 {
   background: url('../images/editor/block-box-1.png') center;
   background-size: contain;
@@ -203,6 +207,11 @@
 
 .troll-cloud {
   background: url('../images/editor/troll-cloud.png') center;
+  background-size: contain;
+}
+
+.troll-invisible-cloud {
+  background: url('../images/editor/troll-invisible-cloud.png') center;
   background-size: contain;
 }
 

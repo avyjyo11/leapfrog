@@ -418,6 +418,15 @@ function Game(levelMaps, levelData, level) {
             that.trollElements.push(troll);
             that.map[row][column] = 0;
             break;
+          case 48:
+            var troll = new TrollElements();
+            troll.setPos(that.element.x, that.element.y);
+            troll.trollInvisibleCloud();
+            troll.draw();
+            that.trollElements.push(troll);
+            that.map[row][column] = 0;
+            break;
+            //finish Line
           case 100:
             that.element.finishLine();
             that.element.draw();
@@ -674,34 +683,43 @@ function Game(levelMaps, levelData, level) {
       player.grounded = true;
       player.jumping = false;
       that.pressCounter = 0;
-      if (troll.type == 5 || troll.type == 7) {
+      if (troll.type == 5 || troll.type == 7 || troll.type == 8) {
         if (troll.type == 5) {
           troll.sX = 477;
           troll.sY = 134;
         } else if (troll.type == 7) {
           troll.trollBlockBoxHit = true;
+        } else if (troll.type == 8) {
+          troll.sX = 548;
+          troll.sY = 135;
         }
         that.playerDie();
       }
     } else if (collisionDirection == 'l') {
-      if (troll.type == 5 || troll.type == 7 || troll.type == 6) {
+      if (troll.type == 5 || troll.type == 7 || troll.type == 6 || troll.type == 8) {
         if (troll.type == 5) {
           troll.sX = 477;
           troll.sY = 134;
         } else if (troll.type == 7) {
           troll.trollBlockBoxHit = true;
+        } else if (troll.type == 8) {
+          troll.sX = 548;
+          troll.sY = 135;
         }
         that.playerDie();
       } else {
         player.x = troll.x + troll.width;
       }
     } else if (collisionDirection == 'r') {
-      if (troll.type == 5 || troll.type == 7 || troll.type == 6) {
+      if (troll.type == 5 || troll.type == 7 || troll.type == 6 || troll.type == 8) {
         if (troll.type == 5) {
           troll.sX = 477;
           troll.sY = 134;
         } else if (troll.type == 7) {
           troll.trollBlockBoxHit = true;
+        } else if (troll.type == 8) {
+          troll.sX = 548;
+          troll.sY = 135;
         }
         that.playerDie();
       } else {
@@ -711,6 +729,9 @@ function Game(levelMaps, levelData, level) {
       if (troll.type == 5) {
         troll.sX = 477;
         troll.sY = 134;
+      } else if (troll.type == 8) {
+        troll.sX = 548;
+        troll.sY = 135;
       }
       that.playerDie();
     }

@@ -95,6 +95,16 @@ function TrollElements() {
     this.height = 40;
   }
 
+  this.trollInvisibleCloud = function () {
+    that.type = 8;
+    that.sX = 548;
+    this.sY = 190; // 135
+    that.sWidth = 70;
+    this.sHeight = 44;
+    this.width = 110;
+    this.height = 60;
+  }
+
   this.moveIrritatingBox = function () {
     that.y = player.y - 16 - that.width;
   }
