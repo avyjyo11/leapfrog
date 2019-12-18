@@ -304,15 +304,6 @@ function Game(levelMaps, levelData, level) {
             that.enemies.push(enemy);
             that.map[row][column] = 0;
             break;
-          case 22:
-            var enemy = new Enemy();
-            enemy.pawnFromBox();
-            enemy.x = (column * tileSize) + tileSize - enemy.width;
-            enemy.y = (row * tileSize) + tileSize - enemy.height;
-            enemy.draw();
-            that.enemies.push(enemy);
-            that.map[row][column] = 0;
-            break;
           case 23:
             var enemy = new Enemy();
             enemy.flyer();

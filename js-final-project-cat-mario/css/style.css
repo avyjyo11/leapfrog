@@ -20,3 +20,238 @@
   display: block;
   /*background-color: #a0b4fa;*/
 }
+
+.block-box-1 {
+  background: url('../images/editor/block-box-1.png') center;
+  background-size: contain;
+}
+
+.block-box-2 {
+  background: url('../images/editor/block-box-2.png') center;
+  background-size: contain;
+}
+
+.block-box-3 {
+  background: url('../images/editor/block-box-3.png') center;
+  background-size: contain;
+}
+
+.brick-box-1 {
+  background: url('../images/editor/brick-box-1.png') center;
+  background-size: contain;
+}
+
+.brick-box-2 {
+  background: url('../images/editor/brick-box-2.png') center;
+  background-size: contain;
+}
+
+.brick-box-3 {
+  background: url('../images/editor/brick-box-3.png') center;
+  background-size: contain;
+}
+
+.ground-box-1 {
+  background: url('../images/editor/ground-box-1.png') center;
+  background-size: contain;
+}
+
+.ground-box-2 {
+  background: url('../images/editor/ground-box-2.png') center;
+  background-size: contain;
+}
+
+.ground-box-3 {
+  background: url('../images/editor/ground-box-3.png') center;
+  background-size: contain;
+}
+
+.platform-box-1 {
+  background: url('../images/editor/platform-box-1.png') center;
+  background-size: contain;
+}
+
+.platform-box-2 {
+  background: url('../images/editor/platform-box-2.png') center;
+  background-size: contain;
+}
+
+.platform-box-3 {
+  background: url('../images/editor/platform-box-3.png') center;
+  background-size: contain;
+}
+
+.useless-box-1 {
+  background: url('../images/editor/useless-box-1.png') center;
+  background-size: contain;
+}
+
+.useless-box-2 {
+  background: url('../images/editor/useless-box-2.png') center;
+  background-size: contain;
+}
+
+.useless-box-3 {
+  background: url('../images/editor/useless-box-3.png') center;
+  background-size: contain;
+}
+
+.checkpoint {
+  background: url('../images/editor/checkpoint.png') center;
+  background-size: contain;
+}
+
+.cloud {
+  background: url('../images/editor/cloud.png') center;
+  background-size: contain;
+}
+
+.finish-line {
+  background: url('../images/editor/finish-line.png') center;
+  background-size: contain;
+}
+
+.coin-box {
+  background: url('../images/editor/coin-box.png') center;
+  background-size: contain;
+}
+
+.flyerDown {
+  background: url('../images/editor/flyerDown.png') center;
+  background-size: contain;
+}
+
+.flyerUp {
+  background: url('../images/editor/flyerUp.png') center;
+  background-size: contain;
+}
+
+.grass {
+  background: url('../images/editor/grass.png') center;
+  background-size: contain;
+}
+
+.hill {
+  background: url('../images/editor/hill.png') center;
+  background-size: contain;
+}
+
+.king-pawn {
+  background: url('../images/editor/king-pawn.png') center;
+  background-size: contain;
+}
+
+.pawn {
+  background: url('../images/editor/pawn.png') center;
+  background-size: contain;
+}
+
+.castle {
+  background: url('../images/editor/castle.png') center;
+  background-size: contain;
+}
+
+.pipe-left {
+  background: url('../images/editor/pipe-left.png') center;
+  background-size: contain;
+}
+
+.pipe-right {
+  background: url('../images/editor/pipe-right.png') center;
+  background-size: contain;
+}
+
+.pipe-top-left {
+  background: url('../images/editor/pipe-top-left.png') center;
+  background-size: contain;
+}
+
+.pipe-top-right {
+  background: url('../images/editor/pipe-top-right.png') center;
+  background-size: contain;
+}
+
+.pole {
+  background: url('../images/editor/pole.png') center;
+  background-size: contain;
+}
+
+.pole-top {
+  background: url('../images/editor/pole-top.png') center;
+  background-size: contain;
+}
+
+.tree-1 {
+  background: url('../images/editor/tree-1.png') center;
+  background-size: contain;
+}
+
+.tree-2 {
+  background: url('../images/editor/tree-2.png') center;
+  background-size: contain;
+}
+
+.troll-block-box {
+  background: url('../images/editor/troll-block-box.png') center;
+  background-size: contain;
+}
+
+.troll-brick-box {
+  background: url('../images/editor/troll-brick-box.png') center;
+  background-size: contain;
+}
+
+.troll-cloud {
+  background: url('../images/editor/troll-cloud.png') center;
+  background-size: contain;
+}
+
+.troll-ground-box {
+  background: url('../images/editor/troll-ground-box.png') center;
+  background-size: contain;
+}
+
+.troll-pawn {
+  background: url('../images/editor/troll-pawn.png') center;
+  background-size: contain;
+}
+
+.troll-platform-box {
+  background: url('../images/editor/troll-platform-box.png') center;
+  background-size: contain;
+}
+
+.troll-powerup-box {
+  background: url('../images/editor/troll-powerup-box.png') center;
+  background-size: contain;
+}
+
+.troll-star-box {
+  background: url('../images/editor/troll-star-box.png') center;
+  background-size: contain;
+}
+
+.turtle {
+  background: url('../images/editor/turtle.png') center;
+  background-size: contain;
+}
+
+.yellow-rect {
+  background: url('../images/editor/yellow-rect.png') center;
+  background-size: contain;
+}
+
+.invisible-box {
+  background: url('../images/editor/invisible-box.png') center;
+  background-size: contain;
+}
+
+.troll-enemy-box {
+  background: url('../images/editor/troll-enemy-box.png') center;
+  background-size: contain;
+}
+
+.irritating-box {
+  background: url('../images/editor/irritating-box.png') center;
+  background-size: contain;
+}
