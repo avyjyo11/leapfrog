@@ -2,6 +2,7 @@ var player = new Player();
 player.init();
 
 function Player() {
+  this.type = 'small';
   this.x;
   this.y;
   this.width = 32;
@@ -25,22 +26,56 @@ function Player() {
   var that = this;
 
   this.init = function (x, y) {
+    this.type = 'small';
     this.x = x;
     this.y = y;
     this.sX = 5;
     this.sY = 38;
+    this.sWidth = 20;
+    this.sHeight = 34;
+    this.width = 32;
+    this.height = 50;
+  }
+
+  this.trollPowerUp = function (x, y) {
+    this.y = this.y - 52;
+    this.sX = 179;
+    this.sY = 1;
+    this.sWidth = 41;
+    this.sHeight = 70;
+    this.width = 64;
+    this.height = 100;
+    this.type = 'big';
+  }
+
+  this.playerHappy = function () {
+    this.type = 'small';
+    this.sX = 693;
+    this.sY = 76;
+    this.sWidth = 24;
+    this.sHeight = 34;
+    this.width = 32;
+    this.height = 50;
   }
 
   this.moveLeft = function () {
     this.x -= this.SPEED;
-    this.sX = 320;
-    this.sY = 38;
+    if (this.type == 'big') {
+
+    } else {
+      this.sX = 320;
+      this.sY = 38;
+    }
   }
 
   this.moveRight = function () {
     this.x += this.SPEED;
-    this.sX = 5;
-    this.sY = 38;
+    if (this.type == 'big') {
+
+    } else {
+      this.sX = 5;
+      this.sY = 38;
+    }
   }
 
   this.moveY = function () {

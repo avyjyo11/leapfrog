@@ -132,15 +132,15 @@ function TrollElements() {
         that.move = false;
       }
     } else if (that.type == 2) {
-      if (player.x + player.width > that.saveX1 && player.x < that.saveX2 && player.y > that.y + that.width) {
+      if (player.x > that.saveX1 && player.x + player.width < that.saveX2 && player.y > that.y + that.width) {
         that.move = true;
       }
     } else if (that.type == 3) {
-      if (player.x + player.width > that.saveX1 && player.x < that.saveX2 && player.y + player.height == that.y) {
+      if (player.x > that.saveX1 && player.x + player.width < that.saveX2 && player.y + player.height == that.y) {
         that.move = true;
       }
     } else if (that.type == 4) {
-      if (player.x + player.width > that.saveX1 && player.x < that.saveX2 && player.y + player.height == that.y - that.height) {
+      if (player.x > that.saveX1 && player.x + player.width < that.saveX2 && player.y + player.height == that.y - that.height) {
         that.move = true;
       }
     }

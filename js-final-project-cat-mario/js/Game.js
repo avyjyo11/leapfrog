@@ -8,11 +8,11 @@ function Game(levelMaps, levelData, level) {
   this.level = level;
   this.levelBlockSet;
   this.map = [];
-  this.spawnMap = [];
   this.animation;
   this.frameRate = 60;
   this.pressCounter = 0;
   this.gameOverCounter = 0;
+  this.stageClearCounter = 0;
   this.translatedDist = 0;
   this.centerPos = 0;
   this.keys = [];
@@ -46,8 +46,8 @@ function Game(levelMaps, levelData, level) {
         that.animation = window.requestAnimationFrame(that.startGame);
       } else if (e.keyCode == 80) {
         window.cancelAnimationFrame(that.animation);
-        gameUI.makeBox(that.translatedDist + (gameUI.viewPort / 3) - 20, gameUI.viewHeight / 3, 310, 50);
-        gameUI.writeText('Press Enter To Play', that.translatedDist + gameUI.viewPort / 3, gameUI.viewHeight / 3 + 30);
+        gameUI.makeBox(0, gameUI.viewHeight / 2, gameUI.viewPort, 50);
+        gameUI.writeText('Press Enter To Resume', that.translatedDist + gameUI.viewPort / 4, gameUI.viewHeight / 2 + 30);
       }
     });
 
@@ -61,8 +61,10 @@ function Game(levelMaps, levelData, level) {
     that.drawEnvironments();
     that.drawLevels();
     player.draw();
-    gameUI.makeBox((gameUI.viewPort / 3) - 20, player.y, 310, 50);
-    gameUI.writeText('Press Enter To Start', gameUI.viewPort / 3, player.y + 30);
+    gameUI.makeBox(0, gameUI.viewHeight / 2, gameUI.viewPort, 50);
+    gameUI.writeText('Press Enter To Start', gameUI.viewPort / 4, player.y + 30);
+    gameUI.writeText('Arrow Keys or WASD For Movements', 40, 30, 'black');
+    gameUI.writeText('Press P To Pause the Game', 40, 60, 'black');
   }
 
   this.startGame = function () {
@@ -75,10 +77,16 @@ function Game(levelMaps, levelData, level) {
         break;
       case 1:
         that.gameRunning();
-        gameUI.writeText('Press P To Pause', gameUI.viewPort / 3, 30, 'black');
+        if (player.x < gameUI.viewPort * 2) {
+          gameUI.writeText('Arrow Keys or WASD For Movements', 40, 30, 'black');
+          gameUI.writeText('Press P To Pause the Game', 40, 60, 'black');
+        }
         break;
       case 2:
         that.gameOver();
+        break;
+      case 3:
+        that.stageCleared();
         break;
     }
     that.animation = window.requestAnimationFrame(that.startGame);
@@ -254,6 +262,7 @@ function Game(levelMaps, levelData, level) {
               if (that.gameState == 1)
                 that.checkPlayerElementCollision();
             }
+            that.checkEnemyElementCollision();
             break;
           case 12:
             that.element.pole();
@@ -342,8 +351,13 @@ function Game(levelMaps, levelData, level) {
             that.map[row][column] = 0;
             break;
           case 40:
-            if (player.x + player.width > column * tileSize) {
-              for (var i = 0; i < 4; i++) {
+            if (player.x > column * tileSize) {
+              var j = 0;
+              while (that.map[row][column + j] == 40) {
+                that.map[row][column + j] = 0;
+                j++;
+              }
+              for (var i = 0; i < j; i++) {
                 var enemy = new Enemy();
                 enemy.pawn();
                 enemy.x = ((column + i) * tileSize) + tileSize - enemy.width;
@@ -351,7 +365,6 @@ function Game(levelMaps, levelData, level) {
                 enemy.draw();
                 that.enemies.push(enemy);
               }
-              that.map[row][column] = 0;
             }
             break;
             //41 to 60 for troll elements
@@ -403,7 +416,6 @@ function Game(levelMaps, levelData, level) {
               troll.yellowRect();
               that.trollElements.push(troll);
               that.map[row][column] = 0;
-              console.log(that.trollElements);
             }
             break;
           case 47:
@@ -430,7 +442,7 @@ function Game(levelMaps, levelData, level) {
       if (player.x + player.width > (enemy.x - gameUI.viewPort) && player.x < (enemy.x + enemy.width + gameUI.viewPort) && enemy.y > -(gameUI.viewHeight) && enemy.y < gameUI.viewHeight + gameUI.viewHeight) {
         enemy.movement();
         enemy.draw();
-        if (that.gameState == 1) {
+        if (that.gameState == 1 && !enemy.dead) {
           that.checkPlayerEnemyCollision(that.enemies[i], i);
           if (enemy.type == 8) {
             that.checkEnemyEnemyCollision(enemy);
@@ -530,26 +542,41 @@ function Game(levelMaps, levelData, level) {
   }
 
   this.checkPlayerElementCollision = function () {
+    var element = that.element;
     if (that.gameState == 1) {
       var collisionDirection = this.collisionCheck(player, that.element);
       if (that.element.type == 100) {
-        that.stageCleared();
-      }
-      if (collisionDirection == 'b') {
-        player.y = that.element.y - player.height;
-        player.grounded = true;
-        player.jumping = false;
-        that.pressCounter = 0;
-      } else if (collisionDirection == 'l') {
-        player.x = that.element.x + that.element.width;
-      } else if (collisionDirection == 'r') {
-        player.x = that.element.x - player.width;
-      } else if (collisionDirection == 't' && (player.jumpInertia || player.jumping)) {
-        player.grounded = false;
-        player.jumping = false;
-        player.jumpInertia = false;
-        player.pressCounter = 30;
-        that.afterCollisionBottom(that.element);
+        if (collisionDirection == 'l' || collisionDirection == 'r' || collisionDirection == 't' || collisionDirection == 'b') {
+          that.gameState = 3;
+        }
+      } else if (player.type == 'big') {
+        if (collisionDirection == 't' || collisionDirection == 'b' || collisionDirection == 'l' || collisionDirection == 'r') {
+          that.map[element.row][element.column] = 0;
+          that.gamesound.play('blockbreak');
+          for (var index = 1; index <= 4; index++) {
+            var brickBall = new ExtraElements();
+            brickBall.destroyedBrick(index);
+            brickBall.setPos(element.x + 13, element.y + 13);
+            that.extras.push(brickBall);
+          }
+        }
+      } else {
+        if (collisionDirection == 'b') {
+          player.y = that.element.y - player.height;
+          player.grounded = true;
+          player.jumping = false;
+          that.pressCounter = 0;
+        } else if (collisionDirection == 'l') {
+          player.x = that.element.x + that.element.width;
+        } else if (collisionDirection == 'r') {
+          player.x = that.element.x - player.width;
+        } else if (collisionDirection == 't' && (player.jumpInertia || player.jumping)) {
+          player.grounded = false;
+          player.jumping = false;
+          player.jumpInertia = false;
+          player.pressCounter = 30;
+          that.afterCollisionBottom(that.element);
+        }
       }
     }
   }
@@ -602,7 +629,7 @@ function Game(levelMaps, levelData, level) {
       that.gamesound.play('humi');
       if (enemy.type == 1) {
         that.enemies.splice(index, 1);
-      } else if (enemy.type == 3) {
+      } else if (enemy.type == 3 || enemy.type == 4 || enemy.type == 5) {
         that.playerDie();
       } else if (enemy.type == 6) {
         enemy.turtleStop();
@@ -613,11 +640,17 @@ function Game(levelMaps, levelData, level) {
         }
       } else if (enemy.type == 8) {
         enemy.turtleStop();
+      } else if (enemy.type == 11 || enemy.type == 12) {
+        player.trollPowerUp();
+        that.enemies.splice(index, 1);
       }
     } else if (collisionDirection == 'l') {
       player.x = enemy.x + enemy.width;
       if (enemy.type == 7) {
         enemy.turtleGo();
+      } else if (enemy.type == 11 || enemy.type == 12) {
+        player.trollPowerUp();
+        that.enemies.splice(index, 1);
       } else {
         that.playerDie();
       }
@@ -626,11 +659,19 @@ function Game(levelMaps, levelData, level) {
       if (enemy.type == 7) {
         enemy.turtleGo();
         enemy.speed = -enemy.speed;
+      } else if (enemy.type == 11 || enemy.type == 12) {
+        player.trollPowerUp();
+        that.enemies.splice(index, 1);
       } else {
         that.playerDie();
       }
     } else if (collisionDirection == 't') {
-      that.playerDie();
+      if (enemy.type == 11 || enemy.type == 12) {
+        player.trollPowerUp();
+        that.enemies.splice(index, 1);
+      } else {
+        that.playerDie();
+      }
     }
   }
 
@@ -651,7 +692,7 @@ function Game(levelMaps, levelData, level) {
         that.playerDie();
       }
     } else if (collisionDirection == 'l') {
-      if (troll.type == 5 || troll.type == 7) {
+      if (troll.type == 5 || troll.type == 7 || troll.type == 6) {
         if (troll.type == 5) {
           troll.sX = 477;
           troll.sY = 134;
@@ -663,7 +704,7 @@ function Game(levelMaps, levelData, level) {
         player.x = troll.x + troll.width;
       }
     } else if (collisionDirection == 'r') {
-      if (troll.type == 5 || troll.type == 7) {
+      if (troll.type == 5 || troll.type == 7 || troll.type == 6) {
         if (troll.type == 5) {
           troll.sX = 477;
           troll.sY = 134;
@@ -694,6 +735,10 @@ function Game(levelMaps, levelData, level) {
           enemy.jumping = false;
         } else if (collisionDirection == 'l' || collisionDirection == 'r') {
           enemy.speed = -enemy.speed;
+          if (that.element.type == 11) {
+            that.map[that.element.row][that.element.column] = 4;
+            that.gamesound.play('jumpBlock');
+          }
         } else if (collisionDirection == 't') {
           enemy.grounded = false;
           enemy.jumping = false;
@@ -816,6 +861,10 @@ function Game(levelMaps, levelData, level) {
       gameUI.canvas.style.backgroundColor = 'black';
       player.x = gameUI.viewPort / 2 - 50;
       player.y = gameUI.viewHeight / 2 - 50;
+      player.sWidth = 20;
+      player.sHeight = 34;
+      player.width = 32;
+      player.height = 50;
       player.draw();
       gameUI.writeText('x ' + that.life, player.x + 50, player.y + 30);
     } else if (that.gameOverCounter == 401) {
@@ -844,12 +893,45 @@ function Game(levelMaps, levelData, level) {
 
   this.stageCleared = function () {
     that.stageClearCounter++;
-    if(that.stageClearCounter == 1){
+    if (that.stageClearCounter == 1) {
+      that.gamesound.stop(levelData[that.level + '-bgm']);
       that.gamesound.play('clear');
-    }else if(that.stageClearCounter < 200) {
-      
+    } else if (that.stageClearCounter < 150) {
+      gameUI.clear();
+      that.drawEnvironments();
+      that.drawLevels();
+      player.playerHappy();
+      player.draw();
+    } else if (that.stageClearCounter < 300) {
+      gameUI.clear();
+      that.drawEnvironments();
+      that.drawLevels();
+    } else if (that.stageClearCounter == 301) {
+      gameUI.translate(that.translatedDist, 0);
+    } else if (that.stageClearCounter < 500) {
+      gameUI.clear();
+      gameUI.canvas.style.backgroundColor = 'black';
+      gameUI.writeText('LEVEL ' + that.level + ' CLEARED', gameUI.viewPort / 4, gameUI.viewHeight / 2);
+    } else if (that.stageClearCounter == 501) {
+      var nextLevel;
+      for (var i = 0; i < Object.keys(levelMaps).length; i++) {
+        if (that.level == Object.keys(levelMaps)[i]) {
+          nextLevel = Object.keys(levelMaps)[i + 1];
+          if (nextLevel == null) {
+            nextLevel = Object.keys(levelMaps)[i];
+          }
+        }
+      }
+      that.saveCheckpointPos = 0;
+      that.savePlayerX = 100;
+      that.savePlayerY = gameUI.viewHeight / 2;
+      player.resetAll();
+      that.resetAll();
+      that.life = 3;
+      that.level = nextLevel;
+      that.stageClearCounter = 0;
+      that.gameState = 0;
     }
   }
-
 
 }

@@ -12,7 +12,6 @@ function Element() {
   this.height = 40;
   this.gravity = 0.2;
   var that = this;
-  console.log(gameUI.blockSet);
 
   this.platform = function () {
     that.type = 1;

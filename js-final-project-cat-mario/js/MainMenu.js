@@ -3,13 +3,13 @@ levelMaps.getJSONMap(afterGetMap);
 function afterGetMap(levelMaps, levelData) {
   var mainMenu = new MainMenu(levelMaps, levelData);
   mainMenu.startFxn();
-  console.log(Object.keys(levelMaps));
+  //console.log(Object.keys(levelMaps));
 }
 
 function MainMenu(levelMaps, levelData) {
   this.levelMaps = levelMaps;
   this.levelData = levelData;
-  this.width = 900;
+  this.width = 1000;
   this.height = 650;
   this.gameClear = false;
   this.mainContainer;
@@ -18,6 +18,7 @@ function MainMenu(levelMaps, levelData) {
   this.savedlvlBtn;
   this.startScreen;
   this.selectLevelScreen;
+  this.editorScreen;
   this.levelsBtn = [];
   var that = this;
 
@@ -39,7 +40,12 @@ function MainMenu(levelMaps, levelData) {
         });
       }
     });
-    console.log(Object.keys(that.levelData));
+    that.editorBtn.addEventListener('click', function (e) {
+      that.mainContainer.removeChild(that.startScreen);
+      that.mainContainer.appendChild(that.editorScreen);
+      var levelMaker = new LevelMaker(that.editorScreen);
+      levelMaker.init();
+    });
   }
 
   this.mainMenu = function () {
@@ -57,7 +63,7 @@ function MainMenu(levelMaps, levelData) {
     startScreen.style.top = 0 + 'px';
     startScreen.style.textAlign = 'center';
     startScreen.style.background = "url('./images/startBG.png') no-repeat center";
-    startScreen.style.backgroundSize = 'contain';
+    startScreen.style.backgroundSize = 'cover';
     mainContainer.appendChild(startScreen);
     this.startScreen = startScreen;
 
@@ -111,7 +117,7 @@ function MainMenu(levelMaps, levelData) {
     selectLevelScreen.style.left = 0 + 'px';
     selectLevelScreen.style.top = 0 + 'px';
     selectLevelScreen.style.background = "url('./images/startBG.png') no-repeat center";
-    selectLevelScreen.style.backgroundSize = 'contain';
+    selectLevelScreen.style.backgroundSize = 'cover';
 
     var levelsContainer = document.createElement('div');
     levelsContainer.style.position = 'absolute';
@@ -138,6 +144,19 @@ function MainMenu(levelMaps, levelData) {
     }
 
     this.selectLevelScreen = selectLevelScreen;
+
+    var editorScreen = document.createElement('div');
+    editorScreen.style.position = 'absolute';
+    editorScreen.style.zIndex = 40;
+    editorScreen.style.width = this.width + 'px';
+    editorScreen.style.height = this.height + 'px';
+    editorScreen.style.left = 0 + 'px';
+    editorScreen.style.top = 0 + 'px';
+    editorScreen.style.backgroundColor = '#ffdcb9';
+    //editorScreen.style.background = "url('./images/startBG.png') no-repeat center";
+    //editorScreen.style.backgroundSize = 'contain';
+
+    this.editorScreen = editorScreen;
   }
 
   this.startLevel = function (level) {

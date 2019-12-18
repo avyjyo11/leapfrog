@@ -78,6 +78,7 @@ function Enemy() {
     this.sHeight = 42;
     this.width = 40;
     this.height = 54;
+    this.jumpSpeed = 8;
   }
 
   this.turtle = function () {
@@ -123,6 +124,7 @@ function Enemy() {
     this.width = 40;
     this.height = 40;
     this.move = true;
+    this.speed = 2;
     this.speed = -this.speed;
   }
 

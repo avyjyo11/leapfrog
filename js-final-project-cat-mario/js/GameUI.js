@@ -22,7 +22,7 @@ function GameUI() {
     that.context = that.canvas.getContext('2d');
     that.canvas.width = that.viewPort;
     that.canvas.height = that.viewHeight;
-    that.canvas.style.border = '2px solid white';
+    that.canvas.style.border = '3px solid white';
   }
 
   this.draw = function (sX, sY, sWidth, sHeight, x, y, width, height) {
@@ -43,7 +43,7 @@ function GameUI() {
     that.context.fill();
   }
 
-  this.writeText = function (text, x, y, color) {
+  this.writeText = function (text, x, y, color, size) {
     that.context.font = '20px catMarioFont';
     that.context.fillStyle = color || 'white';
     that.context.fillText(text, x, y);
