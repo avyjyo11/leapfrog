@@ -1009,6 +1009,9 @@ function Game(levelMaps, levelData, level) {
     this.trollElements = [];
     this.enemies = [];
     this.extras = [];
+    this.enemySpawnCounter = 1;
+    this.enemySpawnLimit = 100;
+    this.pressCounter = 0;
   }
 
   this.stageCleared = function () {

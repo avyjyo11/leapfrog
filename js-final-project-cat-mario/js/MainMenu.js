@@ -13,7 +13,7 @@ function MainMenu(levelMaps, levelData) {
   this.levelMaps = levelMaps;
   this.levelData = levelData;
   this.width = 1000;
-  this.height = 650;
+  this.height = 624;
   this.gameClear = false;
   this.mainContainer;
   this.startBtn;
@@ -53,12 +53,14 @@ function MainMenu(levelMaps, levelData) {
 
   this.mainMenu = function () {
     var mainContainer = document.getElementsByClassName('main-container')[0];
+    mainContainer.classList.add('clearfix');
     mainContainer.style.width = this.width + 'px';
     mainContainer.style.height = this.height + 'px';
     this.mainContainer = mainContainer;
 
     var startScreen = document.createElement('div');
     startScreen.style.position = 'absolute';
+    startScreen.classList.add('clearfix', 'div-startScreen');
     startScreen.style.zIndex = 100;
     startScreen.style.width = this.width + 'px';
     startScreen.style.height = this.height + 'px';
@@ -155,7 +157,7 @@ function MainMenu(levelMaps, levelData) {
     editorScreen.style.height = this.height + 'px';
     editorScreen.style.left = 0 + 'px';
     editorScreen.style.top = 0 + 'px';
-    editorScreen.style.backgroundColor = '#ffdcb9';
+    editorScreen.style.backgroundColor = '#a0b4fa';
     //editorScreen.style.background = "url('./images/startBG.png') no-repeat center";
     //editorScreen.style.backgroundSize = 'contain';
 

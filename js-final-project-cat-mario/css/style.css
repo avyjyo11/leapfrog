@@ -1,3 +1,8 @@
+.div-startScreen button:hover {
+  background-color: white;
+  color: black;
+}
+
 .block-box-1 {
   background: url('../images/editor/block-box-1.png') center;
   background-size: contain;

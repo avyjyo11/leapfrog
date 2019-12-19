@@ -43,7 +43,8 @@ function LevelMaker(container) {
     // console.log('that.levelMapString ', that.levelMapString);
     // console.log('that.levelDataString ', that.levelDataString);
     this.setVariables();
-    this.setLayout();
+    this.setLayoutMap();
+    this.setLayoutSelection();
     this.setSaveMap();
 
     that.setSettingBtn.addEventListener('click', function (e) {
@@ -183,7 +184,7 @@ function LevelMaker(container) {
     that.allBlocks = allBlocks;
   }
 
-  this.setLayout = function () {
+  this.setLayoutMap = function () {
     var mapScreen = document.createElement('div');
     //mapScreen.classList.add('map-screen');
     mapScreen.style.position = 'absolute';
@@ -191,8 +192,8 @@ function LevelMaker(container) {
     mapScreen.style.zIndex = 60;
     mapScreen.style.width = gameUI.viewPort + 'px';
     mapScreen.style.height = gameUI.viewHeight + 20 + 'px';
-    mapScreen.style.left = 14 + 'px';
-    mapScreen.style.top = 12 + 'px';
+    mapScreen.style.left = 0 + 'px';
+    mapScreen.style.top = 0 + 'px';
     mapScreen.style.border = '2px solid black';
     mapScreen.style.backgroundColor = that.levelDataObj.bgcolor;
     this.container.appendChild(mapScreen);
@@ -252,22 +253,25 @@ function LevelMaker(container) {
         });
       }
     }
+  }
 
+  this.setLayoutSelection = function () {
     var selectionScreen = document.createElement('div');
+    selectionScreen.classList.add('class', 'selection-screen');
     selectionScreen.style.position = 'absolute';
-    selectionScreen.style.overflow = 'auto';
     selectionScreen.style.zIndex = 60;
-    selectionScreen.style.width = 270 + 'px';
+    selectionScreen.style.width = 312 + 'px';
     selectionScreen.style.height = gameUI.viewHeight + 20 + 'px';
-    selectionScreen.style.right = 14 + 'px';
-    selectionScreen.style.top = 12 + 'px';
+    selectionScreen.style.right = 0 + 'px';
+    selectionScreen.style.top = 0 + 'px';
     selectionScreen.style.border = '2px solid black';
     this.container.appendChild(selectionScreen);
 
     var selectionScreenInner = document.createElement('div');
+    selectionScreenInner.classList.add('class', 'clearfix');
     selectionScreenInner.style.position = 'absolute';
     selectionScreenInner.style.zIndex = 70;
-    selectionScreenInner.style.width = 250 + 'px';
+    selectionScreenInner.style.width = '100%';
     selectionScreenInner.style.height = gameUI.viewHeight * 2 + 'px';
     selectionScreenInner.style.right = 0 + 'px';
     selectionScreenInner.style.top = 0 + 'px';
@@ -275,16 +279,29 @@ function LevelMaker(container) {
     selectionScreen.appendChild(selectionScreenInner);
 
     var levelSetting = document.createElement('div');
-    levelSetting.innerHTML = 'Level Setting';
-    levelSetting.style.backgroundColor = 'red';
-    levelSetting.style.padding = '10px';
+    levelSetting.classList.add('class', 'clearfix');
+    levelSetting.style.backgroundColor = '#333333';
+    levelSetting.style.color = '#ffffff';
     selectionScreenInner.appendChild(levelSetting);
+
+    var levelSettingTitle = document.createElement('div');
+    levelSettingTitle.innerHTML = 'Level Setting';
+    levelSettingTitle.style.lineHeight = '20px';
+    levelSettingTitle.style.backgroundColor = '#808080';
+    levelSettingTitle.style.padding = '10px';
+    levelSettingTitle.style.paddingLeft = '20px';
+    levelSettingTitle.style.fontFamily = 'catMarioFont';
+    levelSettingTitle.style.fontSize = '14px';
+    levelSetting.appendChild(levelSettingTitle);
 
     var bgcolorDiv = document.createElement('div');
     bgcolorDiv.innerHTML = "Select Backgound Color: <br>";
+    bgcolorDiv.style.paddingLeft = '14px';
+    bgcolorDiv.style.lineHeight = '40px';
     levelSetting.appendChild(bgcolorDiv);
     var bgcolorSelect = document.createElement("select");
     bgcolorSelect.setAttribute("id", "bg-color-select");
+    bgcolorSelect.setAttribute("class", "div-select");
     bgcolorDiv.appendChild(bgcolorSelect);
     var bgcolor = ['#a0b4fa|Blue', '#111111|Black'];
     for (var option in bgcolor) {
@@ -298,8 +315,11 @@ function LevelMaker(container) {
     var bgmusicDiv = document.createElement('div');
     bgmusicDiv.innerHTML = "Select Backgound Music: <br>";
     levelSetting.appendChild(bgmusicDiv);
+    bgmusicDiv.style.paddingLeft = '14px';
+    bgmusicDiv.style.lineHeight = '40px';
     var bgmusicSelect = document.createElement("select");
     bgmusicSelect.setAttribute("id", "bg-music-select");
+    bgmusicSelect.setAttribute("class", "div-select");
     bgmusicDiv.appendChild(bgmusicSelect);
     var bgmusic = ['makaimura|Makaimura', 'puyo|Puyo', 'spelunk|Spelunk', 'star4|Star4', 'titerman|Titerman'];
     for (var option in bgmusic) {
@@ -313,8 +333,11 @@ function LevelMaker(container) {
     var blocksetDiv = document.createElement('div');
     blocksetDiv.innerHTML = "Select BlockSet: <br>";
     levelSetting.appendChild(blocksetDiv);
+    blocksetDiv.style.paddingLeft = '14px';
+    blocksetDiv.style.lineHeight = '40px';
     var blocksetSelect = document.createElement("select");
     blocksetSelect.setAttribute("id", "blockset-select");
+    blocksetSelect.setAttribute("class", "div-select");
     blocksetDiv.appendChild(blocksetSelect);
     var blockset = ['1|Set 1', '2|Set 2', '3|Set 3'];
     for (var option in blockset) {
@@ -330,34 +353,44 @@ function LevelMaker(container) {
     setSettingBtn.style.display = 'block';
     setSettingBtn.style.fontFamily = 'catMarioFont';
     setSettingBtn.style.fontSize = '14px';
-    setSettingBtn.style.color = 'white';
-    setSettingBtn.style.margin = '0 auto';
-    setSettingBtn.style.marginTop = '20px';
+    setSettingBtn.style.color = 'black';
+    setSettingBtn.style.margin = '20px auto';
     setSettingBtn.style.padding = '14px';
-    setSettingBtn.style.backgroundColor = '#000000';
+    setSettingBtn.style.backgroundColor = '#0099ff';
     setSettingBtn.style.border = '0px';
+    setSettingBtn.style.borderRadius = '20px';
     levelSetting.appendChild(setSettingBtn);
     this.setSettingBtn = setSettingBtn;
 
     var blocksSelection = document.createElement('div');
-    blocksSelection.style.backgroundColor = 'blue';
-    blocksSelection.style.padding = '10px';
-    blocksSelection.style.paddingLeft = '0px';
-    blocksSelection.innerHTML = 'Block Selection';
+    blocksSelection.classList.add('class', 'clearfix');
+    blocksSelection.style.backgroundColor = '#333333';
+    blocksSelection.style.color = '#ffffff';
     selectionScreenInner.appendChild(blocksSelection);
+
+    var blocksSelectionTitle = document.createElement('div');
+    blocksSelectionTitle.innerHTML = 'Block Selection';
+    blocksSelectionTitle.style.lineHeight = '20px';
+    blocksSelectionTitle.style.backgroundColor = '#888888';
+    blocksSelectionTitle.style.padding = '10px';
+    blocksSelectionTitle.style.paddingLeft = '20px';
+    blocksSelectionTitle.style.fontFamily = 'catMarioFont';
+    blocksSelectionTitle.style.fontSize = '14px';
+    blocksSelectionTitle.style.marginBottom = '10px';
+    blocksSelection.appendChild(blocksSelectionTitle);
 
     var ul = document.createElement('ul');
     ul.style.textDecoration = 'none';
     ul.style.listStyle = 'none';
-    ul.style.border = '1px solid black';
+    ul.style.marginBottom = '12px';
     ul.classList.add('block-list-ul');
     blocksSelection.appendChild(ul);
     for (var i = 0; i < that.allBlocks.length; i++) {
       var li = document.createElement('li');
       li.innerHTML = that.allBlocks[i][0];
-      li.style.lineHeight = '30px';
+      li.style.padding = '12px';
+      li.style.paddingLeft = '20px';
       //li.style.fontFamily = 'Arial';
-      li.style.fontSize = '18px';
       li.style.cursor = 'grab';
 
       ul.appendChild(li);
@@ -374,15 +407,6 @@ function LevelMaker(container) {
           that.selectedBlock = that.allBlocks[index][0];
         }
       })(i);
-
-      // li.addEventListener('click', function (e) {
-      //   var list = document.getElementsByTagName('li');
-      //   for (var i = 0; i < list.length; i++) {
-      //     if (e.target == list[i]) {
-      //       that.selectedBlock = that.allBlocks[i][0];
-      //     }
-      //   }
-      // });
     }
 
     var saveMapBtn = document.createElement('button');
@@ -398,5 +422,19 @@ function LevelMaker(container) {
     saveMapBtn.style.border = '0px';
     selectionScreenInner.appendChild(saveMapBtn);
     this.saveMapBtn = saveMapBtn;
+
+    var goBackBtn = document.createElement('button');
+    goBackBtn.innerHTML = 'GO BACK';
+    goBackBtn.style.display = 'block';
+    goBackBtn.style.fontFamily = 'catMarioFont';
+    goBackBtn.style.fontSize = '14px';
+    goBackBtn.style.color = 'white';
+    goBackBtn.style.margin = '0 auto';
+    goBackBtn.style.marginTop = '20px';
+    goBackBtn.style.padding = '14px';
+    goBackBtn.style.backgroundColor = '#000000';
+    goBackBtn.style.border = '0px';
+    selectionScreenInner.appendChild(goBackBtn);
+    this.goBackBtn = goBackBtn;
   }
 }
