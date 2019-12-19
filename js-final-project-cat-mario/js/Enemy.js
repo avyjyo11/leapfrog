@@ -175,6 +175,47 @@ function Enemy() {
     this.move = true;
   }
 
+  this.orangeBall = function () {
+    this.type = 14;
+    this.sX = 166;
+    this.sY = 74;
+    this.sWidth = 29;
+    this.sHeight = 29;
+    this.width = 40;
+    this.height = 40;
+    this.move = true;
+    this.jumpSpeed = getRandom(5, 11);
+    this.speed = getRandom(1, 3);
+    this.jumping = true;
+  }
+
+  this.chickenMan = function () {
+    this.type = 15;
+    this.sX = 622;
+    this.sY = 76;
+    this.sWidth = 36;
+    this.sHeight = 77;
+    this.width = 60;
+    this.height = 120;
+    this.move = true;
+    this.jumpSpeed = 8;
+    this.speed = 1;
+    this.jumping = true;
+  }
+
+  this.fireBall = function () {
+    this.type = 16;
+    this.sX = 232;
+    this.sY = 74;
+    this.sWidth = 26;
+    this.sHeight = 29;
+    this.width = 40;
+    this.height = 40;
+    this.move = true;
+    this.jumpSpeed = 10;
+    this.speed = 0;
+    this.jumping = true;
+  }
   //move functions
 
   this.movePawn = function () {
@@ -299,11 +340,11 @@ function Enemy() {
   this.movement = function () {
     that.checkPlayerPos();
     if (this.move) {
-      if (this.type == 1 || this.type == 6 || this.type == 9 || this.type == 11 || this.type == 13) {
+      if (this.type == 1 || this.type == 6 || this.type == 9 || this.type == 11 || this.type == 13 || this.type == 14 || this.type == 15) {
         that.movePawn();
       } else if (this.type == 2 || this.type == 10 || this.type == 12) {
         that.movePawnFromBox();
-      } else if (this.type == 3) {
+      } else if (this.type == 3 || this.type == 16) {
         that.moveFlyer();
       } else if (this.type == 4) {
         that.moveKingPawn();
@@ -317,4 +358,8 @@ function Enemy() {
     }
   }
 
+}
+
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
 }

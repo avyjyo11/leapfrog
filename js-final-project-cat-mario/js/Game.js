@@ -21,6 +21,8 @@ function Game(levelMaps, levelData, level) {
   this.enemies = [];
   this.gameState = 0;
   this.life = 3;
+  this.enemySpawnCounter = 1;
+  this.enemySpawnLimit = 100;
   this.start = false;
   this.saveCheckpointPos = 0;
   this.initialPlayerX = 84;
@@ -179,6 +181,10 @@ function Game(levelMaps, levelData, level) {
   }
 
   this.drawLevels = function () {
+    if (that.enemySpawnLimit < 0) {
+      that.enemySpawnLimit = 100;
+    }
+    that.enemySpawnCounter = (that.enemySpawnCounter % that.enemySpawnLimit == 0) ? 1 : (this.enemySpawnCounter + 1);
     var tileSize = gameUI.tileSize;
     var saveX1, saveX2;
     var trollCount = 0;
@@ -354,6 +360,38 @@ function Game(levelMaps, levelData, level) {
             that.enemies.push(enemy);
             that.map[row][column] = 0;
             break;
+          case 27:
+            if (that.enemySpawnCounter == 1) {
+              var enemy = new Enemy();
+              enemy.orangeBall();
+              enemy.x = (column * tileSize) + tileSize - enemy.width + 20;
+              enemy.y = (row * tileSize) + tileSize - enemy.height;
+              if ((player.x + player.width) > (enemy.x - gameUI.viewPort)) {
+                that.enemies.push(enemy);
+              }
+            }
+            break;
+          case 28:
+            var enemy = new Enemy();
+            enemy.chickenMan();
+            enemy.x = (column * tileSize) + tileSize - enemy.width + 20;
+            enemy.y = (row * tileSize) + tileSize - enemy.height;
+            if ((player.x + player.width) > (enemy.x - gameUI.viewPort / 4)) {
+              that.enemies.push(enemy);
+              that.map[row][column] = 0;
+            }
+            break;
+          case 29:
+            if (that.enemySpawnCounter == 1) {
+              var enemy = new Enemy();
+              enemy.fireBall();
+              enemy.x = (column * tileSize) + tileSize - enemy.width;
+              enemy.y = (row * tileSize) + tileSize - enemy.height;
+              if ((player.x + player.width) > (enemy.x - gameUI.viewPort)) {
+                that.enemies.push(enemy);
+              }
+            }
+            break;
           case 40:
             if (player.x > column * tileSize) {
               var j = 0;
@@ -438,6 +476,25 @@ function Game(levelMaps, levelData, level) {
             that.trollElements.push(troll);
             that.map[row][column] = 0;
             break;
+          case 49:
+            var troll = new TrollElements();
+            troll.setPos(that.element.x, that.element.y);
+            troll.circleQuestion();
+            troll.draw();
+            that.trollElements.push(troll);
+            that.map[row][column] = 0;
+            break;
+          case 50:
+            if (that.enemySpawnCounter == 1) {
+              var troll = new TrollElements();
+              troll.scrollingRects();
+              troll.x = (column * tileSize) - 20;
+              troll.y = (row * tileSize) - 20;
+              if ((player.x + player.width) > (troll.x - gameUI.viewPort)) {
+                that.trollElements.push(troll);
+              }
+            }
+            break;
             //finish Line
           case 100:
             that.element.finishLine();
@@ -474,9 +531,11 @@ function Game(levelMaps, levelData, level) {
         troll.movement();
         troll.draw();
         if (that.gameState == 1) {
-          that.checkPlayerTrollCollision(that.trollElements[i]);
+          that.checkPlayerTrollCollision(that.trollElements[i], i);
           that.checkEnemyTrollCollision(that.trollElements[i]);
         }
+      } else if (troll.x + troll.width + gameUI.viewPort < player.x) {
+        that.trollElements.splice(i, 1);
       }
     }
   }
@@ -656,6 +715,8 @@ function Game(levelMaps, levelData, level) {
       } else if (enemy.type == 11 || enemy.type == 12) {
         player.trollPowerUp();
         that.enemies.splice(index, 1);
+      } else if (enemy.type = 15) {
+        player.jumpSpeedVar = 10;
       }
     } else if (collisionDirection == 'l') {
       player.x = enemy.x + enemy.width;
@@ -706,6 +767,9 @@ function Game(levelMaps, levelData, level) {
           troll.sY = 135;
         }
         that.playerDie();
+      } else if (troll.type == 11) {
+        that.enemySpawnLimit -= 60;
+        that.trollElements.splice(index, 1);
       }
     } else if (collisionDirection == 'l') {
       if (troll.type == 5 || troll.type == 7 || troll.type == 6 || troll.type == 8) {
@@ -719,6 +783,9 @@ function Game(levelMaps, levelData, level) {
           troll.sY = 135;
         }
         that.playerDie();
+      } else if (troll.type == 11) {
+        that.enemySpawnLimit -= 60;
+        that.trollElements.splice(index, 1);
       } else {
         player.x = troll.x + troll.width;
       }
@@ -734,6 +801,9 @@ function Game(levelMaps, levelData, level) {
           troll.sY = 135;
         }
         that.playerDie();
+      } else if (troll.type == 11) {
+        that.enemySpawnLimit -= 60;
+        that.trollElements.splice(index, 1);
       } else {
         player.x = troll.x - player.width;
       }
@@ -744,6 +814,9 @@ function Game(levelMaps, levelData, level) {
       } else if (troll.type == 8) {
         troll.sX = 548;
         troll.sY = 135;
+      } else if (troll.type == 11) {
+        that.enemySpawnLimit -= 60;
+        that.trollElements.splice(index, 1);
       }
       that.playerDie();
     }
@@ -764,7 +837,7 @@ function Game(levelMaps, levelData, level) {
             that.extras.push(brickBall);
           }
         }
-      } else if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && enemy.type != 12 && enemy.type != 10 && !enemy.dead) {
+      } else if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && enemy.type != 12 && enemy.type != 10 && enemy.type != 14 && !enemy.dead) {
         var collisionDirection = this.collisionCheck(enemy, that.element);
         if (collisionDirection == 'b') {
           enemy.y = that.element.y - enemy.height;
@@ -814,7 +887,6 @@ function Game(levelMaps, levelData, level) {
           if (enemy.type == 8) {
             enemy2.jumping = true;
             enemy2.dead = true;
-            that.gamesound.play('humi');
             if (enemy2.type == 1)
               enemy2.sY = 121;
           } else if (enemy.type == 11) {

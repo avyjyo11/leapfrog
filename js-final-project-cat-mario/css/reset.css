@@ -1,0 +1,26 @@
+@font-face {
+  font-family: catMarioFont;
+  src: url('../font/catMarioFont.ttf');
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+}
+
+.clearfix::after {
+  clear: both;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+}

@@ -1,30 +1,3 @@
-@font-face {
-  font-family: catMarioFont;
-  src: url('../font/catMarioFont.ttf');
-}
-
-.main-wrapper {
-  width: 100%;
-}
-
-.main-container {
-  display: block;
-  margin: 20px auto;
-  background-color: #808080;
-  border: 2px solid black;
-  position: relative;
-}
-
-#mainCanvas {
-  margin: 20px auto;
-  display: block;
-  /*background-color: #a0b4fa;*/
-}
-
-.active {
-  color: white;
-}
-
 .block-box-1 {
   background: url('../images/editor/block-box-1.png') center;
   background-size: contain;
@@ -262,5 +235,30 @@
 
 .irritating-box {
   background: url('../images/editor/irritating-box.png') center;
+  background-size: contain;
+}
+
+.chicken-man {
+  background: url('../images/editor/chicken-man.png') center;
+  background-size: contain;
+}
+
+.orange-ball {
+  background: url('../images/editor/orange-ball.png') center;
+  background-size: contain;
+}
+
+.circle-question {
+  background: url('../images/editor/circle-question.png') center;
+  background-size: contain;
+}
+
+.fire-ball {
+  background: url('../images/editor/fire-ball.png') center;
+  background-size: contain;
+}
+
+.scrolling-rectangle {
+  background: url('../images/editor/scrolling-rectangle.png') center;
   background-size: contain;
 }

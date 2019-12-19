@@ -156,6 +156,9 @@ function LevelMaker(container) {
       ['king-pawn', 24],
       ['flyerDown', 25],
       ['turtle', 26],
+      ['orange-ball', 27],
+      ['chicken-man', 28],
+      ['fire-ball', 29],
       ['troll-pawn', 40],
       ['irritating-box', 41],
       ['troll-brick-box', 42],
@@ -165,6 +168,8 @@ function LevelMaker(container) {
       ['yellow-rect', 46],
       ['troll-block-box', 47],
       ['troll-invisible-cloud', 48],
+      ['circle-question', 49],
+      ['scrolling-rectangle', 50],
       ['hill', 81],
       ['grass', 82],
       ['cloud', 83],
@@ -180,6 +185,7 @@ function LevelMaker(container) {
 
   this.setLayout = function () {
     var mapScreen = document.createElement('div');
+    //mapScreen.classList.add('map-screen');
     mapScreen.style.position = 'absolute';
     mapScreen.style.overflow = 'auto';
     mapScreen.style.zIndex = 60;
@@ -213,10 +219,10 @@ function LevelMaker(container) {
         td.style.width = that.tileSize + 'px';
         td.style.height = that.tileSize + 'px';
         td.style.border = '1px solid blue';
+        td.style.cursor = 'grabbing';
         tr.appendChild(td);
 
         td.addEventListener('mousedown', function (e) {
-          e.preventDefault();
           that.mouseDown = true;
           var tile = e.target;
           if (tile.className != "") {

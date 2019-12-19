@@ -106,7 +106,25 @@ function TrollElements() {
   }
 
   this.circleQuestion = function () {
+    this.type = 11;
+    this.sX = 132;
+    this.sY = 199;
+    this.sWidth = 30;
+    this.sHeight = 30;
+    this.width = 40;
+    this.height = 40;
+  }
 
+  this.scrollingRects = function () {
+    that.type = 12;
+    that.sX = 253;
+    this.sY = 233;
+    that.sWidth = 96;
+    this.sHeight = 10;
+    this.width = 120;
+    this.height = 20;
+    this.move = true;
+    this.JUMPSPEED = 3;
   }
 
   this.moveIrritatingBox = function () {
@@ -125,6 +143,10 @@ function TrollElements() {
     this.x -= this.JUMPSPEED;
   }
 
+  this.moveScrollingRects = function () {
+    this.y -= this.JUMPSPEED;
+  }
+
   this.movement = function () {
     this.moveChecker();
     if (this.move) {
@@ -134,6 +156,8 @@ function TrollElements() {
         that.moveFallingBox();
       } else if (this.type == 6) {
         that.moveYellowRect();
+      } else if (this.type == 12) {
+        that.moveScrollingRects();
       }
     }
   }
