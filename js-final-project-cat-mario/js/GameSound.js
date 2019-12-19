@@ -22,7 +22,6 @@ function GameSound() {
   this.kirra;
   this.koura;
   this.powerup;
-  this.pswitch;
   this.tekifire;
   var that = this;
 
@@ -55,7 +54,6 @@ function GameSound() {
     this.kirra = new Audio('./audio/kirra.mp3');
     this.koura = new Audio('./audio/koura.mp3');
     this.powerup = new Audio('./audio/powerup.mp3');
-    this.pswitch = new Audio('./audio/pswitch.mp3');
     this.tekifire = new Audio('./audio/tekifire.mp3');
   }
 
@@ -132,10 +130,6 @@ function GameSound() {
       that.powerup.pause();
       that.powerup.currentTime = 0;
       that.powerup.play();
-    } else if (element == 'pswitch') {
-      that.pswitch.pause();
-      that.pswitch.currentTime = 0;
-      that.pswitch.play();
     } else if (element == 'tekifire') {
       that.tekifire.pause();
       that.tekifire.currentTime = 0;

@@ -699,8 +699,6 @@ function Game(levelMaps, levelData, level) {
       that.gamesound.play('humi');
       if (enemy.type == 1) {
         that.enemies.splice(index, 1);
-      } else if (enemy.type == 3 || enemy.type == 4 || enemy.type == 5) {
-        that.playerDie();
       } else if (enemy.type == 6) {
         enemy.turtleStop();
       } else if (enemy.type == 7) {
@@ -715,6 +713,8 @@ function Game(levelMaps, levelData, level) {
         that.enemies.splice(index, 1);
       } else if (enemy.type = 15) {
         player.jumpSpeedVar = 10;
+      } else {
+        that.playerDie();
       }
     } else if (collisionDirection == 'l') {
       player.x = enemy.x + enemy.width;
@@ -835,7 +835,7 @@ function Game(levelMaps, levelData, level) {
             that.extras.push(brickBall);
           }
         }
-      } else if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && enemy.type != 12 && enemy.type != 10 && enemy.type != 14 && !enemy.dead) {
+      } else if (enemy.type != 2 && enemy.type != 3 && enemy.type != 5 && enemy.type != 12 && enemy.type != 10 && enemy.type != 14 && enemy.type != 16 && !enemy.dead) {
         var collisionDirection = this.collisionCheck(enemy, that.element);
         if (collisionDirection == 'b') {
           enemy.y = that.element.y - enemy.height;
@@ -945,6 +945,7 @@ function Game(levelMaps, levelData, level) {
 
   this.playerDie = function () {
     that.gameState = 2;
+    player.dead = true;
     player.jumpSpeedVar = player.JUMPSPEED;
     player.fallSpeedVar = player.FALLSPEED;
     player.jumpInertia = false;

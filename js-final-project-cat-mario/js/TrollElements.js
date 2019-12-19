@@ -8,7 +8,7 @@ function TrollElements() {
   this.JUMPSPEED = 7;
   this.jumpSpeed = this.JUMPSPEED;
   this.fallSpeed = 0;
-  this.gravity = 0.2;
+  this.gravity = 0.15;
   this.jumping = false;
   this.grounded = false;
   this.sX; // sprite x
@@ -133,8 +133,8 @@ function TrollElements() {
 
   this.moveFallingBox = function () {
     that.fallSpeed += that.gravity;
-    if (that.fallSpeed > that.JUMPSPEED) {
-      that.fallSpeed = that.JUMPSPEED;
+    if (that.fallSpeed > that.JUMPSPEED + 1) {
+      that.fallSpeed = that.JUMPSPEED + 1;
     }
     that.y += that.fallSpeed;
   }
@@ -178,7 +178,7 @@ function TrollElements() {
         that.move = true;
       }
     } else if (that.type == 4) {
-      if (player.x > that.saveX1 && player.x + player.width < that.saveX2 && player.y + player.height == that.y - that.height) {
+      if (player.x > that.saveX1 && player.x + player.width < that.saveX2 && player.y + player.height > that.y - that.height) {
         that.move = true;
       }
     }

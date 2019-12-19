@@ -67,7 +67,8 @@ function Enemy() {
     this.sHeight = 33;
     this.width = 44;
     this.height = 44;
-    this.JUMPSPEED = 8;
+    this.JUMPSPEED = 9;
+    this.jumpSpeed = this.JUMPSPEED;
   }
 
   this.flyerDown = function () {
@@ -212,7 +213,7 @@ function Enemy() {
     this.width = 40;
     this.height = 40;
     this.move = true;
-    this.jumpSpeed = 10;
+    this.jumpSpeed = 11;
     this.speed = 0;
     this.jumping = true;
   }
@@ -323,6 +324,24 @@ function Enemy() {
     this.x = this.x - this.speed;
   }
 
+  this.moveFireBall = function () {
+    if (this.jumping) {
+      this.jumpSpeed -= this.gravity;
+      if (this.jumpSpeed > 0) {
+        this.y = this.y - this.jumpSpeed;
+      } else {
+        this.jumpSpeed = this.JUMPSPEED;
+        this.jumping = false;
+      }
+    } else if (this.grounded) {
+      this.jumpSpeed = this.JUMPSPEED;
+      this.fallSpeed = 0;
+    } else {
+      this.y += this.fallSpeed;
+      this.fallSpeed += this.gravity;
+    }
+  }
+
   //checking and movements
 
   this.checkPlayerPos = function () {
@@ -344,7 +363,7 @@ function Enemy() {
         that.movePawn();
       } else if (this.type == 2 || this.type == 10 || this.type == 12) {
         that.movePawnFromBox();
-      } else if (this.type == 3 || this.type == 16) {
+      } else if (this.type == 3) {
         that.moveFlyer();
       } else if (this.type == 4) {
         that.moveKingPawn();
@@ -354,6 +373,8 @@ function Enemy() {
         that.moveTurtleStop();
       } else if (this.type == 8) {
         that.moveTurtleGo();
+      } else if (this.type == 16) {
+        that.moveFireBall();
       }
     }
   }

@@ -23,6 +23,8 @@ function Player() {
   this.sY; // sprite y
   this.sWidth = 20;
   this.sHeight = 34;
+  this.direction = 'right';
+  this.dead = false;
   var that = this;
 
   this.init = function (x, y) {
@@ -60,17 +62,11 @@ function Player() {
 
   this.moveLeft = function () {
     this.x -= this.SPEED;
+    this.direction = 'left';
     if (this.type == 'big') {
 
     } else {
-      if (this.jumpInertia || this.jumping) {
-        this.sX = 256;
-        this.sY = 38;
-        this.sWidth = 24;
-        this.sHeight = 34;
-        this.width = 38;
-        this.height = 50;
-      } else {
+      if (!this.jumpInertia && !this.jumping) {
         this.sX = 320;
         this.sY = 38;
         this.sWidth = 20;
@@ -83,18 +79,52 @@ function Player() {
 
   this.moveRight = function () {
     this.x += this.SPEED;
+    this.direction = 'right';
     if (this.type == 'big') {
 
     } else {
-      if (this.jumpInertia || this.jumping) {
-        this.sX = 256;
+      if (!this.jumpInertia && !this.jumping) {
+        this.sX = 5;
+        this.sY = 38;
+        this.sWidth = 20;
+        this.sHeight = 34;
+        this.width = 32;
+        this.height = 50;
+      }
+    }
+  }
+
+  this.jumpingFrame = function () {
+    if (!this.dead) {
+      if (this.direction == 'right') {
+        this.sX = 65;
         this.sY = 38;
         this.sWidth = 24;
         this.sHeight = 34;
         this.width = 38;
         this.height = 50;
       } else {
+        this.sX = 256;
+        this.sY = 38;
+        this.sWidth = 24;
+        this.sHeight = 34;
+        this.width = 38;
+        this.height = 50;
+      }
+    }
+  }
+
+  this.groundedFrame = function () {
+    if (!this.dead) {
+      if (this.direction == 'right') {
         this.sX = 5;
+        this.sY = 38;
+        this.sWidth = 20;
+        this.sHeight = 34;
+        this.width = 32;
+        this.height = 50;
+      } else {
+        this.sX = 320;
         this.sY = 38;
         this.sWidth = 20;
         this.sHeight = 34;
@@ -106,6 +136,7 @@ function Player() {
 
   this.moveY = function () {
     if (this.jumping) {
+      this.jumpingFrame();
       this.y -= this.jumpSpeedVar;
       this.jumping = false;
       this.jumpInertia = true;
@@ -118,6 +149,7 @@ function Player() {
         this.jumpInertia = false;
       }
     } else if (this.grounded) {
+      this.groundedFrame();
       this.jumpSpeedVar = this.JUMPSPEED;
       this.fallSpeedVar = this.FALLSPEED;
     } else {
@@ -137,6 +169,8 @@ function Player() {
     this.jumpInertia = false;
     this.jumping = false;
     this.grounded = false;
+    this.dead = false;
+    this.direction = 'right';
   }
 
 }
