@@ -1,8 +1,6 @@
 function Game(levelMaps, levelData, level) {
   this.gamesound;
   this.bgm;
-  this.translatePoint = 2;
-  this.blockSet;
   this.element;
   this.background;
   this.level = level;
@@ -938,7 +936,7 @@ function Game(levelMaps, levelData, level) {
   }
 
   this.wallCollision = function () {
-    if (player.x >= gameUI.maxWidth - player.width) {
+    if (player.x + player.width >= gameUI.maxWidth) {
       player.x = gameUI.maxWidth - player.width;
     } else if (player.x <= that.translatedDist) {
       player.x = that.translatedDist + 1;

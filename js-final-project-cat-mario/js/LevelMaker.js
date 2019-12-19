@@ -33,15 +33,13 @@ function LevelMaker(container) {
   this.saveMapBtn;
   this.saveMap = [];
   this.prevSelectBlock;
+  this.savedDisplay;
   var that = this;
 
   this.init = function () {
     this.savedLevel = parseInt(window.localStorage.getItem('savedLevel'));
     this.levelMapString = window.localStorage.getItem('savedMapString');
     this.levelDataString = window.localStorage.getItem('savedDataString');
-    // console.log('that.savedlevel ', that.savedLevel);
-    // console.log('that.levelMapString ', that.levelMapString);
-    // console.log('that.levelDataString ', that.levelDataString);
     this.setVariables();
     this.setLayoutMap();
     this.setLayoutSelection();
@@ -91,6 +89,8 @@ function LevelMaker(container) {
       that.saveMap = saveMap;
       that.saveLevelStorage();
       that.saveLevelDataStorage();
+      that.savedDisplay.style.display = 'block';
+      that.saveMapBtn.style.display = 'none';
     });
   }
 
@@ -186,7 +186,6 @@ function LevelMaker(container) {
 
   this.setLayoutMap = function () {
     var mapScreen = document.createElement('div');
-    //mapScreen.classList.add('map-screen');
     mapScreen.style.position = 'absolute';
     mapScreen.style.overflow = 'auto';
     mapScreen.style.zIndex = 60;
@@ -232,7 +231,6 @@ function LevelMaker(container) {
           }
           if (that.selectedBlock != null && that.selectedBlock != 'none')
             tile.classList.add(that.selectedBlock);
-          //console.log(tile.className);
         });
 
         td.addEventListener('mouseover', function (e) {
@@ -244,7 +242,6 @@ function LevelMaker(container) {
             }
             if (that.selectedBlock != null && that.selectedBlock != 'none')
               tile.classList.add(that.selectedBlock);
-            //console.log(tile.className);
           }
         });
 
@@ -390,7 +387,6 @@ function LevelMaker(container) {
       li.innerHTML = that.allBlocks[i][0];
       li.style.padding = '12px';
       li.style.paddingLeft = '20px';
-      //li.style.fontFamily = 'Arial';
       li.style.cursor = 'grab';
 
       ul.appendChild(li);
@@ -409,32 +405,37 @@ function LevelMaker(container) {
       })(i);
     }
 
+    var savedDiv = document.createElement('div');
+    savedDiv.classList.add('class', 'clearfix');
+    savedDiv.style.backgroundColor = '#111111';
+    savedDiv.style.color = '#ffffff';
+    selectionScreenInner.appendChild(savedDiv);
+
     var saveMapBtn = document.createElement('button');
     saveMapBtn.innerHTML = 'Save Map';
     saveMapBtn.style.display = 'block';
     saveMapBtn.style.fontFamily = 'catMarioFont';
-    saveMapBtn.style.fontSize = '14px';
-    saveMapBtn.style.color = 'white';
-    saveMapBtn.style.margin = '0 auto';
-    saveMapBtn.style.marginTop = '20px';
-    saveMapBtn.style.padding = '14px';
-    saveMapBtn.style.backgroundColor = '#000000';
+    saveMapBtn.style.fontSize = '20px';
+    saveMapBtn.style.color = 'black';
+    saveMapBtn.style.margin = '20px auto';
+    saveMapBtn.style.padding = '14px 30px';
+    saveMapBtn.style.backgroundColor = '#0099ff';
     saveMapBtn.style.border = '0px';
-    selectionScreenInner.appendChild(saveMapBtn);
+    saveMapBtn.style.borderRadius = '20px';
+    savedDiv.appendChild(saveMapBtn);
     this.saveMapBtn = saveMapBtn;
 
-    var goBackBtn = document.createElement('button');
-    goBackBtn.innerHTML = 'GO BACK';
-    goBackBtn.style.display = 'block';
-    goBackBtn.style.fontFamily = 'catMarioFont';
-    goBackBtn.style.fontSize = '14px';
-    goBackBtn.style.color = 'white';
-    goBackBtn.style.margin = '0 auto';
-    goBackBtn.style.marginTop = '20px';
-    goBackBtn.style.padding = '14px';
-    goBackBtn.style.backgroundColor = '#000000';
-    goBackBtn.style.border = '0px';
-    selectionScreenInner.appendChild(goBackBtn);
-    this.goBackBtn = goBackBtn;
+    var savedDisplay = document.createElement('div');
+    savedDisplay.innerHTML = 'Level Saved!';
+    savedDisplay.style.lineHeight = '20px';
+    savedDisplay.style.textAlign = 'center';
+    savedDisplay.style.padding = '16px';
+    savedDisplay.style.margin = '20px auto';
+    savedDisplay.style.fontFamily = 'catMarioFont';
+    savedDisplay.style.fontSize = '20px';
+    savedDisplay.style.display = 'none';
+    savedDiv.appendChild(savedDisplay);
+    this.savedDisplay = savedDisplay;
   }
+
 }

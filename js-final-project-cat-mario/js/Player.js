@@ -87,7 +87,7 @@ function Player() {
 
     } else {
       if (this.jumpInertia || this.jumping) {
-        this.sX = 65;
+        this.sX = 256;
         this.sY = 38;
         this.sWidth = 24;
         this.sHeight = 34;
