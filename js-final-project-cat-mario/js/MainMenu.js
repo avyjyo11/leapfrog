@@ -76,13 +76,14 @@ function MainMenu(levelMaps, levelData) {
     startBtn.style.display = 'block';
     startBtn.innerHTML = 'START GAME';
     startBtn.style.fontFamily = 'catMarioFont';
-    startBtn.style.fontSize = '22px';
+    startBtn.style.fontSize = '20px';
     startBtn.style.color = 'white';
     startBtn.style.margin = '0 auto';
     startBtn.style.marginTop = '240px';
     startBtn.style.padding = '14px';
     startBtn.style.backgroundColor = '#000000';
     startBtn.style.border = '0px';
+    startBtn.style.borderRadius = '20px';
     startScreen.appendChild(startBtn);
     this.startBtn = startBtn;
 
@@ -90,12 +91,13 @@ function MainMenu(levelMaps, levelData) {
     editorBtn.innerHTML = 'LEVEL MAKER';
     editorBtn.style.display = 'block';
     editorBtn.style.fontFamily = 'catMarioFont';
-    editorBtn.style.fontSize = '22px';
+    editorBtn.style.fontSize = '20px';
     editorBtn.style.color = 'white';
     editorBtn.style.margin = '0 auto';
     editorBtn.style.marginTop = '20px';
     editorBtn.style.padding = '14px';
     editorBtn.style.backgroundColor = '#000000';
+    editorBtn.style.borderRadius = '20px';
     editorBtn.style.border = '0px';
     startScreen.appendChild(editorBtn);
     this.editorBtn = editorBtn;
@@ -104,13 +106,14 @@ function MainMenu(levelMaps, levelData) {
     savedlvlBtn.innerHTML = 'SELECT LEVEL';
     savedlvlBtn.style.display = 'block';
     savedlvlBtn.style.fontFamily = 'catMarioFont';
-    savedlvlBtn.style.fontSize = '22px';
+    savedlvlBtn.style.fontSize = '20px';
     savedlvlBtn.style.color = 'white';
     savedlvlBtn.style.margin = '0 auto';
     savedlvlBtn.style.marginTop = '20px';
     savedlvlBtn.style.padding = '14px';
     savedlvlBtn.style.backgroundColor = '#000000';
     savedlvlBtn.style.border = '0px';
+    savedlvlBtn.style.borderRadius = '20px';
     startScreen.appendChild(savedlvlBtn);
     this.savedlvlBtn = savedlvlBtn;
 
