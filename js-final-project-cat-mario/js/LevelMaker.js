@@ -97,7 +97,7 @@ function LevelMaker(container) {
   this.saveLevelStorage = function () {
     that.savedLevel++;
     let saveMapString = '';
-    //window.localStorage.setItem('savedLevel', (that.savedLevel).toString());
+    window.localStorage.setItem('savedLevel', (that.savedLevel).toString());
     for (var i = 0; i < that.saveMap.length; i++) {
       let eachRow = [];
       eachRow = that.saveMap[i];
@@ -109,16 +109,16 @@ function LevelMaker(container) {
     saveMapString = '[' + saveMapString + ']';
     saveMapString = ', "Save-' + that.savedLevel + '" : ' + saveMapString;
     that.levelMapString = that.levelMapString + saveMapString;
-    //window.localStorage.setItem('savedMapString', that.levelMapString);
-    console.log('that.savedlevel ', that.savedLevel);
-    console.log('that.levelMapString ', that.levelMapString);
+    window.localStorage.setItem('savedMapString', that.levelMapString);
+    //console.log('that.savedlevel ', that.savedLevel);
+    //console.log('that.levelMapString ', that.levelMapString);
   }
 
   this.saveLevelDataStorage = function () {
     var saveDataString = ', "Save-' + that.savedLevel + '-bgcolor" : "' + that.levelDataObj.bgcolor + '", "Save-' + that.savedLevel + '-blockSet": ' + that.levelDataObj.blockSet + ', "Save-' + that.savedLevel + '-bgm": "' + that.levelDataObj.bgm + '"';
     that.levelDataString = that.levelDataString + saveDataString;
-    //window.localStorage.setItem('savedDataString', that.levelDataString);
-    console.log('that.levelDataString ', that.levelDataString);
+    window.localStorage.setItem('savedDataString', that.levelDataString);
+    //console.log('that.levelDataString ', that.levelDataString);
   }
 
   this.setSaveMap = function () {
