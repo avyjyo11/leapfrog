@@ -6,7 +6,7 @@
 
 ### Level Maker
 
-This project also consists of its own level-maker as well. If you wished of creating your own level for the game, it’s possible with LEVEL MAKER! It’s super easy to use and save the level map once done and play the level in level select menu. Level Maker is allows the player for awesome creation and fun designs. You can PLAY and MAKE levels, so let your imagination run wild!
+This game also consists of its own level-maker as well. If you wished of creating your own level for the game, it’s possible with LEVEL MAKER! It’s super easy to use and save the level map once done and play the level in level select menu. Level Maker is allows the player for awesome creation and fun designs. You can PLAY and MAKE levels, so let your imagination run wild!
 
 ### How to play?
 
