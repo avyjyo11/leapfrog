@@ -1,12 +1,14 @@
 ## CAT MARIO
 
+The project is the emulation of the famous game 'Syobon Action' which is a fun take on another famous game 'Super Mario Bros.'
+
 ### Description
 
 <strong>Cat Mario</strong> is a fun 2d-platform mario-like game but the levels are weird. The objects and enemies behave differently than expected, which provides hilarious as well as frustating experience. Its levels designed to cause frustration due to innocuous-looking objects that suddenly kill the character. It is riddled with traps designed to trick the player, and abuse their previous knowledge of Super Mario Bros. gameplay, including normal-looking ground tiles that fall away into pits, blocks that sprout spikes when touched, enemies that spawn nearly on top of the character, deadly background scenery, coin blocks rigged at the edge of a pit to cause the character to fall down, and a Mario-style flagpole that kills the character. Despite the surprise factor of these traps, the levels do not change between plays, allowing the player to memorize their locations and patterns and eventually make progress.
 
 ### Level Maker
 
-This game also consists of its own level-maker as well. If you wished of creating your own level for the game, it’s possible with LEVEL MAKER! It’s super easy to use and save the level map once done and play the level in level select menu. Level Maker is allows the player for awesome creation and fun designs. You can PLAY and MAKE levels, so let your imagination run wild!
+The game also consists of its own level-maker as well. If you wished of creating your own level for the game, it’s possible with LEVEL MAKER! It’s super easy to use and save the level map once done and play the level in level select menu. Level Maker is allows the player for awesome creation and fun designs. You can PLAY and MAKE levels, so let your imagination run wild!
 
 ### How to play?
 
