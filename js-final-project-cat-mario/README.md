@@ -2,7 +2,7 @@
 
 The project is the emulation of the famous game 'Syobon Action' which is itself a fun take on another famous game 'Super Mario Bros.'
 
-Download the files and run index.html to play the game, or simply visit the following link.
+Download the files and run index.html to play the game, or simply visit the following link. <br>
 https://avyjyo11.github.io/leapfrog/js-final-project-cat-mario
 
 ### Description
