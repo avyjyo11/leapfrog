@@ -1,5 +1,5 @@
-## CAT MARIO
-### JS final project
+## JS final project
+### CAT MARIO
 
 This project is a fun 2d-platform mario-like game but the levels are weird. 
 The objects and enemies behave differently than expected, which provides hilarious as well as frustating experience.
