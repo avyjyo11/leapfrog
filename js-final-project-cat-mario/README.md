@@ -1,6 +1,6 @@
 ## CAT MARIO
 
-The project is the emulation of the famous game 'Syobon Action' which is itself a fun take on another famous game 'Super Mario Bros.'
+The project is the emulation of the famous game 'Syobon Action' which is itself a fun take on another famous game 'Super Mario Bros.' <br>
 Demo link: https://avyjyo11.github.io/leapfrog/js-final-project-cat-mario
 
 ### Description
