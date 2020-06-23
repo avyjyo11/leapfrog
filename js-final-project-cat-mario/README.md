@@ -11,9 +11,7 @@ This project also consists of its own level-maker as well. If you wished of crea
 ### How to play?
 
 <strong>START GAME</strong> - Move right towards the finish line to complete the level while dealing with the enemies in the way, but beware since enemies are not the only thing that will kill you. 
-
 <strong>LEVEL MAKER</strong> - Select on block you want to use and right click on level map to place that block in the position as you desire. There are various blocks, enemies, tricking blocks you can select from to make your own level.
-
 <strong>LEVEL SELECT</strong> - Select the level you want to play. The level created and saved in the level maker will also be displayed here for you to play.
 
 ### Controls
